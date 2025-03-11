@@ -4,6 +4,11 @@
 <@adresse_autocomplete_includes/>
 <@simpleModal modal_id="map-modal" text=i18n("dansmarue.map.max.results.execeeded",map_max_results)/>
 <@modalImage/>
+<style>
+    .full-width {
+	width: 100%;
+    }
+</style>
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 <script type="text/javascript" src="js/sira.js"></script>
 
@@ -73,7 +78,7 @@ $(document).ready(function(){
 		url :"jsp/admin/plugins/signalement/DoInitDomainsAjax.jsp",
 		async:false,
 		data: {idDomaine: filterIdDomaine},
-		success : function(data) { 
+		success : function(data) {
 			if(data != undefined){
 				var domain;
 				data.forEach(function(element,index,array){
@@ -114,8 +119,8 @@ $(document).ready(function(){
 			}
 		},
 		error:function (xhr, ajaxOptions, thrownError){
-			alert(thrownError); 
-		}   
+			alert(thrownError);
+		}
 	});
 	
 	$("#idDomaine").change(function(){
@@ -126,7 +131,7 @@ $(document).ready(function(){
 	$("#idDirection").change(function(){
         updateSectorList($("#idDirection").val(), $("#idDomaine").val());
         return false;
-    });	
+    });
 	
 	$.getScript("jsp/admin/plugins/leaflet/DoGetAutocomplete.jsp", function(data){
 		addAutocomplete("filter_adresse",null);
@@ -150,7 +155,7 @@ function updateFiltersFromDomain(idDomaine,reset){
 		url :"jsp/admin/plugins/signalement/DoGetDomainAjax.jsp",
 		data: {idDomaine: idDomaine},
 		async:false,
-		success : function(domain) { 
+		success : function(domain) {
 			$("#idDirection, #idSector, #checkbox_arrondissement").html("");
 			if(reset){
 				deleteFields(true);
@@ -229,8 +234,8 @@ function updateFiltersFromDomain(idDomaine,reset){
 		    });
 		},
 		error:function (xhr, ajaxOptions, thrownError){
-			alert(thrownError); 
-		}   
+			alert(thrownError);
+		}
 	});
 	$(".overlay").hide()
 }
@@ -266,7 +271,7 @@ function updateSectorList(idDirection, idDomaine){
 					direction_id: idDirection,
 					idDomaine: idDomaine
 				},
-				success : function(data) { 
+				success : function(data) {
 					var text = "";
 					if(!(data.secteur_list === void 0))
 					{
@@ -278,14 +283,14 @@ function updateSectorList(idDirection, idDomaine){
 									var option = $("<option />").attr("value", secteur.id).text(secteur.value);
 									if ($("#idSelectedSector").val() == secteur.id){
 										option.attr("selected", "selected");
-									}                                   
+									}
 									selectSecteurs.append(option);
-							});     
+							});
 						}
 					}
 				},
 				error:function (xhr, ajaxOptions, thrownError){
-				}   
+				}
 			});
 		}else{
 			var domain = getDomainById($("#idDomaine").val());
@@ -298,7 +303,7 @@ function updateSectorList(idDirection, idDomaine){
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 <link rel="stylesheet" href="js/jquery/plugins/autocomplete/jquery.autocomplete.css" type="text/css" media="screen, projection" />
 <#-- javascript --> <#-- cartographie : -->
-	
+
 
 <!--  Overriding Boostrap (otherwise the active page, is overlapping the autocomplete list-->
 <style>
@@ -333,7 +338,7 @@ function updateSectorList(idDirection, idDomaine){
   right: 0;
   bottom: 0;
   left: 0;
-  position: absolute; 
+  position: absolute;
 }
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
@@ -366,27 +371,27 @@ function updateSectorList(idDirection, idDomaine){
 								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_type">#i18n{dansmarue.reportingList.domaine} :
 								</label><span id="firt_filter"></span>
-								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">	
+								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 										<select id="idDomaine" class="form-control
-										input-sm" name="idDomaine" filter="${(filter.idDomaine)!}" ></select>							
+										input-sm" name="idDomaine" filter="${(filter.idDomaine)!}" ></select>
 								</div>
 							</div>
 							<#--<div class="form-group">
 								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_type">#i18n{dansmarue.reportingList.category} :
 								</label><span id="firt_filter"></span>
-								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">	
-									<div id="categoryCheckboxes" data-toggle="buttons">		
-									</div>									
+								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+									<div id="categoryCheckboxes" data-toggle="buttons">
+									</div>
 								</div>
 							</div>-->
 							<div class="form-group">
 								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_type">#i18n{dansmarue.reportingList.type} :
 								</label><span id="firt_filter"></span>
-								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">	
+								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 									<input  class="form-control input-sm" id="typeSignalements" value="${idTypeSignalement!}" filter="${(filter.idTypeSignalement)!}" type="text" placeholder="" maxlength="255"/>
-									<input id="idTypeSignalement" name="idTypeSignalement" value="${(filter.idTypeSignalement)!}" type="hidden" />											
+									<input id="idTypeSignalement" name="idTypeSignalement" value="${(filter.idTypeSignalement)!}" type="hidden" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -541,9 +546,9 @@ function updateSectorList(idDirection, idDomaine){
 										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_arrondissement">#i18n{dansmarue.reportingList.arrondissement}
 										</label>
-											
+										
 										<div id="checkbox_arrondissement" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
-											
+										
 										</div>
 										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
 											<button type="button" class="btn btn-primary" onClick="select_all_arrondissement()">#i18n{dansmarue.button.select.all}</button>
@@ -607,7 +612,7 @@ function updateSectorList(idDirection, idDomaine){
 								</div>
 							</div>
 							<style>
-								
+							
 							</style>
 							<div class="form-group">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -681,114 +686,116 @@ function updateSectorList(idDirection, idDomaine){
 					</div>
 					<br />
 					<br />
-					<table id="table-signalements"  class="table table-condensed">
-						<thead>
-							<tr>
-								<@hasAutorisationMacro ressourceType="GESTION_DES_SIGNALEMENTS"
-								permissions=["TRAITEMENT_MASSE","SUPPRIMER_SIGNALEMENT_MASSE"]>
-								<th><input type="checkbox" name="selectAll" id="selectAll"
-									value="selectAll"
-									title="#i18n{dansmarue.reportingList.alt.selectAll}" /></th> </@hasAutorisationMacro>
-								<th>#i18n{dansmarue.reportingList.actions}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="photo.id_photo"/>#i18n{dansmarue.reportingList.photo}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="signalement.suivi"/>#i18n{dansmarue.reportingList.nbfollowers}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="signaleur.mail"/>#i18n{dansmarue.reportingList.mail}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="numSignalement"/>#i18n{dansmarue.reportingList.number}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="priorite.libelle"/>#i18n{dansmarue.reportingList.priority}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="type.libelle"/>#i18n{dansmarue.reportingList.type}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="direction_unit.label"/>#i18n{dansmarue.reportingList.direction}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="adr.adresse"/>#i18n{dansmarue.reportingList.adress}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="signalement.commentaire"/>#i18n{dansmarue.reportingList.comment}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/ManageSignalement.jsp"
-									attribute="signalement.commentaireAgentTerrain"/>#i18n{dansmarue.saveSignalement.commentaireAgentTerrain}</th>
-								<th><@sort
-									jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
-									attribute="signalement.date_creation"/>#i18n{dansmarue.reportingList.creationDate}</th>
-								<th>#i18n{dansmarue.reportingList.etat}</th>
-							</tr>
-						</thead>
-						<tbody>
-							<#if signalement_list?has_content> <#list signalement_list as
-							signalement>
-							<tr id="ancre-signalement-${signalement.id}"
-								class="signalement-list-element">
-								<#if (map_actions[signalement.id?string] ?? ) > <#assign action = map_actions[signalement.id?string] /> <#else> <#assign action ="" /></#if>
-								<@hasAutorisationMacro ressourceType="GESTION_DES_SIGNALEMENTS"
-								permissions=["TRAITEMENT_MASSE","SUPPRIMER_SIGNALEMENT_MASSE"]>
-								<td class="signalement-checkbox"><input type="checkbox"
-									name="signalement_id" value="${signalement.id}"
-									title="#i18n{dansmarue.reportingList.alt.select}" /></td>
-								</@hasAutorisationMacro>
-								<td class="signalement-actions"><@a class="btn btn-xs
-									btn-primary" visu=false
-									href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
-									params="?signalement_id=${signalement.id}&from_page=display_page"
-									additionalParameters="title='#i18n{dansmarue.reportingList.alt.view}'"> <i
-									class="glyphicon glyphicon-eye-open"></i> </@a> <a
-									class="btn btn-xs btn-primary"
-									title="#i18n{dansmarue.reportingList.alt.history}"
-									href="jsp/admin/plugins/signalement/ViewHistory.jsp?signalement_id=${signalement.id}&from_page=display_page">
-										<i class="glyphicon glyphicon-book"></i>
-								   </a>
-								   <#if action?has_content>
-								   <a title="${action.name}"
-									href="jsp/admin/plugins/signalement/ProcessAction.jsp?action_id=${action.id}&amp;signalement_id=${signalement.id}&from_page=display_page">
-										<img width="24px"
-										src="image?resource_type=workflow_icon_img&id=${action.icon.id}"
-										alt="${action.name}" />
-									</a> 
-								 </#if>
-								</td>
-								<td class="signalement-photo">
-									<#if signalement.photos?has_content> 
-										<a href='#' data-toggle="modal" data-target="#imageModal" image-url='${signalement.photos[0].imageUrl}'>
-											<img src="${signalement.photos[0].imageThumbnailUrl}" width="100" />
-										</a>
-									</#if>
-								</td>
-								<td class="signalement-vote">${signalement.suivi!}</td>
-								<td class="signalement-mail">${(signalement.signaleurs[0].mail)!}</td> 
-								<td class="signalement-id"><@a class="link" visu=true
-									href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
-									params="?signalement_id=${signalement.id}">${signalement.numeroSignalement!}</@a></td>
-								<td class="signalement-priorite">${signalement.prioriteName!}</td>
-								<td class="signalement-type">${signalement.type!}</td>
-								<td class="signalement-direction">${(signalement.directionSector.label)!}</td>
-								<td class="signalement-address"><@a visu=true
-									href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
-									params="?signalement_id=${signalement.id}&from_page=display_page">${signalement.adresses[0].adresse!}</@a></td>
-								<td class="signalement-comment">${signalement.commentaire!}</td>
-								<td class="signalement-comment">${signalement.commentaireAgentTerrain!}</td>
-								<td class="signalement-date">${signalement.dateCreation!}</td>
-								<td class="signalement-etat">${map_etats[signalement.id?string]!}</td>
-							</tr>
-							</#list> <#else>
-							<tr>
-								<td colspan="12">
-									#i18n{dansmarue.reportingList.messageNoResult}</td>
-							</tr>
-							</#if>
-						</tbody>
-					</table>
+                    <div class="table-responsive full-width">
+                        <table id="table-signalements"  class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <@hasAutorisationMacro ressourceType="GESTION_DES_SIGNALEMENTS"
+                                    permissions=["TRAITEMENT_MASSE","SUPPRIMER_SIGNALEMENT_MASSE"]>
+                                    <th><input type="checkbox" name="selectAll" id="selectAll"
+                                        value="selectAll"
+                                        title="#i18n{dansmarue.reportingList.alt.selectAll}" /></th> </@hasAutorisationMacro>
+                                    <th>#i18n{dansmarue.reportingList.actions}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="photo.id_photo"/>#i18n{dansmarue.reportingList.photo}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="signalement.suivi"/>#i18n{dansmarue.reportingList.nbfollowers}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="signaleur.mail"/>#i18n{dansmarue.reportingList.mail}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="numSignalement"/>#i18n{dansmarue.reportingList.number}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="priorite.libelle"/>#i18n{dansmarue.reportingList.priority}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="type.libelle"/>#i18n{dansmarue.reportingList.type}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="direction_unit.label"/>#i18n{dansmarue.reportingList.direction}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="adr.adresse"/>#i18n{dansmarue.reportingList.adress}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="signalement.commentaire"/>#i18n{dansmarue.reportingList.comment}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/ManageSignalement.jsp"
+                                        attribute="signalement.commentaireAgentTerrain"/>#i18n{dansmarue.saveSignalement.commentaireAgentTerrain}</th>
+                                    <th><@sort
+                                        jsp_url="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
+                                        attribute="signalement.date_creation"/>#i18n{dansmarue.reportingList.creationDate}</th>
+                                    <th>#i18n{dansmarue.reportingList.etat}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <#if signalement_list?has_content> <#list signalement_list as
+                                signalement>
+                                <tr id="ancre-signalement-${signalement.id}"
+                                    class="signalement-list-element">
+                                    <#if (map_actions[signalement.id?string] ?? ) > <#assign action = map_actions[signalement.id?string] /> <#else> <#assign action ="" /></#if>
+                                    <@hasAutorisationMacro ressourceType="GESTION_DES_SIGNALEMENTS"
+                                    permissions=["TRAITEMENT_MASSE","SUPPRIMER_SIGNALEMENT_MASSE"]>
+                                    <td class="signalement-checkbox"><input type="checkbox"
+                                        name="signalement_id" value="${signalement.id}"
+                                        title="#i18n{dansmarue.reportingList.alt.select}" /></td>
+                                    </@hasAutorisationMacro>
+                                    <td class="signalement-actions"><@a class="btn btn-xs
+                                        btn-primary" visu=false
+                                        href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
+                                        params="?signalement_id=${signalement.id}&from_page=display_page"
+                                        additionalParameters="title='#i18n{dansmarue.reportingList.alt.view}'"> <i
+                                        class="glyphicon glyphicon-eye-open"></i> </@a> <a
+                                        class="btn btn-xs btn-primary"
+                                        title="#i18n{dansmarue.reportingList.alt.history}"
+                                        href="jsp/admin/plugins/signalement/ViewHistory.jsp?signalement_id=${signalement.id}&from_page=display_page">
+                                            <i class="glyphicon glyphicon-book"></i>
+                                       </a>
+                                       <#if action?has_content>
+                                       <a title="${action.name}"
+                                        href="jsp/admin/plugins/signalement/ProcessAction.jsp?action_id=${action.id}&amp;signalement_id=${signalement.id}&from_page=display_page">
+                                            <img width="24px"
+                                            src="image?resource_type=workflow_icon_img&id=${action.icon.id}"
+                                            alt="${action.name}" />
+                                        </a>
+                                     </#if>
+                                    </td>
+                                    <td class="signalement-photo">
+                                        <#if signalement.photos?has_content>
+                                            <a href='#' data-toggle="modal" data-target="#imageModal" image-url='${signalement.photos[0].imageUrl}'>
+                                                <img src="${signalement.photos[0].imageThumbnailUrl}" width="100" />
+                                            </a>
+                                        </#if>
+                                    </td>
+                                    <td class="signalement-vote">${signalement.suivi!}</td>
+                                    <td class="signalement-mail">${(signalement.signaleurs[0].mail)!}</td>
+                                    <td class="signalement-id"><@a class="link" visu=true
+                                        href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
+                                        params="?signalement_id=${signalement.id}">${signalement.numeroSignalement!}</@a></td>
+                                    <td class="signalement-priorite">${signalement.prioriteName!}</td>
+                                    <td class="signalement-type">${signalement.type!}</td>
+                                    <td class="signalement-direction">${(signalement.directionSector.label)!}</td>
+                                    <td class="signalement-address"><@a visu=true
+                                        href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
+                                        params="?signalement_id=${signalement.id}&from_page=display_page">${signalement.adresses[0].adresse!}</@a></td>
+                                    <td class="signalement-comment">${signalement.commentaire!}</td>
+                                    <td class="signalement-comment">${signalement.commentaireAgentTerrain!}</td>
+                                    <td class="signalement-date">${signalement.dateCreation!}</td>
+                                    <td class="signalement-etat">${map_etats[signalement.id?string]!}</td>
+                                </tr>
+                                </#list> <#else>
+                                <tr>
+                                    <td colspan="12">
+                                        #i18n{dansmarue.reportingList.messageNoResult}</td>
+                                </tr>
+                                </#if>
+                            </tbody>
+                        </table>
+                    </div>
 					<div class="pull-left">
 						<!-- export en input pour r�cup�rer les dossiers coch�s -->
 						<@estAutoriseMacro ressourceType="GESTION_DES_SIGNALEMENTS"
@@ -798,7 +805,7 @@ function updateSectorList(idDirection, idDomaine){
 							name="exportcsvdisplay" class="btn btn-xs btn-primary">
 							<i class="glyphicon glyphicon-save"></i>
 						</button>
-						</@estAutoriseMacro> 
+						</@estAutoriseMacro>
 					</div>
 				</form>
 				<@paginationSig paginator=paginator combo=1 />
@@ -888,7 +895,7 @@ $(window).load(function() {
                     
                     $(this).click(function() {
                         var idImg = $(this).attr("src").split("id=")[1];
-                        var offsetGrandeImage = $("#grande"+idImg).offset().top; 
+                        var offsetGrandeImage = $("#grande"+idImg).offset().top;
                         $('html, body').animate({scrollTop:offsetGrandeImage});
                     });
                 });
@@ -903,7 +910,7 @@ $(window).load(function() {
 function select_all_states() {
 	var checkboxes = $( "label[checkType='etat'] > input");
 	$( "label[checkType='etat']").addClass("active");
-  
+ 
 	for (var i = 0; i < checkboxes.length; i++) {
 	  checkboxes[i].checked = true
 	}
@@ -922,7 +929,7 @@ function un_select_all_states() {
 function select_all_arrondissement() {
 	var checkboxes = $( "label[checkType='arrondissement'] > input");
 	$( "label[checkType='arrondissement']").addClass("active");
-  
+ 
 	for (var i = 0; i < checkboxes.length; i++) {
 	  checkboxes[i].checked = true
 	}

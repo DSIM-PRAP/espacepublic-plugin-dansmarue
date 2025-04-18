@@ -65,6 +65,12 @@
       </exclusions>
     </dependency>
     <dependency>
+		<groupId>fr.paris.lutece.plugins</groupId>
+		<artifactId>plugin-rest</artifactId>
+		<version>3.1.0</version>
+		<type>lutece-plugin</type>
+	</dependency>
+    <dependency>
       <groupId>fr.paris.lutece.plugins</groupId>
       <artifactId>plugin-unittree</artifactId>
       <version>2.1.2</version>

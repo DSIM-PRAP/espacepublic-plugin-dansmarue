@@ -599,3 +599,19 @@ label.btn-radio > [type='radio']{
 .create-fdt-modale .greyDmr {
 	color: rgb(153,153,153);
 }
+.table-manage-signalement {
+	max-height: 90vh;
+    overflow: auto;
+}
+
+.table-manage-signalement .table-signalements {
+    position: relative;
+    min-width: 1500px;
+}
+
+.table-manage-signalement th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: rgb(12, 81, 138);
+} 

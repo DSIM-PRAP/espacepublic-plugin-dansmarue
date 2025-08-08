@@ -225,23 +225,12 @@ public final class SignalementUtils
     public static boolean isValidAddress( String address )
     {
 
-        if ( ( address == null ) || StringUtils.isEmpty( address.trim( ) ) )
-        {
-            return false;
-        }
-        else
-            if ( !StringUtils.containsIgnoreCase( address, "PARIS" ) )
-            {
-                return false;
-            }
-            else
-                if ( !address.matches( ".*75[0-9]{3}.*" ) )
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+		if ((address == null) || StringUtils.isEmpty(address.trim())) {
+			return false;
+		} else if (!address.matches(".*93[0-9]{3}.*")) {
+			return false;
+		} else {
+			return true;
+		}
     }
 }

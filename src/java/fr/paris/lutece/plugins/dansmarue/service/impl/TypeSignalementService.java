@@ -751,6 +751,25 @@ public class TypeSignalementService implements ITypeSignalementService
         _typesignalementDAO.refreshViewTypesWithParentsLinks( );
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<TypeSignalement> getListTypeSignalementActifLastLevel( )
+    {
+        List<TypeSignalement> listTypeSignalementWithMessage = new ArrayList<>( );
+
+        _typesignalementDAO.getListTypeSignalementLastLevel( ).forEach( ( TypeSignalement typeSignalement ) -> {
+            if ( typeSignalement.getActif( ) )
+            {
+                listTypeSignalementWithMessage.add( typeSignalement );
+            }
+        } );
+
+        return listTypeSignalementWithMessage;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -833,7 +852,7 @@ public class TypeSignalementService implements ITypeSignalementService
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see fr.paris.lutece.plugins.dansmarue.service.ITypeSignalementService#getAllTypeLastlevelNotInSource(java.lang.Integer)
      */
     @Override

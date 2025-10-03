@@ -131,7 +131,7 @@ public class ManageServiceFaitMasseJspBean extends AbstractJspBean
     {
         Map<String, Object> model = new HashMap<>( );
         model.put( MARK_LIST_STATE, getEtatEnCours( ) );
-        model.put( MARK_LIST_TYPE_SIGNALEMENT, _typeSignalementService.getListTypeSignalementLastLevelWithoutMessage( ) );
+        model.put( MARK_LIST_TYPE_SIGNALEMENT, _typeSignalementService.getListTypeSignalementActifLastLevel( ) );
         model.put( SignalementConstants.MARK_LOCALE, request.getLocale( ) );
         model.put( MARK_FILTER, _serviceFaitMasseFilter );
 
@@ -160,7 +160,7 @@ public class ManageServiceFaitMasseJspBean extends AbstractJspBean
 
         Map<String, Object> model = new HashMap<>( );
         model.put( MARK_LIST_STATE, getEtatEnCours( ) );
-        model.put( MARK_LIST_TYPE_SIGNALEMENT, _typeSignalementService.getListTypeSignalementLastLevelWithoutMessage( ) );
+        model.put( MARK_LIST_TYPE_SIGNALEMENT, _typeSignalementService.getListTypeSignalementActifLastLevel( ) );
         model.put( SignalementConstants.MARK_LOCALE, request.getLocale( ) );
         model.put( MARK_FILTER, _serviceFaitMasseFilter );
 

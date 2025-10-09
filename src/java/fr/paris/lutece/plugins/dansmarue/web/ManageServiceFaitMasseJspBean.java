@@ -42,10 +42,13 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import fr.paris.lutece.plugins.dansmarue.business.entities.ServiceFaitMasseFilter;
 import fr.paris.lutece.plugins.dansmarue.service.ISignalementService;
 import fr.paris.lutece.plugins.dansmarue.service.ITypeSignalementService;
 import fr.paris.lutece.plugins.dansmarue.util.constants.SignalementConstants;
+import fr.paris.lutece.plugins.dansmarue.utils.ListUtils;
 import fr.paris.lutece.plugins.workflowcore.business.state.State;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
@@ -150,6 +153,14 @@ public class ManageServiceFaitMasseJspBean extends AbstractJspBean
     {
         // Remplissage du filtre
         _serviceFaitMasseFilter = new ServiceFaitMasseFilter( );
+
+        String [ ] strTypeSignalements = request.getParameterValues( "idTypeSignalements" );
+        if ( !ArrayUtils.isEmpty( strTypeSignalements ) )
+        {
+            List<Integer> typeSignalementIds = ListUtils.getListOfIntFromStrArray( strTypeSignalements );
+            _serviceFaitMasseFilter.setIdTypeSignalements(typeSignalementIds.toArray( new Integer [ typeSignalementIds.size( ) ] ) );
+        }
+
         populate( _serviceFaitMasseFilter, request, request.getLocale( ) );
 
         // Si pas d'état renseigné, on selectionne les états en cours

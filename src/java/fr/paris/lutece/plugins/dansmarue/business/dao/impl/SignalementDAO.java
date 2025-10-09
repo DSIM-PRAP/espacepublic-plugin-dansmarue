@@ -353,7 +353,7 @@ public class SignalementDAO implements ISignalementDAO
 
     /** The Constant SQL_QUERY_FIND_LABEL_PRESTATAIRE. */
     private static final String SQL_QUERY_FIND_LABEL_PRESTATAIRE = "select uu.label from signalement_signalement ss, unittree_unit_sector uus , unittree_unit uu , signalement_workflow_webservice_config_unit swwcu "
-            + "where ss.fk_id_sector = uus.id_sector and uus.id_unit = uu.id_unit and uu.id_unit = swwcu.id_unit and ss.id_signalement = ? and swwcu.urlprestataire is not null limit 1";
+            + "where ss.fk_id_sector = uus.id_sector and uus.id_unit = uu.id_unit and uu.id_unit = swwcu.id_unit and ss.id_signalement = ? limit 1";
 
     /**
      * Makes references between client sort keyword and actual sql joins / columns names.

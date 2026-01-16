@@ -8,7 +8,7 @@
   </parent>
   <groupId>fr.paris.lutece.plugins</groupId>
   <artifactId>plugin-bienvu</artifactId>
-  <version>1.1.4</version>
+  <version>1.1.5-SNAPSHOT</version>
   <packaging>lutece-plugin</packaging>
   <name>plugin bien VU (BO signalement)</name>
   <url>https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue</url>
@@ -16,7 +16,7 @@
     <connection>scm:git:https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue.git</connection>
     <developerConnection>scm:git:https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue.git</developerConnection>
     <url>https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue</url>
-    <tag>plugin-bienvu-1.1.4</tag>
+    <tag>plugin-bienvu-1.0.0</tag>
   </scm>
   <properties>
     <jiraComponentId>10653</jiraComponentId>

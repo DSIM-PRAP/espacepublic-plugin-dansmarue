@@ -11,11 +11,11 @@
   <version>1.1.5-SNAPSHOT</version>
   <packaging>lutece-plugin</packaging>
   <name>plugin bien VU (BO signalement)</name>
-  <url>https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue</url>
+  <url>https://github.com/DSIM-PRAP/espacepublic-plugin-dansmarue</url>
   <scm>
-    <connection>scm:git:https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue.git</connection>
-    <developerConnection>scm:git:https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue.git</developerConnection>
-    <url>https://github.com/bienVU-PCO/espacepublic-plugin-dansmarue</url>
+    <connection>scm:git:https://github.com/DSIM-PRAP/espacepublic-plugin-dansmarue.git</connection>
+    <developerConnection>scm:git:https://github.com/DSIM-PRAP/espacepublic-plugin-dansmarue.git</developerConnection>
+    <url>https://github.com/DSIM-PRAP/espacepublic-plugin-dansmarue</url>
     <tag>plugin-bienvu-1.1.5</tag>
   </scm>
   <properties>

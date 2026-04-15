@@ -149,6 +149,8 @@ public class SignalementFilter implements Serializable
 
     private int _nIdFdt;
 
+    private boolean _bAllQuartiersSelected = false;
+
     /**
      * Init empty list for report filter to avoid Null Pointer Exception.
      */
@@ -823,5 +825,15 @@ public class SignalementFilter implements Serializable
     public void setIdSatisfactionFeedback( int nIdSatisfactionFeedback )
     {
         this._nIdSatisfactionFeedback = nIdSatisfactionFeedback;
+    }
+
+    public boolean isAllQuartiersSelected( )
+    {
+        return _bAllQuartiersSelected;
+    }
+
+    public void setAllQuartiersSelected( boolean b )
+    {
+        _bAllQuartiersSelected = b;
     }
 }

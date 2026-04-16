@@ -743,7 +743,19 @@ public class SignalementExportDAO implements ISignalementExportDAO
         {
             String unionQuery = StringUtils.join( filter.getListIdQuartier( ), COMMA_SEPARATOR );
             nIndex = addSQLWhereOr( false, sbSQL, nIndex );
-            sbSQL.append( MessageFormat.format( SQL_QUERY_ADD_FILTER_LIST_QUARTIER, unionQuery ) );
+
+            if ( filter.isAllQuartiersSelected( ) )
+            {
+                // Tous les quartiers du domaine + signalements sans quartier assigné
+                sbSQL.append( "(" )
+                     .append( MessageFormat.format( SQL_QUERY_ADD_FILTER_LIST_QUARTIER, unionQuery ) )
+                     .append( " OR id_quartier IS NULL) " );
+            }
+            else
+            {
+                // Filtre sur quartier(s) spécifique(s) seulement
+                sbSQL.append( MessageFormat.format( SQL_QUERY_ADD_FILTER_LIST_QUARTIER, unionQuery ) );
+            }
         }
 
         // SECTOR

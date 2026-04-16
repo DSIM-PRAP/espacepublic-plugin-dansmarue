@@ -3861,6 +3861,7 @@ public class SignalementJspBean extends AbstractJspBean
                     {
                         // No filter and several fields -> Selected value empty but search on all neighborhoods
                         filter.setListIdQuartier( domainQuartiers );
+                        filter.setAllQuartiersSelected( true );
                         isAllQuartier = true;
                     }
         }

@@ -310,10 +310,10 @@ public class SignalementDAO implements ISignalementDAO
     private static final String SQL_QUERY_UPDATE_REQUALIFICATION_HISTORY_TASK = "UPDATE signalement_requalification t1 set id_history = ?, id_task = ? where t1.id_signalement = ? and date_requalification = ( select max(t2.date_requalification) from signalement_requalification t2 where t1.id_signalement = t2.id_signalement )";
 
     /** The Constant SQL_QUERY_GET_SIGNALEMENT_TDT_SELECT. */
-    private static final String SQL_QUERY_GET_SIGNALEMENT_TDT_SELECT = "select state.id_state, case when state.id_state not in(9,21) then case when sig.date_creation >=( now()::date - interval ''2 DAY''::interval) then ''2'' when (sig.date_creation > now()- interval ''11 DAY''::interval) AND (sig.date_creation < now()- interval ''3 DAY''::interval) then ''1'' else ''0'' "
-            + "end when state.id_state in (9,21) THEN case when sig.date_prevue_traitement > ( select  now()  ) and sig.date_prevue_traitement < ( select  now() + interval ''2 DAY''::interval ) then ''2'' when (sig.date_prevue_traitement > now()- interval ''11 DAY''::interval) and (sig.date_prevue_traitement < now()) then ''1'' when (sig.date_prevue_traitement < now()- ''11 days''::interval ) then ''0'' else ''-1'' end END AS tranche_date_creation,  count(sig.id_signalement) from signalement_signalement sig"
+    private static final String SQL_QUERY_GET_SIGNALEMENT_TDT_SELECT = "select state.id_state, case when state.id_state not in(9,21) then case when sig.date_creation >=( now()::date - interval ''2 DAY''::interval) then ''2'' when (sig.date_creation > now()::date - ''10 days''::interval) AND (sig.date_creation < now()::date - ''2 days''::interval) then ''1'' else ''0'' "
+            + "end when state.id_state in (9,21) THEN case when sig.date_prevue_traitement > ( select  now()  ) and sig.date_prevue_traitement < ( select  now()::date + ''2 days''::interval ) then ''2'' when (sig.date_prevue_traitement > now()::date - ''10 days''::interval) and (sig.date_prevue_traitement < now()) then ''1'' when (sig.date_prevue_traitement < now()::date - ''10 days''::interval ) then ''0'' else ''-1'' end END AS tranche_date_creation,  count(sig.id_signalement) from signalement_signalement sig"
             + " join workflow_resource_workflow resource on resource.id_resource=sig.id_signalement join workflow_state state on state.id_state = resource.id_state "
-            + "join unittree_unit_sector uus on sig.fk_id_sector = uus.id_sector " + "where date_creation > (now() - ''{0} days''::interval) ";
+            + "join unittree_unit_sector uus on sig.fk_id_sector = uus.id_sector " + "where date_creation > (now()::date - ''{0} days''::interval) ";
 
     /** The Constant SQL_QUERY_GET_ID_SIGNALEMENT_TDT_SELECT. */
     private static final String SQL_QUERY_GET_ID_SIGNALEMENT_TDT_SELECT = "select sig.id_signalement " + "from signalement_signalement sig "
@@ -361,7 +361,7 @@ public class SignalementDAO implements ISignalementDAO
     private Map<String, String> _ordersMap;
 
     /** The Constant SQL_WHERE_DATE_CREATION. */
-    private static final String SQL_WHERE_DATE_CREATION = "where date_creation > (now() - ''{0} days''::interval)";
+    private static final String SQL_WHERE_DATE_CREATION = "where date_creation > (now()::date - ''{0} days''::interval)";
 
     private static final String SQL_QUERY_GET_SIGNALEMENTS_DAEMON_ANONYMISATION = "select id_signalement from signalement_signalement join signalement_signaleur on id_signalement = fk_id_signalement where (service_fait_date_passage::date <= current_date - ? or date_rejet::date <= current_date - ?) and mail <> ?";
 
@@ -2773,39 +2773,39 @@ public class SignalementDAO implements ISignalementDAO
                 {
                     // A echeance dans 48h
                     query.append( " and date_prevue_traitement > now()" );
-                    query.append( " and date_prevue_traitement < (now() + '2 days'::interval)" );
+                    query.append( " and date_prevue_traitement < (now()::date + '2 days'::interval)" );
                 }
                 else
                 {
                     // moins de 48h
-                    query.append( "where date_creation > (now() - '2 days'::interval) " );
+                    query.append( "where date_creation > (now()::date - '2 days'::interval) " );
                 }
                 break;
             case 1:
                 if ( isProgramme )
                 {
                     // retard de 10j ou moins
-                    query.append( " and date_prevue_traitement > (now()- '11 days'::interval)" );
+                    query.append( " and date_prevue_traitement > (now()::date - '10 days'::interval)" );
                     query.append( " and date_prevue_traitement < now()" );
                 }
                 else
                 {
                     // moins de 10j
-                    query.append( "where date_creation > (now() - '10 days'::interval) " );
+                    query.append( "where date_creation > (now()::date - '10 days'::interval) and date_creation < (now()::date - '2 days'::interval)" );
                 }
                 break;
             default:
                 if ( isProgramme )
                 {
                     // retard de + 10 jours
-                    query.append( " and date_prevue_traitement < (now()- '11 days'::interval)" );
+                    query.append( " and date_prevue_traitement < (now()::date - '10 days'::interval)" );
                 }
                 else
                 {
                     // utilisation de la période
                     query.append( MessageFormat.format( SQL_WHERE_DATE_CREATION, PERIODE_MAP.get( tableauDeBordFilter.getPeriodId( ) ) ) );
                     // plus de 10j
-                    query.append( " and date_creation < (now()- '10 DAY days'::interval) " );
+                    query.append( " and date_creation < (now()::date - '10 days'::interval) " );
                 }
                 break;
         }

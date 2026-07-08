@@ -311,7 +311,7 @@ public class SignalementDAO implements ISignalementDAO
 
     /** The Constant SQL_QUERY_GET_SIGNALEMENT_TDT_SELECT. */
     private static final String SQL_QUERY_GET_SIGNALEMENT_TDT_SELECT = "select state.id_state, case when state.id_state not in(9,21) then case when sig.date_creation >=( now()::date - interval ''2 DAY''::interval) then ''2'' when (sig.date_creation > now()::date - ''10 days''::interval) AND (sig.date_creation < now()::date - ''2 days''::interval) then ''1'' else ''0'' "
-            + "end when state.id_state in (9,21) THEN case when sig.date_prevue_traitement > ( select  now()  ) and sig.date_prevue_traitement < ( select  now()::date + ''2 days''::interval ) then ''2'' when (sig.date_prevue_traitement > now()::date - ''10 days''::interval) and (sig.date_prevue_traitement < now()) then ''1'' when (sig.date_prevue_traitement < now()::date - ''10 days''::interval ) then ''0'' else ''-1'' end END AS tranche_date_creation,  count(sig.id_signalement) from signalement_signalement sig"
+            + "end when state.id_state in (9,21) THEN case when sig.date_prevue_traitement > ( select  now()  ) and sig.date_prevue_traitement < ( select  now()::date + ''2 days''::interval ) then ''2'' when (sig.date_prevue_traitement >= now()::date - ''10 days''::interval) and (sig.date_prevue_traitement < now()) then ''1'' when (sig.date_prevue_traitement < now()::date - ''10 days''::interval ) then ''0'' else ''-1'' end END AS tranche_date_creation,  count(sig.id_signalement) from signalement_signalement sig"
             + " join workflow_resource_workflow resource on resource.id_resource=sig.id_signalement join workflow_state state on state.id_state = resource.id_state "
             + "join unittree_unit_sector uus on sig.fk_id_sector = uus.id_sector " + "where date_creation > (now()::date - ''{0} days''::interval) ";
 
@@ -2785,7 +2785,7 @@ public class SignalementDAO implements ISignalementDAO
                 if ( isProgramme )
                 {
                     // retard de 10j ou moins
-                    query.append( " and date_prevue_traitement > (now()::date - '10 days'::interval)" );
+                    query.append( " and date_prevue_traitement >= (now()::date - '10 days'::interval)" );
                     query.append( " and date_prevue_traitement < now()" );
                 }
                 else

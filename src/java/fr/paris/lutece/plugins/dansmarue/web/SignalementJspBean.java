@@ -3490,7 +3490,7 @@ public class SignalementJspBean extends AbstractJspBean
                     "Mail du destinataire du courriel", "Expéditeur courriel", "Date envoi courriel", "Identifiant type de message service fait",
                     "Nom exécuteur service fait", "Date de dernière prise en compte", "Date de programmation", "Commentaire agent terrain", "Rejeté par",
                     "Sous Surveillance par", "Nombre de requalifications", "Formulaire de satisfaction:réponse", "Formulaire de satisfaction:commentaire", "Complétion du formulaire",
-                    "Date de requalification", "Heure de requalification", "Date état programmé", "Heure état programmé"
+                    "Date de requalification", "Heure de requalification", "Date état programmé", "Heure état programmé", "Heure de clôture"
             } );
             for ( SignalementExportCSVDTO signalementDTO : listeSignalementExportCSVDTO )
             {

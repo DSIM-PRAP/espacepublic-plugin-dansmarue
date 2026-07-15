@@ -162,6 +162,9 @@ public class SignalementExportCSVDTO
 
     private String _strHeureEtatProgramme;
 
+    /** The str heure cloture. */
+    private String _strHeureCloture;
+
     /** The photos. */
     private List<PhotoDMR> _listPhotos = new ArrayList<>( );
 
@@ -184,9 +187,9 @@ public class SignalementExportCSVDTO
                 getEtat( ), getMailUsager( ), getCommentaireUsager( ), Integer.toString( getNbPhotos( ) ), getRaisonsRejet( ),
                 Integer.toString( getNbSuivis( ) ), Integer.toString( getNbFelicitations( ) ), getDateCloture( ),
                 isPhotoServiceFait( ) ? "Photo présente" : "Pas de photo", getMailDestinataireCourriel( ), getCourrielExpediteur( ), getDateEnvoiCourriel( ),
-                getIdMailServiceFait( ) != 0 ? getIdMailServiceFait( ).toString( ) : "", getExecuteurServiceFait( ), getDateDerniereAction( ),
-                getDatePrevuTraitement( ), getCommentairAgentTerrain( ), getExecuteurRejet( ), getExecuteurMiseSurveillance( ), getNbRequalifications( ), getSatisfactionFeedback( ), getCommentaireFeedback( ), StringUtils.isNotEmpty( getSatisfactionFeedback( ) )?"1":"0",
-                getDateRequalification( ), getHeureRequalification( ), getDateEtatProgramme( ), getHeureEtatProgramme( )
+                        getIdMailServiceFait( ) != 0 ? getIdMailServiceFait( ).toString( ) : "", getExecuteurServiceFait( ), getDateDerniereAction( ),
+                                getDatePrevuTraitement( ), getCommentairAgentTerrain( ), getExecuteurRejet( ), getExecuteurMiseSurveillance( ), getNbRequalifications( ), getSatisfactionFeedback( ), getCommentaireFeedback( ), StringUtils.isNotEmpty( getSatisfactionFeedback( ) )?"1":"0",
+                                        getDateRequalification( ), getHeureRequalification( ), getDateEtatProgramme( ), getHeureEtatProgramme( ), getHeureCloture()
         };
     }
 
@@ -976,7 +979,7 @@ public class SignalementExportCSVDTO
      */
     public void setCommentaireFeedback( String strCommentaireFeedback )
     {
-        this._strCommentaireFeedback = strCommentaireFeedback;
+        _strCommentaireFeedback = strCommentaireFeedback;
     }
 
     /**
@@ -997,7 +1000,7 @@ public class SignalementExportCSVDTO
      */
     public void setSatisfactionFeedback( String strSatisfactionFeedback )
     {
-        this._strSatisfactionFeedback = strSatisfactionFeedback;
+        _strSatisfactionFeedback = strSatisfactionFeedback;
     }
 
     public String getDateRequalification() {
@@ -1005,7 +1008,7 @@ public class SignalementExportCSVDTO
     }
 
     public void setDateRequalification(String strDateRequalification) {
-        this._strDateRequalification = strDateRequalification;
+        _strDateRequalification = strDateRequalification;
     }
 
     public String getHeureRequalification() {
@@ -1013,7 +1016,7 @@ public class SignalementExportCSVDTO
     }
 
     public void setHeureRequalification(String strHeureRequalification) {
-        this._strHeureRequalification = strHeureRequalification;
+        _strHeureRequalification = strHeureRequalification;
     }
 
     public String getDateEtatProgramme() {
@@ -1021,7 +1024,7 @@ public class SignalementExportCSVDTO
     }
 
     public void setDateEtatProgramme(String strDateEtatProgramme) {
-        this._strDateEtatProgramme = strDateEtatProgramme;
+        _strDateEtatProgramme = strDateEtatProgramme;
     }
 
     public String getHeureEtatProgramme() {
@@ -1029,6 +1032,14 @@ public class SignalementExportCSVDTO
     }
 
     public void setHeureEtatProgramme(String strHeureEtatProgramme) {
-        this._strHeureEtatProgramme = strHeureEtatProgramme;
+        _strHeureEtatProgramme = strHeureEtatProgramme;
+    }
+
+    public String getHeureCloture() {
+        return _strHeureCloture;
+    }
+
+    public void setHeureCloture(String strHeureCloture) {
+        _strHeureCloture = strHeureCloture;
     }
 }

@@ -105,3 +105,17 @@ begin
 END;
 $function$
 ;
+
+-- rattrapage des donnees
+UPDATE signalement_export se
+SET heure_cloture = TO_CHAR(wrh.creation_date, 'hh24:mi')
+FROM (
+    SELECT id_resource,
+           MAX(id_history) AS max_id_history
+    FROM workflow_resource_history
+    GROUP BY id_resource
+) last_wrh
+JOIN workflow_resource_history wrh
+    ON wrh.id_history = last_wrh.max_id_history
+WHERE se.id_signalement = wrh.id_resource
+and se.etat in ('Service fait', 'Rejeté', 'Sous surveillance');

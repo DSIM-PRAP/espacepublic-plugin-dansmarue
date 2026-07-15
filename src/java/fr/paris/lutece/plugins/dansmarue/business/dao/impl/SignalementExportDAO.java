@@ -406,7 +406,8 @@ public class SignalementExportDAO implements ISignalementExportDAO
             exportReport.setDateRequalification( daoUtil.getString( nIndex++ ) );
             exportReport.setHeureRequalification( daoUtil.getString( nIndex++ ) );
             exportReport.setDateEtatProgramme( daoUtil.getString( nIndex++ ) );
-            exportReport.setHeureEtatProgramme( daoUtil.getString( nIndex ) );
+            exportReport.setHeureEtatProgramme( daoUtil.getString( nIndex++ ) );
+            exportReport.setHeureCloture( daoUtil.getString( nIndex ) );
 
             exportList.add( exportReport );
 

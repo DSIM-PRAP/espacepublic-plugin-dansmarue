@@ -33,7 +33,7 @@
  */
 package fr.paris.lutece.plugins.dansmarue.business.dao.impl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.dao.ITaskNotificationConfigDAO;
 import fr.paris.lutece.util.sql.DAOUtil;

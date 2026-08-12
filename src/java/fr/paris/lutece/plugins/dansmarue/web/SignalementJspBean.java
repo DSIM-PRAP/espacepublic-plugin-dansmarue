@@ -64,8 +64,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import au.com.bytecode.opencsv.CSVWriter;
@@ -147,8 +147,10 @@ import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.image.ImageUtil;
 import fr.paris.lutece.util.url.UrlItem;
-import net.sf.json.JSONObject;
-import net.sf.json.util.JSONBuilder;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 /**
  * The Class SignalementJspBean.
@@ -3698,11 +3700,11 @@ public class SignalementJspBean extends AbstractJspBean
     {
         String strDirectionId = request.getParameter( PARAMETER_DIRECTION_ID );
 
-        JSONBuilder jsonStringer;
+        JsonGenerator jsonStringer;
         response.setContentType( EXTENSION_APPLICATION_JSON );
         try
         {
-            jsonStringer = new JSONBuilder( response.getWriter( ) );
+            jsonStringer = DmrJson.mapper( ).getFactory( ).createGenerator( response.getWriter( ) );
             try
             {
                 Integer directionId = Integer.parseInt( strDirectionId );
@@ -3751,16 +3753,16 @@ public class SignalementJspBean extends AbstractJspBean
                 }
                 ReferenceList refListSectorsOfUnit = ListUtils.toReferenceList( listSectors, ID_SECTOR, "name", StringUtils.EMPTY, true );
 
-                jsonStringer.object( ).key( MARK_SECTEUR_LIST ).array( );
+                jsonStringer.writeStartObject( ); jsonStringer.writeArrayFieldStart( MARK_SECTEUR_LIST );
                 for ( ReferenceItem sector : refListSectorsOfUnit )
                 {
-                    jsonStringer.object( ).key( JSON_KEY_ID ).value( sector.getCode( ) ).key( "value" ).value( sector.getName( ) ).endObject( );
+                    jsonStringer.writeStartObject( ); jsonStringer.writeStringField( JSON_KEY_ID, sector.getCode( ) ); jsonStringer.writeStringField( "value", sector.getName( ) ); jsonStringer.writeEndObject( );
                 }
-                jsonStringer.endArray( ).endObject( );
+                jsonStringer.writeEndArray( ); jsonStringer.writeEndObject( ); jsonStringer.close( );
             }
             catch( NumberFormatException e )
             {
-                jsonStringer.object( ).key( "errors" ).array( ).value( e.getMessage( ) ).endArray( ).endObject( );
+                jsonStringer.writeStartObject( ); jsonStringer.writeArrayFieldStart( "errors" ); jsonStringer.writeString( e.getMessage( ) ); jsonStringer.writeEndArray( ); jsonStringer.writeEndObject( ); jsonStringer.close( );
             }
         }
         catch( IOException e1 )
@@ -4301,11 +4303,11 @@ public class SignalementJspBean extends AbstractJspBean
 
         String strDirectionId = request.getParameter( PARAMETER_DIRECTION_ID );
 
-        JSONBuilder jsonStringer;
+        JsonGenerator jsonStringer;
         response.setContentType( EXTENSION_APPLICATION_JSON );
         try
         {
-            jsonStringer = new JSONBuilder( response.getWriter( ) );
+            jsonStringer = DmrJson.mapper( ).getFactory( ).createGenerator( response.getWriter( ) );
             try
             {
                 List<Unit> units = new ArrayList<>( );
@@ -4329,17 +4331,17 @@ public class SignalementJspBean extends AbstractJspBean
 
                     ReferenceList refListSectorsOfUnit = ListUtils.toReferenceList( listSectorsForSelectedUnit, ID_SECTOR, "name", StringUtils.EMPTY, true );
 
-                    jsonStringer.object( ).key( MARK_SECTEUR_LIST ).array( );
+                    jsonStringer.writeStartObject( ); jsonStringer.writeArrayFieldStart( MARK_SECTEUR_LIST );
                     for ( ReferenceItem sector : refListSectorsOfUnit )
                     {
-                        jsonStringer.object( ).key( JSON_KEY_ID ).value( sector.getCode( ) ).key( "value" ).value( sector.getName( ) ).endObject( );
+                        jsonStringer.writeStartObject( ); jsonStringer.writeStringField( JSON_KEY_ID, sector.getCode( ) ); jsonStringer.writeStringField( "value", sector.getName( ) ); jsonStringer.writeEndObject( );
                     }
-                    jsonStringer.endArray( ).endObject( );
+                    jsonStringer.writeEndArray( ); jsonStringer.writeEndObject( ); jsonStringer.close( );
                 }
             }
             catch( NumberFormatException e )
             {
-                jsonStringer.object( ).key( "errors" ).array( ).value( e.getMessage( ) ).endArray( ).endObject( );
+                jsonStringer.writeStartObject( ); jsonStringer.writeArrayFieldStart( "errors" ); jsonStringer.writeString( e.getMessage( ) ); jsonStringer.writeEndArray( ); jsonStringer.writeEndObject( ); jsonStringer.close( );
             }
         }
         catch( IOException e1 )
@@ -4455,9 +4457,9 @@ public class SignalementJspBean extends AbstractJspBean
 
         List<Sector> sectorList = _sectorService.findSectorsByDirectionsAndGeom( nLng, nLat, radius, idUnits );
 
-        JSONObject result = new JSONObject( );
-        result.accumulate( "computedSector", computedSector );
-        result.accumulate( "sectors", sectorList );
+        ObjectNode result = DmrJson.object( );
+        DmrJson.accumulate(result, "computedSector", computedSector );
+        DmrJson.accumulate(result, "sectors", sectorList );
 
         response.setContentType( EXTENSION_APPLICATION_JSON );
         try

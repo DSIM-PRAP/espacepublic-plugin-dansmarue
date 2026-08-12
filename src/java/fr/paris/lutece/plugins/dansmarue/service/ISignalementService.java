@@ -59,7 +59,7 @@ import fr.paris.lutece.plugins.workflowcore.business.action.Action;
 import fr.paris.lutece.plugins.workflowcore.business.state.State;
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.service.plugin.Plugin;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The Interface ISignalementService.
@@ -582,7 +582,7 @@ public interface ISignalementService
      *            HttpServletRequest
      * @return a json object containing the report history
      */
-    JSONObject getHistorySignalement( Integer idSignalement, HttpServletRequest request );
+    ObjectNode getHistorySignalement( Integer idSignalement, HttpServletRequest request );
 
     /**
      * Add a rejection date to the report.

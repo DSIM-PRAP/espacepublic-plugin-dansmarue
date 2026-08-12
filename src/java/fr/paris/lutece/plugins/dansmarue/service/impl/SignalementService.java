@@ -32,6 +32,7 @@
  * License 1.0
  */
 package fr.paris.lutece.plugins.dansmarue.service.impl;
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -55,8 +56,8 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.DigestUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.dao.IAdresseDAO;
@@ -132,7 +133,7 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.service.workflow.WorkflowService;
 import fr.paris.lutece.util.image.ImageUtil;
 import fr.paris.lutece.util.url.UrlItem;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The Class SignalementService.
@@ -2052,11 +2053,11 @@ public class SignalementService implements ISignalementService
      * {@inheritDoc}
      */
     @Override
-    public JSONObject getHistorySignalement( Integer idSignalement, HttpServletRequest request )
+    public ObjectNode getHistorySignalement( Integer idSignalement, HttpServletRequest request )
     {
 
         boolean serviceFait = false;
-        JSONObject jsonObject = new JSONObject( );
+        ObjectNode jsonObject = DmrJson.object( );
 
         int nIdWorkflow = _signalementWorkflowService.getSignalementWorkflowId( );
 
@@ -2093,11 +2094,11 @@ public class SignalementService implements ISignalementService
         List<HistorySignalementDTO> listHistory = getHistorySignalementList( idSignalement );
 
         /* Fill the json */
-        jsonObject.accumulate( MARK_CURRENT_STATE, strState );
-        jsonObject.accumulate( MARK_CURRENT_STATE_ID, stateOfSignalement.getId( ) );
-        jsonObject.accumulate( MARK_DATE_LAST_STATE, strDateLastState );
-        jsonObject.accumulate( MARK_HISTORY, listHistory );
-        jsonObject.accumulate( MARK_SERVICE_FAIT_AVAILABLE, serviceFait );
+        DmrJson.accumulate(jsonObject, MARK_CURRENT_STATE, strState );
+        DmrJson.accumulate(jsonObject, MARK_CURRENT_STATE_ID, stateOfSignalement.getId( ) );
+        DmrJson.accumulate(jsonObject, MARK_DATE_LAST_STATE, strDateLastState );
+        DmrJson.accumulate(jsonObject, MARK_HISTORY, listHistory );
+        DmrJson.accumulate(jsonObject, MARK_SERVICE_FAIT_AVAILABLE, serviceFait );
 
         return jsonObject;
 

@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.dao.IFeuilleDeTourneeDAO;
 import fr.paris.lutece.plugins.dansmarue.business.entities.FeuilleDeTournee;

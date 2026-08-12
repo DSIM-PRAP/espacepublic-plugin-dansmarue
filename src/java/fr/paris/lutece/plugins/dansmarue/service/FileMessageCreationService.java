@@ -41,7 +41,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.io.IOUtils;
 
 import fr.paris.lutece.plugins.dansmarue.utils.SignalementUtils;

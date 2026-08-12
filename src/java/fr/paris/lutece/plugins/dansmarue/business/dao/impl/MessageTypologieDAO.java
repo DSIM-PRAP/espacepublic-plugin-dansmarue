@@ -36,7 +36,7 @@ package fr.paris.lutece.plugins.dansmarue.business.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.dao.IMessageTypologieDAO;
 import fr.paris.lutece.plugins.dansmarue.business.entities.MessageTypologie;
@@ -288,7 +288,7 @@ public class MessageTypologieDAO implements IMessageTypologieDAO
             MessageTypologieExport messageTypologieExport = new MessageTypologieExport( );
             messageTypologieExport.setFkIdTypeSignalement( daoUtil.getInt( nIndex++ ) );
             messageTypologieExport.setTypeMessage( daoUtil.getString( nIndex++ ) );
-            messageTypologieExport.setContenuMessage( StringEscapeUtils.unescapeHtml( daoUtil.getString( nIndex++ ) ) );
+            messageTypologieExport.setContenuMessage( StringEscapeUtils.unescapeHtml4( daoUtil.getString( nIndex++ ) ) );
             messageTypologieExport.setNbMessage( daoUtil.getInt( nIndex++ ) );
             messageTypologieExport.setActif( daoUtil.getBoolean( nIndex ) );
 

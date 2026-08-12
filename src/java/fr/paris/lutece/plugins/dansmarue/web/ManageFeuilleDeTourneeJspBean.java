@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import fr.paris.lutece.plugins.dansmarue.business.entities.Arrondissement;
@@ -100,8 +100,12 @@ import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
+import fr.paris.lutece.portal.service.util.AppException;
 
 @Controller( controllerJsp = "ManageFeuilleDeTournee.jsp", controllerPath = "jsp/admin/plugins/signalement/", right = "FEUILLE_DE_TOURNEE" )
 public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
@@ -436,7 +440,15 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
     {
 
         String jsonFilterValue = _feuilleTourneeService.loadSearchFilterById( idFilterLoad );
-        JSONObject jsonObjectFilterValue = JSONObject.fromObject( jsonFilterValue );
+        ObjectNode jsonObjectFilterValue;
+        try
+        {
+            jsonObjectFilterValue = DmrJson.parseObject( jsonFilterValue );
+        }
+        catch ( JsonProcessingException e )
+        {
+            throw new AppException( e.getMessage( ), e );
+        }
 
         return fillSignalementFilterFromJsonObject( jsonObjectFilterValue, states );
     }
@@ -484,17 +496,17 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
      *            All display state
      * @return SignalementFilter
      */
-    private SignalementFilter fillSignalementFilterFromJsonObject( JSONObject jsonObjectFilterValue, List<State> states )
+    private SignalementFilter fillSignalementFilterFromJsonObject( ObjectNode jsonObjectFilterValue, List<State> states )
     {
 
         // State
         List<EtatSignalement> etats = new ArrayList<>( );
         for ( State state : states )
         {
-            JSONArray arrayIdStateSelect = jsonObjectFilterValue.getJSONArray( PARAMETER_ETAT );
+            ArrayNode arrayIdStateSelect = ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_ETAT ));
             for ( int i = 0; i < arrayIdStateSelect.size( ); i++ )
             {
-                if ( arrayIdStateSelect.getInt( i ) == state.getId( ) )
+                if ( arrayIdStateSelect.get( i ).asInt( ) == state.getId( ) )
                 {
                     EtatSignalement etatSignalement = new EtatSignalement( );
 
@@ -509,26 +521,26 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
         _signalementFilter = new SignalementFilter( );
 
         _signalementFilter
-                .setListIdTypeSignalements( new ArrayList<Integer>( JSONArray.toCollection( jsonObjectFilterValue.getJSONArray( PARAMETER_TYPOLOGIE ) ) ) );
+                .setListIdTypeSignalements( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_TYPOLOGIE )) ) ) );
         _signalementFilter.setEtats( etats );
-        _signalementFilter.setPriorites( new ArrayList<Integer>( JSONArray.toCollection( jsonObjectFilterValue.getJSONArray( PARAMETER_PRIORITE ) ) ) );
+        _signalementFilter.setPriorites( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_PRIORITE )) ) ) );
         _signalementFilter
-                .setListIdArrondissements( new ArrayList<Integer>( JSONArray.toCollection( jsonObjectFilterValue.getJSONArray( PARAMETER_ARRONDISEMENT ) ) ) );
-        _signalementFilter.setListIdQuartier( new ArrayList<Integer>( JSONArray.toCollection( jsonObjectFilterValue.getJSONArray( PARAMETER_QUARTIER ) ) ) );
+                .setListIdArrondissements( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_ARRONDISEMENT )) ) ) );
+        _signalementFilter.setListIdQuartier( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_QUARTIER )) ) ) );
 
-        _signalementFilter.setDateBegin( jsonObjectFilterValue.getString( PARAMETER_DATE_BEGIN ) );
-        _signalementFilter.setDateEnd( jsonObjectFilterValue.getString( PARAMETER_DATE_END ) );
+        _signalementFilter.setDateBegin( jsonObjectFilterValue.get( PARAMETER_DATE_BEGIN ).asText( ) );
+        _signalementFilter.setDateEnd( jsonObjectFilterValue.get( PARAMETER_DATE_END ).asText( ) );
 
-        _signalementFilter.setDateRequalificationBegin( jsonObjectFilterValue.getString( PARAMETER_DATE_REQUALIFICATION_BEGIN ) );
-        _signalementFilter.setDateRequalificationEnd( jsonObjectFilterValue.getString( PARAMETER_DATE_REQUALIFICATION_END ) );
+        _signalementFilter.setDateRequalificationBegin( jsonObjectFilterValue.get( PARAMETER_DATE_REQUALIFICATION_BEGIN ).asText( ) );
+        _signalementFilter.setDateRequalificationEnd( jsonObjectFilterValue.get( PARAMETER_DATE_REQUALIFICATION_END ).asText( ) );
 
-        _signalementFilter.setDateProgrammationBegin( jsonObjectFilterValue.getString( PARAMETER_DATE_PROGRAMMATION_BEGIN ) );
-        _signalementFilter.setDateProgrammationEnd( jsonObjectFilterValue.getString( PARAMETER_DATE_PROGRAMMATION_END ) );
+        _signalementFilter.setDateProgrammationBegin( jsonObjectFilterValue.get( PARAMETER_DATE_PROGRAMMATION_BEGIN ).asText( ) );
+        _signalementFilter.setDateProgrammationEnd( jsonObjectFilterValue.get( PARAMETER_DATE_PROGRAMMATION_END ).asText( ) );
 
-        _signalementFilter.setCommentaireAgentTerrain( jsonObjectFilterValue.getString( PARAMETER_COMMENTAIRE_AGENT_TERRAIN ) );
-        _signalementFilter.setCommentaire( jsonObjectFilterValue.getString( PARAMETER_COMMENTAIRE_USAGER ) );
-        _signalementFilter.setAdresse( jsonObjectFilterValue.getString( PARAMETER_ADRESSE ) );
-        _signalementFilter.setIdSector( jsonObjectFilterValue.getInt( PARAMETER_ENTITE ) );
+        _signalementFilter.setCommentaireAgentTerrain( jsonObjectFilterValue.get( PARAMETER_COMMENTAIRE_AGENT_TERRAIN ).asText( ) );
+        _signalementFilter.setCommentaire( jsonObjectFilterValue.get( PARAMETER_COMMENTAIRE_USAGER ).asText( ) );
+        _signalementFilter.setAdresse( jsonObjectFilterValue.get( PARAMETER_ADRESSE ).asText( ) );
+        _signalementFilter.setIdSector( jsonObjectFilterValue.get( PARAMETER_ENTITE ).asInt( ) );
 
         return _signalementFilter;
 
@@ -744,7 +756,15 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
     public String doInitSearchAno( HttpServletRequest request ) throws AccessDeniedException
     {
 
-        JSONObject jsonFilterValue = JSONObject.fromObject( buildJsonSearchFilter( request ) );
+        ObjectNode jsonFilterValue;
+        try
+        {
+            jsonFilterValue = DmrJson.parseObject( buildJsonSearchFilter( request ) );
+        }
+        catch ( JsonProcessingException e )
+        {
+            throw new AppException( e.getMessage( ), e );
+        }
         _signalementFilter = fillSignalementFilterFromJsonObject( jsonFilterValue, getListeEtats( ) );
 
         return doSearchAno( request );
@@ -1131,22 +1151,22 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
 
         } );
 
-        JSONObject jsonObject = new JSONObject( );
-        jsonObject.accumulate( PARAMETER_TYPOLOGIE, selectedTypologie );
-        jsonObject.accumulate( PARAMETER_ETAT, selectedState );
-        jsonObject.accumulate( PARAMETER_PRIORITE, selectedPriorite );
-        jsonObject.accumulate( PARAMETER_ARRONDISEMENT, selectedArrondissement );
-        jsonObject.accumulate( PARAMETER_QUARTIER, selectedQuartier );
-        jsonObject.accumulate( PARAMETER_DATE_BEGIN, request.getParameter( PARAMETER_DATE_BEGIN ) );
-        jsonObject.accumulate( PARAMETER_DATE_END, request.getParameter( PARAMETER_DATE_END ) );
-        jsonObject.accumulate( PARAMETER_DATE_REQUALIFICATION_BEGIN, request.getParameter( PARAMETER_DATE_REQUALIFICATION_BEGIN ) );
-        jsonObject.accumulate( PARAMETER_DATE_REQUALIFICATION_END, request.getParameter( PARAMETER_DATE_REQUALIFICATION_END ) );
-        jsonObject.accumulate( PARAMETER_DATE_PROGRAMMATION_BEGIN, request.getParameter( PARAMETER_DATE_PROGRAMMATION_BEGIN ) );
-        jsonObject.accumulate( PARAMETER_DATE_PROGRAMMATION_END, request.getParameter( PARAMETER_DATE_PROGRAMMATION_END ) );
-        jsonObject.accumulate( PARAMETER_COMMENTAIRE_AGENT_TERRAIN, request.getParameter( PARAMETER_COMMENTAIRE_AGENT_TERRAIN ) );
-        jsonObject.accumulate( PARAMETER_COMMENTAIRE_USAGER, request.getParameter( PARAMETER_COMMENTAIRE_USAGER ) );
-        jsonObject.accumulate( PARAMETER_ADRESSE, request.getParameter( PARAMETER_ADRESSE ) );
-        jsonObject.accumulate( PARAMETER_ENTITE, request.getParameter( PARAMETER_ENTITE ) );
+        ObjectNode jsonObject = DmrJson.object( );
+        DmrJson.accumulate(jsonObject, PARAMETER_TYPOLOGIE, selectedTypologie );
+        DmrJson.accumulate(jsonObject, PARAMETER_ETAT, selectedState );
+        DmrJson.accumulate(jsonObject, PARAMETER_PRIORITE, selectedPriorite );
+        DmrJson.accumulate(jsonObject, PARAMETER_ARRONDISEMENT, selectedArrondissement );
+        DmrJson.accumulate(jsonObject, PARAMETER_QUARTIER, selectedQuartier );
+        DmrJson.accumulate(jsonObject, PARAMETER_DATE_BEGIN, request.getParameter( PARAMETER_DATE_BEGIN ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_DATE_END, request.getParameter( PARAMETER_DATE_END ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_DATE_REQUALIFICATION_BEGIN, request.getParameter( PARAMETER_DATE_REQUALIFICATION_BEGIN ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_DATE_REQUALIFICATION_END, request.getParameter( PARAMETER_DATE_REQUALIFICATION_END ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_DATE_PROGRAMMATION_BEGIN, request.getParameter( PARAMETER_DATE_PROGRAMMATION_BEGIN ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_DATE_PROGRAMMATION_END, request.getParameter( PARAMETER_DATE_PROGRAMMATION_END ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_COMMENTAIRE_AGENT_TERRAIN, request.getParameter( PARAMETER_COMMENTAIRE_AGENT_TERRAIN ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_COMMENTAIRE_USAGER, request.getParameter( PARAMETER_COMMENTAIRE_USAGER ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_ADRESSE, request.getParameter( PARAMETER_ADRESSE ) );
+        DmrJson.accumulate(jsonObject, PARAMETER_ENTITE, request.getParameter( PARAMETER_ENTITE ) );
 
         return jsonObject.toString( );
     }

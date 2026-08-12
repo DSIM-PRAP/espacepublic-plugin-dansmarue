@@ -32,6 +32,7 @@
  * License 1.0
  */
 package fr.paris.lutece.plugins.dansmarue.service.impl;
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,7 @@ import org.apache.log4j.Logger;
 
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The Class AndroidPushService.
@@ -106,23 +107,23 @@ public class AndroidPushService
         {
             HttpAccess httpAccess = new HttpAccess( );
 
-            JSONObject message = new JSONObject( );
-            message.accumulate( MARK_TO, userToken );
+            ObjectNode message = DmrJson.object( );
+            DmrJson.accumulate(message, MARK_TO, userToken );
 
-            JSONObject notification = new JSONObject( );
-            notification.accumulate( MARK_BODY, content );
-            notification.accumulate( MARK_TITLE, title );
+            ObjectNode notification = DmrJson.object( );
+            DmrJson.accumulate(notification, MARK_BODY, content );
+            DmrJson.accumulate(notification, MARK_TITLE, title );
 
-            message.accumulate( MARK_NOTIFICATION, notification );
+            DmrJson.accumulate(message, MARK_NOTIFICATION, notification );
 
             if ( null != payload )
             {
-                JSONObject data = new JSONObject( );
+                ObjectNode data = DmrJson.object( );
                 for ( Entry<String, String> payloadItem : payload.entrySet( ) )
                 {
-                    data.accumulate( payloadItem.getKey( ), payloadItem.getValue( ) );
+                    DmrJson.accumulate(data, payloadItem.getKey( ), payloadItem.getValue( ) );
                 }
-                message.accumulate( MARK_DATA, data );
+                DmrJson.accumulate(message, MARK_DATA, data );
             }
 
             Map<String, String> headersRequest = new HashMap<>( );

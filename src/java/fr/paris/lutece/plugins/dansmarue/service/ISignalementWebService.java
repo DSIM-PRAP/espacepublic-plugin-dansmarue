@@ -37,7 +37,7 @@ import java.io.UnsupportedEncodingException;
 
 import fr.paris.lutece.plugins.dansmarue.business.entities.Signalement;
 import fr.paris.lutece.plugins.dansmarue.commons.exceptions.BusinessException;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The Interface ISignalementWebService.
@@ -69,7 +69,7 @@ public interface ISignalementWebService
      *            the url to call
      * @return the response JSON object
      */
-    JSONObject getJSONResponse( Signalement signalement, String url );
+    ObjectNode getJSONResponse( Signalement signalement, String url );
 
     /**
      * convert signalement into json formated data.
@@ -80,7 +80,7 @@ public interface ISignalementWebService
      * @throws UnsupportedEncodingException
      *             the exception
      */
-    JSONObject createJSON( Signalement signalement ) throws UnsupportedEncodingException;
+    ObjectNode createJSON( Signalement signalement ) throws UnsupportedEncodingException;
 
     /**
      * Send notification service done to the correct recipient, with Web Service.
@@ -91,5 +91,5 @@ public interface ISignalementWebService
      *            the ws url
      * @return the return of the call, fail or success
      */
-    JSONObject callWSPartnerServiceDone( Signalement signalement, String urlPartner );
+    ObjectNode callWSPartnerServiceDone( Signalement signalement, String urlPartner );
 }

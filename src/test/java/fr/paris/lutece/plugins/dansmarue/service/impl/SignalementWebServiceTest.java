@@ -64,8 +64,10 @@ import fr.paris.lutece.plugins.dansmarue.utils.ws.WebServiceCaller;
 import fr.paris.lutece.plugins.unittree.modules.dansmarue.business.sector.Sector;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import fr.paris.lutece.util.signrequest.RequestAuthenticator;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -183,7 +185,7 @@ public class SignalementWebServiceTest
     @Test( expected = NullPointerException.class )
     public void createJSONExceptionTest( ) throws UnsupportedEncodingException
     {
-        JSONObject createJSON = _signalementWebService.createJSON( null );
+        ObjectNode createJSON = _signalementWebService.createJSON( null );
         assertTrue( createJSON != null );
     }
 
@@ -196,11 +198,11 @@ public class SignalementWebServiceTest
     @Test
     public void createJSONTest( ) throws UnsupportedEncodingException
     {
-        JSONObject anomalie = _signalementWebService.createJSON( signalement );
+        ObjectNode anomalie = _signalementWebService.createJSON( signalement );
         assertTrue( anomalie != null );
-        JSONArray photosIds = anomalie.getJSONArray( SignalementWebService.JSON_TAG_PHOTOS );
+        ArrayNode photosIds = ((ArrayNode) anomalie.get( SignalementWebService.JSON_TAG_PHOTOS ));
 
-        JSONArray expectedIds = new JSONArray( );
+        ArrayNode expectedIds = DmrJson.array( );
         expectedIds.add( 1 );
         expectedIds.add( 42 );
         expectedIds.add( 2 );

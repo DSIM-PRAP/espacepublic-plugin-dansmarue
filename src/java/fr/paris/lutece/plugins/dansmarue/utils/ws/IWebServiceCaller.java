@@ -39,7 +39,7 @@ import java.util.Map;
 
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import fr.paris.lutece.util.signrequest.RequestAuthenticator;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * WebServiceCaller Interface.
@@ -76,5 +76,5 @@ public interface IWebServiceCaller
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    String postJSON( String strUrl, JSONObject json ) throws IOException;
+    String postJSON( String strUrl, ObjectNode json ) throws IOException;
 }

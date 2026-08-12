@@ -44,8 +44,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.CharEncoding;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.dao.IAdresseDAO;
 import fr.paris.lutece.plugins.dansmarue.business.entities.PhotoDMR;
@@ -60,9 +60,11 @@ import fr.paris.lutece.portal.service.image.ImageResource;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import fr.paris.lutece.util.signrequest.RequestAuthenticator;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 /**
  * The Class SignalementWebService.
@@ -116,9 +118,9 @@ public class SignalementWebService implements ISignalementWebService
      * {@inheritDoc}
      */
     @Override
-    public JSONObject getJSONResponse( Signalement signalement, String url )
+    public ObjectNode getJSONResponse( Signalement signalement, String url )
     {
-        JSONObject response = null;
+        ObjectNode response = null;
 
         if ( signalement.getAdresses( ).isEmpty( ) || !SignalementUtils.isValidAddress( signalement.getAdresses( ).get( 0 ).getAdresse( ) ) )
         {
@@ -128,8 +130,8 @@ public class SignalementWebService implements ISignalementWebService
         try
         {
             String strResp = sendByWS( signalement, url );
-            JSONArray array = JSONArray.fromObject( strResp );
-            response = array.getJSONObject( 0 );
+            ArrayNode array = DmrJson.parseArray( strResp );
+            response = (ObjectNode) array.get( 0 );
         }
         catch( BusinessException e )
         {
@@ -141,7 +143,7 @@ public class SignalementWebService implements ISignalementWebService
             AppLogService.error( e.getMessage( ), e );
             response = generateErrorResponse( "Encoding error" );
         }
-        catch( JSONException e )
+        catch( JsonProcessingException e )
         {
             AppLogService.error( e.getMessage( ), e );
             response = generateErrorResponse( "Get response error" );
@@ -168,13 +170,13 @@ public class SignalementWebService implements ISignalementWebService
             throw new BusinessException( signalement, "dansmarue.ws.error.url.empty" );
         }
 
-        JSONObject json = createJSON( signalement );
+        ObjectNode json = createJSON( signalement );
 
-        JSONObject jsonSrc = new JSONObject( );
-        jsonSrc.accumulate( JSON_TAG_ANOMALIE, json );
+        ObjectNode jsonSrc = DmrJson.object( );
+        DmrJson.accumulate(jsonSrc, JSON_TAG_ANOMALIE, json );
 
         // name of the method in REST api
-        jsonSrc.accumulate( TAG_REQUEST, REQUEST_METHOD_ADD );
+        DmrJson.accumulate(jsonSrc, TAG_REQUEST, REQUEST_METHOD_ADD );
 
         Map<String, List<String>> params = new HashMap<>( );
         List<String> values = new ArrayList<>( );
@@ -187,7 +189,7 @@ public class SignalementWebService implements ISignalementWebService
         {
             AppLogService.info( "Call web service " + url + " for id anomalie : " + signalement.getId( ) );
             // Suppression des photos pour ne pas surcharger les logs
-            ( (JSONObject) jsonSrc.get( JSON_TAG_ANOMALIE ) ).remove( JSON_TAG_PHOTOS );
+            ( (ObjectNode) jsonSrc.get( JSON_TAG_ANOMALIE ) ).remove( JSON_TAG_PHOTOS );
             AppLogService.info( "Flux Json : " + jsonSrc.toString( ) );
             result = _wsCaller.callWebService( url, params, _authenticator, values );
         }
@@ -205,41 +207,41 @@ public class SignalementWebService implements ISignalementWebService
      * {@inheritDoc}
      */
     @Override
-    public JSONObject createJSON( Signalement signalement ) throws UnsupportedEncodingException
+    public ObjectNode createJSON( Signalement signalement ) throws UnsupportedEncodingException
     {
         // content of the json stream must be encode, because using application/x-www-form-urlencoded
 
-        JSONObject jsonAnomalie = new JSONObject( );
-        jsonAnomalie.accumulate( "id", signalement.getId( ) );
-        jsonAnomalie.accumulate( "reference", signalement.getNumeroSignalement( ) );
-        jsonAnomalie.accumulate( "date_creation", signalement.getDateCreation( ) );
-        jsonAnomalie.accumulate( "heure_creation", DateUtils.getHourWithSecondsFr( signalement.getHeureCreation( ) ) );
-        jsonAnomalie.accumulate( "commentaire", encode( signalement.getCommentaire( ) ) );
-        jsonAnomalie.accumulate( "type", encode( signalement.getType()));
-        jsonAnomalie.accumulate( "priorite", encode( signalement.getPriorite( ).getLibelle( ) ) );
-        jsonAnomalie.accumulate( "adresse", encode( signalement.getAdresses( ).get( 0 ).getAdresse( ) ) );
-        jsonAnomalie.accumulate( "lat", signalement.getAdresses( ).get( 0 ).getLat( ) );
-        jsonAnomalie.accumulate( "lng", signalement.getAdresses( ).get( 0 ).getLng( ) );
-        jsonAnomalie.accumulate( "token", signalement.getToken( ) );
+        ObjectNode jsonAnomalie = DmrJson.object( );
+        DmrJson.accumulate(jsonAnomalie, "id", signalement.getId( ) );
+        DmrJson.accumulate(jsonAnomalie, "reference", signalement.getNumeroSignalement( ) );
+        DmrJson.accumulate(jsonAnomalie, "date_creation", signalement.getDateCreation( ) );
+        DmrJson.accumulate(jsonAnomalie, "heure_creation", DateUtils.getHourWithSecondsFr( signalement.getHeureCreation( ) ) );
+        DmrJson.accumulate(jsonAnomalie, "commentaire", encode( signalement.getCommentaire( ) ) );
+        DmrJson.accumulate(jsonAnomalie, "type", encode( signalement.getType()));
+        DmrJson.accumulate(jsonAnomalie, "priorite", encode( signalement.getPriorite( ).getLibelle( ) ) );
+        DmrJson.accumulate(jsonAnomalie, "adresse", encode( signalement.getAdresses( ).get( 0 ).getAdresse( ) ) );
+        DmrJson.accumulate(jsonAnomalie, "lat", signalement.getAdresses( ).get( 0 ).getLat( ) );
+        DmrJson.accumulate(jsonAnomalie, "lng", signalement.getAdresses( ).get( 0 ).getLng( ) );
+        DmrJson.accumulate(jsonAnomalie, "token", signalement.getToken( ) );
 
         List<PhotoDMR> photos = signalement.getPhotos( );
 
-        JSONArray array = new JSONArray( );
+        ArrayNode array = DmrJson.array( );
         if ( ( photos != null ) && !photos.isEmpty( ) )
         {
             for ( PhotoDMR p : photos )
             {
-                JSONObject photoJson = new JSONObject( );
-                photoJson.accumulate( "id_photo", p.getId( ) );
-                photoJson.accumulate( "vue_photo", p.getVue( ) );
-                photoJson.accumulate( "photo", getImageBase64( p.getImage( ) ) );
+                ObjectNode photoJson = DmrJson.object( );
+                DmrJson.accumulate(photoJson, "id_photo", p.getId( ) );
+                DmrJson.accumulate(photoJson, "vue_photo", p.getVue( ) );
+                DmrJson.accumulate(photoJson, "photo", getImageBase64( p.getImage( ) ) );
                 array.add( photoJson );
             }
-            jsonAnomalie.accumulate( JSON_TAG_PHOTOS, array );
+            DmrJson.accumulate(jsonAnomalie, JSON_TAG_PHOTOS, array );
         }
         else
         {
-            jsonAnomalie.accumulate( JSON_TAG_PHOTOS, array );
+            DmrJson.accumulate(jsonAnomalie, JSON_TAG_PHOTOS, array );
         }
 
         return jsonAnomalie;
@@ -249,22 +251,22 @@ public class SignalementWebService implements ISignalementWebService
      * {@inheritDoc}
      */
     @Override
-    public JSONObject callWSPartnerServiceDone( Signalement signalement, String urlPartner )
+    public ObjectNode callWSPartnerServiceDone( Signalement signalement, String urlPartner )
     {
 
-        JSONObject response = null;
+        ObjectNode response = null;
         String result = null;
 
         Map<String, List<String>> params = new HashMap<>( );
         List<String> values = new ArrayList<>( );
 
-        JSONObject jsonSrc = new JSONObject( );
-        jsonSrc.accumulate( TAG_REQUEST, REQUEST_METHOD_DONE );
-        jsonSrc.accumulate( "id", signalement.getId( ) );
-        jsonSrc.accumulate( "reference", signalement.getNumeroSignalement( ) );
-        jsonSrc.accumulate( "token", signalement.getToken( ) );
-        jsonSrc.accumulate( "date_creation", signalement.getDateCreation( ) );
-        jsonSrc.accumulate( "date_service_fait", signalement.getDateServiceFaitTraitement( ) );
+        ObjectNode jsonSrc = DmrJson.object( );
+        DmrJson.accumulate(jsonSrc, TAG_REQUEST, REQUEST_METHOD_DONE );
+        DmrJson.accumulate(jsonSrc, "id", signalement.getId( ) );
+        DmrJson.accumulate(jsonSrc, "reference", signalement.getNumeroSignalement( ) );
+        DmrJson.accumulate(jsonSrc, "token", signalement.getToken( ) );
+        DmrJson.accumulate(jsonSrc, "date_creation", signalement.getDateCreation( ) );
+        DmrJson.accumulate(jsonSrc, "date_service_fait", signalement.getDateServiceFaitTraitement( ) );
 
         String jsonFormated = jsonSrc.toString( );
         values.add( jsonFormated );
@@ -284,19 +286,19 @@ public class SignalementWebService implements ISignalementWebService
 
         try
         {
-            JSONArray array = JSONArray.fromObject( result );
-            response = array.getJSONObject( 0 );
+            ArrayNode array = DmrJson.parseArray( result );
+            response = (ObjectNode) array.get( 0 );
         }
-        catch( JSONException e1 )
+        catch( JsonProcessingException e1 )
         {
             try
             {
-                AppLogService.info( "Received JSONObject is not of the regular type (JSONObject in JSONArray)" );
-                response = JSONObject.fromObject( result );
+                AppLogService.info( "Received ObjectNode is not of the regular type (ObjectNode in ArrayNode)" );
+                response = DmrJson.parseObject( result );
             }
-            catch( JSONException e2 )
+            catch( JsonProcessingException e2 )
             {
-                AppLogService.info( "Received JSONObject is not of the irregular type (JSONObject)" );
+                AppLogService.info( "Received ObjectNode is not of the irregular type (ObjectNode)" );
                 AppLogService.error( e2.getMessage( ), e2 );
                 throw new TechnicalException( e2.getMessage( ), e2.getCause( ) );
             }
@@ -348,14 +350,14 @@ public class SignalementWebService implements ISignalementWebService
      *            the message
      * @return Json error response
      */
-    private JSONObject generateErrorResponse( String message )
+    private ObjectNode generateErrorResponse( String message )
     {
 
-        JSONObject response = new JSONObject( );
-        response.accumulate( TAG_REQUEST, REQUEST_METHOD_ADD );
-        JSONObject error = new JSONObject( );
-        error.accumulate( TAG_ERROR, message );
-        response.accumulate( TAG_ANSWER, error );
+        ObjectNode response = DmrJson.object( );
+        DmrJson.accumulate(response, TAG_REQUEST, REQUEST_METHOD_ADD );
+        ObjectNode error = DmrJson.object( );
+        DmrJson.accumulate(error, TAG_ERROR, message );
+        DmrJson.accumulate(response, TAG_ANSWER, error );
 
         return response;
     }

@@ -35,7 +35,7 @@ package fr.paris.lutece.plugins.dansmarue.service.deamon;
 
 import java.util.List;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import fr.paris.lutece.plugins.dansmarue.service.ISignalementService;
 import fr.paris.lutece.portal.service.daemon.Daemon;

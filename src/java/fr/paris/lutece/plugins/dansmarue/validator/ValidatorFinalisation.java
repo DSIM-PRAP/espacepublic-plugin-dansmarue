@@ -35,7 +35,7 @@ package fr.paris.lutece.plugins.dansmarue.validator;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import fr.paris.lutece.plugins.dansmarue.util.constants.SignalementConstants;
 

@@ -39,7 +39,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.anonymizationphoto.business.ResponseAnonymizationPhoto;
 import fr.paris.lutece.plugins.anonymizationphoto.service.IAnonymizationPhotoService;

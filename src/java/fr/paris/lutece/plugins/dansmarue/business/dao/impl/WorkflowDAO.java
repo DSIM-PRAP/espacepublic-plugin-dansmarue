@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.dao.IWorkflowDAO;
 import fr.paris.lutece.plugins.dansmarue.business.entities.NotificationSignalementUserMultiContents;

@@ -43,7 +43,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.dansmarue.commons.ResultList;
 import fr.paris.lutece.plugins.dansmarue.commons.Rights;

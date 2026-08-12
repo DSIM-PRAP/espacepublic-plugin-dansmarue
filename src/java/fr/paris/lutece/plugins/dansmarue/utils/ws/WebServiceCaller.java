@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -54,7 +54,7 @@ import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import fr.paris.lutece.util.signrequest.NoSecurityAuthenticator;
 import fr.paris.lutece.util.signrequest.RequestAuthenticator;
 import fr.paris.lutece.util.signrequest.RequestHashAuthenticator;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * WebServiceCaller.
@@ -100,10 +100,10 @@ public class WebServiceCaller implements IWebServiceCaller
     /*
      * (non-Javadoc)
      * 
-     * @see fr.paris.lutece.plugins.dansmarue.utils.ws.IWebServiceCaller#postJSON(java.lang.String, net.sf.json.JSONObject)
+     * @see fr.paris.lutece.plugins.dansmarue.utils.ws.IWebServiceCaller#postJSON(java.lang.String, net.sf.json.ObjectNode)
      */
     @Override
-    public String postJSON( String strUrl, JSONObject json ) throws IOException
+    public String postJSON( String strUrl, ObjectNode json ) throws IOException
     {
         LOGGER.debug( "Send to " + strUrl + " : " + json.toString( ) );
         URL url = new URL( strUrl );
@@ -143,7 +143,7 @@ public class WebServiceCaller implements IWebServiceCaller
      *            the json object to send
      * @return the post data
      */
-    private String wrapJsonToPostData( JSONObject json )
+    private String wrapJsonToPostData( ObjectNode json )
     {
         return MARK_JSON_STREAM + "=[" + json.toString( ) + "]";
     }

@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.dao.ITypeSignalementDAO;
 import fr.paris.lutece.plugins.dansmarue.business.entities.Source;

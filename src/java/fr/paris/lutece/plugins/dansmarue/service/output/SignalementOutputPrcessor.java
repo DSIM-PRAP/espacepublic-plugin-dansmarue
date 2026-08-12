@@ -32,6 +32,7 @@
  * License 1.0
  */
 package fr.paris.lutece.plugins.dansmarue.service.output;
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -41,10 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.pdfbox.cos.COSBase;
-import org.apache.pdfbox.util.PDFOperator;
-import org.apache.pdfbox.util.operator.OperatorProcessor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.util.DigestUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.entities.Adresse;
@@ -62,12 +60,12 @@ import fr.paris.lutece.plugins.dansmarue.util.constants.SignalementConstants;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The Class SignalementOutputPrcessor.
  */
-public class SignalementOutputPrcessor extends OperatorProcessor
+public class SignalementOutputPrcessor
 {
 
     /** The Constant MESSAGE_ERROR_NO_SECTOR. */
@@ -110,11 +108,6 @@ public class SignalementOutputPrcessor extends OperatorProcessor
      * 
      * @see org.apache.pdfbox.util.operator.OperatorProcessor#process(org.apache.pdfbox.util.PDFOperator, java.util.List)
      */
-    @Override
-    public void process( PDFOperator operator, List<COSBase> arguments ) throws IOException
-    {
-        // Auto-generated method stub
-    }
 
     /**
      * Save signalement. Prepars a demandeSignalement to be saved.
@@ -206,7 +199,7 @@ public class SignalementOutputPrcessor extends OperatorProcessor
      *            the user mail
      * @return a boolean
      */
-    public JSONObject sauvegarderSignalementFromWS( Signalement demandeSignalement, String userName, String userMail )
+    public ObjectNode sauvegarderSignalementFromWS( Signalement demandeSignalement, String userName, String userMail )
     {
         List<Adresse> adresses = new ArrayList<>( );
         Adresse adresse = demandeSignalement.getAdresses( ).get( 0 );
@@ -253,7 +246,7 @@ public class SignalementOutputPrcessor extends OperatorProcessor
         catch( UnsupportedEncodingException e )
         {
             AppLogService.error( e );
-            JSONObject jObject = new JSONObject( );
+            ObjectNode jObject = DmrJson.object( );
             jObject.put( SignalementConstants.RETOUR_CREATION_SIGNALEMENT, false );
             return jObject;
         }
@@ -287,7 +280,7 @@ public class SignalementOutputPrcessor extends OperatorProcessor
             // Erreur à l'insertion des photos -> signalement non créé
             if ( SignalementConstants.ID_ERREUR_SIGNALEMENT.equals( signalementId ) )
             {
-                JSONObject jObject = new JSONObject( );
+                ObjectNode jObject = DmrJson.object( );
                 jObject.put( SignalementConstants.RETOUR_CREATION_SIGNALEMENT, false );
                 jObject.put( SignalementConstants.CODE_ERREUR_CREATION_SIGNALEMENT, SignalementConstants.ERREUR_SAUVEGARDE_PHOTO );
                 return jObject;
@@ -300,7 +293,7 @@ public class SignalementOutputPrcessor extends OperatorProcessor
             throw new BusinessException( demandeSignalement, MESSAGE_ERROR_NO_SECTOR );
         }
 
-        JSONObject jObject = new JSONObject( );
+        ObjectNode jObject = DmrJson.object( );
         jObject.put( SignalementConstants.RETOUR_CREATION_SIGNALEMENT, true );
         return jObject;
     }

@@ -35,7 +35,7 @@ package fr.paris.lutece.plugins.dansmarue.service.role;
 
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.dansmarue.business.entities.TypeSignalement;
 import fr.paris.lutece.plugins.dansmarue.service.ITypeSignalementService;

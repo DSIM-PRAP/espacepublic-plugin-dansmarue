@@ -42,7 +42,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.rometools.utils.Strings;
 
@@ -295,7 +295,7 @@ public class MessageTypeSignalementJspBean extends AbstractJspBean
             return AdminMessageService.getMessageUrl( request, Messages.MESSAGE_INVALID_ENTRY, errors );
         }
 
-        messageTypologie.setContenuMessage( StringEscapeUtils.unescapeHtml( messageTypologie.getContenuMessage( ) ).replaceAll( "<[^>]*>", "" ) );
+        messageTypologie.setContenuMessage( StringEscapeUtils.unescapeHtml4( messageTypologie.getContenuMessage( ) ).replaceAll( "<[^>]*>", "" ) );
         _messageTypologieService.createMessageTypologie( messageTypologie );
 
         UrlItem urlItem = new UrlItem( JSP_MODIFY );

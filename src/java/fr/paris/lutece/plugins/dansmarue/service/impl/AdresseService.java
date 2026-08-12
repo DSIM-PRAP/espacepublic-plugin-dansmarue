@@ -32,6 +32,7 @@
  * License 1.0
  */
 package fr.paris.lutece.plugins.dansmarue.service.impl;
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,10 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+
+import fr.paris.lutece.portal.service.util.AppException;
 
 import com.google.gson.Gson;
 
@@ -241,7 +245,14 @@ public class AdresseService implements IAdresseService
     {
         HttpAccess http = new HttpAccess( );
         String answer = http.doGet("https://api-adresse.data.gouv.fr/reverse/?lon="+lng.toString( )+"&lat="+lat.toString( ));
-        return  new JSONObject( answer ).getJSONArray( "features" ).getJSONObject( 0 ).getJSONObject( "properties" ).getString( "label" );
+        try
+        {
+            return DmrJson.parseObject( answer ).path( "features" ).path( 0 ).path( "properties" ).path( "label" ).asText( );
+        }
+        catch ( JsonProcessingException e )
+        {
+            throw new AppException( e.getMessage( ), e );
+        }
 
     }
 
@@ -262,13 +273,19 @@ public class AdresseService implements IAdresseService
         // Pour visualiser le retour du WS, mettre le parametre format=html (dans un navigateur)
         String answer = http.doGet( URL_REVERSE_GEOCODING + "&lat=" + lat + "&lon=" + lng );
 
-        Map<String, String> answerMap = new Gson( ).fromJson( answer, Map.class );
+        JsonNode answerJson;
+        try
+        {
+            answerJson = DmrJson.parseObject( answer ).path( "address" );
+        }
+        catch ( JsonProcessingException e )
+        {
+            throw new AppException( e.getMessage( ), e );
+        }
 
-        JSONObject answerJson = new JSONObject( new JSONObject( answerMap ).get( "address" ).toString( ) );
-
-        String numeroRue = answerJson.has( "house_number" ) ? answerJson.get( "house_number" ).toString( ) : "";
-        String rue = answerJson.has( "road" ) ? answerJson.get( "road" ).toString( ) : answerJson.get( "suburb" ).toString( );
-        String codePostal = answerJson.get( "postcode" ).toString( );
+        String numeroRue = answerJson.has( "house_number" ) ? answerJson.get( "house_number" ).asText( ) : "";
+        String rue = answerJson.has( "road" ) ? answerJson.get( "road" ).asText( ) : answerJson.path( "suburb" ).asText( );
+        String codePostal = answerJson.path( "postcode" ).asText( );
         return numeroRue + " " + rue + ", " + codePostal + " PARIS";
     }
 

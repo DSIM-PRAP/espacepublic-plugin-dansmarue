@@ -18,7 +18,7 @@ $.ajaxSetup({ cache: false });
 
 function getSigMarkers(){
 	var markers = L.markerClusterGroup();
-	$("#map_canvas").addClass("hidden");
+	$("#map_canvas").hide();
 	$.get( "jsp/admin/plugins/signalement/DoGetSignalementsJsonForDisplayMap.jsp", function( data ) {
 	  data.forEach(function(signalement){
 		var marker = L.marker([signalement.lat,signalement.lng], {icon: eval(signalement.iconName)});
@@ -29,8 +29,8 @@ function getSigMarkers(){
 		markers.addLayer(marker);
 	  });
 	  leafletmap.addLayer(markers);
-	  $("#map_spinner").addClass("hidden");
-	  $("#map_canvas").removeClass("hidden");
+	  $("#map_spinner").hide();
+	  $("#map_canvas").show();
 	});
 	
 }
@@ -880,7 +880,7 @@ function updateSectorList(idDirection, idDomaine){
 <script src="js/jquery.cookie.js"></script>
 
 <script>
-$(window).load(function() {
+$(window).on("load", function() {
     var doneOnce = false;
     if(/chrom(e|ium)/.test(navigator.userAgent.toLowerCase())){
         $("#album-button").show().click(function() {

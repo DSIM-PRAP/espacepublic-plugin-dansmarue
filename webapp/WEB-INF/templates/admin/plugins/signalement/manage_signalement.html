@@ -24,9 +24,14 @@ function getSigMarkers(){
 	//Spider
 	var oms = new OverlappingMarkerSpiderfier(leafletmap, {keepSpiderfied: true});
 	
-	$("#map_canvas").addClass("hidden");
+	$("#map_canvas").hide();
 	var index=1;
-	$.get( "jsp/admin/plugins/signalement/DoGetSignalementsJsonForMap.jsp", function( data ) {
+	$.get( { url: "jsp/admin/plugins/signalement/DoGetSignalementsJsonForMap.jsp", dataType: "text" } )
+	.always(function(){ $("#map_spinner").hide(); $("#map_canvas").show(); })
+	.done(function( rawData ) {
+	  var data;
+	  try { data = JSON.parse( String( rawData ).trim() ); } catch ( e ) { data = []; }
+	  if ( !Array.isArray( data ) ) { data = []; }
 	  data.forEach(function(signalement){
 		var color;
 		if(signalement.iconName==="greenIcon") {
@@ -63,8 +68,8 @@ function getSigMarkers(){
 	  
 	  var heatLayer = L.heatLayer(heatMapData, {maxZoom:17, radius:30, minOpacity:0.75});
 	  
-	  $("#map_spinner").addClass("hidden");
-	  $("#map_canvas").removeClass("hidden");
+	  $("#map_spinner").hide();
+	  $("#map_canvas").show();
 	  
 	  var overlayMaps = {
 		    "Anomalies": markers,
@@ -1113,7 +1118,7 @@ $(document).ready(function() {
 <script src="js/canvas2image.js"></script>
 
 <script>
-$(window).load(function() {
+$(window).on("load", function() {
     var doneOnce = false;
     if(/chrom(e|ium)/.test(navigator.userAgent.toLowerCase())){
         $("#album-button").show().click(function() {

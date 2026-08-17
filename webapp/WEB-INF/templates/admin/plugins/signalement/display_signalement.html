@@ -19,7 +19,12 @@ $.ajaxSetup({ cache: false });
 function getSigMarkers(){
 	var markers = L.markerClusterGroup();
 	$("#map_canvas").hide();
-	$.get( "jsp/admin/plugins/signalement/DoGetSignalementsJsonForDisplayMap.jsp", function( data ) {
+	$.get( { url: "jsp/admin/plugins/signalement/DoGetSignalementsJsonForDisplayMap.jsp", dataType: "text" } )
+	.always(function(){ $("#map_spinner").hide(); $("#map_canvas").show(); })
+	.done(function( rawData ) {
+	  var data;
+	  try { data = JSON.parse( String( rawData ).trim() ); } catch ( e ) { data = []; }
+	  if ( !Array.isArray( data ) ) { data = []; }
 	  data.forEach(function(signalement){
 		var marker = L.marker([signalement.lat,signalement.lng], {icon: eval(signalement.iconName)});
 		marker.bindPopup(signalement.tooltip);
@@ -349,77 +354,86 @@ function updateSectorList(idDirection, idDomaine){
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+/* BS5/Tabler ne définit plus .hidden (BS3) : on restaure display:none pour
+   les bascules de la page (recherche avancée, vue liste/carte). */
+.hidden { display: none !important; }
+/* Filtre « Date de creation » : Du/Au sur une meme ligne (comme en v6). Les col-1/col-3
+   (BS3) etaient ecrases dans le conteneur flex BS5 -> on leur rend une largeur auto et on
+   fixe la largeur des champs date. */
+.input-daterange .col-1, .input-daterange .col-3 { width: auto; flex: 0 0 auto; padding-left: 0; padding-right: 0; }
+.input-daterange .input-group { width: auto; margin-right: .75rem; }
+#filter_dateBegin, #filter_dateEnd { width: 90px; }
 </style>
 <div class="overlay">
 	<div class="loader"></div>
 </div>
 <div id="manage-signalement" class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<div class="box box-info">
-			<div class="box-header">
-				<h3 class="box-title">#i18n{dansmarue.reportingList.title}</h3>
+	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">#i18n{dansmarue.reportingList.title}</h3>
 			</div>
 
-			<div class="box-body">
+			<div class="card-body">
 				<fieldset>
-					<form class="form-horizontal"
+					<form class="form-horizontal row"
 						action="jsp/admin/plugins/signalement/DisplaySignalement.jsp"
 						method="post" name="form">
 
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_type">#i18n{dansmarue.reportingList.domaine} :
 								</label><span id="firt_filter"></span>
-								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+								<div  class="col-12 col-sm-12 col-md-12 col-lg-12 ">
 										<select id="idDomaine" class="form-control
-										input-sm" name="idDomaine" filter="${(filter.idDomaine)!}" ></select>
+										form-control-sm" name="idDomaine" filter="${(filter.idDomaine)!}" ></select>
 								</div>
 							</div>
 							<#--<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_type">#i18n{dansmarue.reportingList.category} :
 								</label><span id="firt_filter"></span>
-								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+								<div  class="col-12 col-sm-12 col-md-12 col-lg-12 ">
 									<div id="categoryCheckboxes" data-toggle="buttons">
 									</div>
 								</div>
 							</div>-->
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_type">#i18n{dansmarue.reportingList.type} :
 								</label><span id="firt_filter"></span>
-								<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-									<input  class="form-control input-sm" id="typeSignalements" value="${idTypeSignalement!}" filter="${(filter.idTypeSignalement)!}" type="text" placeholder="" maxlength="255"/>
+								<div  class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+									<input  class="form-control form-control-sm" id="typeSignalements" value="${idTypeSignalement!}" filter="${(filter.idTypeSignalement)!}" type="text" placeholder="" maxlength="255"/>
 									<input id="idTypeSignalement" name="idTypeSignalement" value="${(filter.idTypeSignalement)!}" type="hidden" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_numero">#i18n{dansmarue.reportingList.number}
 									: </label>
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 									<input type="text" value="${filter.numero!}"
-										class="form-control input-sm" name="numero" id="filter_numero"
+										class="form-control form-control-sm" name="numero" id="filter_numero"
 										maxlength="255" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_direction">#i18n{dansmarue.reportingList.direction}
 									: </label>
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 									<select id="idDirection" class="form-control
-									input-sm" name="idDirection" filter="${(filter.idDirection)!}"  ></select>
+									form-control-sm" name="idDirection" filter="${(filter.idDirection)!}"  ></select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_secteur">#i18n{dansmarue.reportingList.entite}
 									: </label>
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 									<select id="idSector" class="form-control
-										input-sm" name="idSector" filter="${(filter.idSector)!}"  ></select>
+										form-control-sm" name="idSector" filter="${(filter.idSector)!}"  ></select>
 									<noscript>
 										<button class="btn btn-primary btn-sm" type="submit"
 											name="updateSectorsWithDirection">
@@ -431,35 +445,35 @@ function updateSectorList(idDirection, idDomaine){
 									id="idSelectedSector" />
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_dateBegin">
 									#i18n{dansmarue.reportingList.creationDate} : </label>
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-									<div class="input-daterange">
-										<div class="col-xs-1">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex align-items-center flex-wrap">
+									<div class="input-daterange d-flex align-items-center">
+										<div class="col-1">
 											#i18n{dansmarue.reportingList.from}</div>
-										<div class="col-xs-3 ">
+										<div class="col-3 ">
 											<div class="input-group">
-												<div class="input-group-addon">
-													<span class="glyphicon glyphicon-calendar"></span>
+												<div class="input-group-text">
+													<span class="bi bi-calendar"></span>
 												</div>
-												<input class="form-control input-sm" type="text"
+												<input class="form-control form-control-sm" type="text"
 													value="${filter.dateBegin!}" name="dateBegin"
 													id="filter_dateBegin" maxlength="10" />
 											</div>
 										</div>
 									</div>
-									<div class="input-daterange">
-										<div class="col-xs-1">#i18n{dansmarue.reportingList.to}
+									<div class="input-daterange d-flex align-items-center">
+										<div class="col-1">#i18n{dansmarue.reportingList.to}
 										</div>
-										<div class="col-xs-3">
+										<div class="col-3">
 											<div class="input-group">
-												<div class="input-group-addon">
-													<span class="glyphicon glyphicon-calendar"></span>
+												<div class="input-group-text">
+													<span class="bi bi-calendar"></span>
 												</div>
-												<input class="form-control input-sm" type="text"
+												<input class="form-control form-control-sm" type="text"
 													value="${filter.dateEnd!}" name="dateEnd"
 													id="filter_dateEnd" />
 											</div>
@@ -468,10 +482,10 @@ function updateSectorList(idDirection, idDomaine){
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+								<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 									for="filter_typecase">
 									#i18n{dansmarue.reportingList.etat}</label>
-								<div id="checkbox_etat" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
+								<div id="checkbox_etat" class="col-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
 									<#list etat_list as etat>
 									<label checkType="etat"  class="btn btn-checkbox<#list filter.etats as
 											filterEtat> <#if etat.id == filterEtat.id > active
@@ -480,120 +494,120 @@ function updateSectorList(idDirection, idDomaine){
 											</#if> </#list> />${etat.name!}</label>
 									</#list>
 								</div>
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
 									<button type="button" class="btn btn-primary" onClick="select_all_states()">#i18n{dansmarue.button.select.all}</button>
 									<button type="button" class="btn btn-primary" onClick="un_select_all_states();">#i18n{dansmarue.button.deselect.all}</button>
 								</div>
 							</div>
 						</div>
 						<!-- Advanced search -->
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 							<div class="row hidden advanced-search-block">
-								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_adresse">#i18n{dansmarue.reportingList.adress}
 											</label>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 											<input type="text" value="${filter.adresse!}"
-												class="form-control input-sm" name="adresse"
+												class="form-control form-control-sm" name="adresse"
 												id="filter_adresse" maxlength="255" />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_mail">#i18n{dansmarue.reportingList.mail}
 										</label>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 											<input type="text" value="${filter.mail!}"
-												class="form-control input-sm" name="mail" id="filter_mail"
+												class="form-control form-control-sm" name="mail" id="filter_mail"
 												maxlength="255" />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_commentaire">#i18n{dansmarue.reportingList.comment}
 										</label>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 											<input type="text" value="${filter.commentaire!}"
-												class="form-control input-sm" name="commentaire"
+												class="form-control form-control-sm" name="commentaire"
 												id="filter_commentaire" maxlength="255" />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_commentaireAgentTerrain">#i18n{dansmarue.saveSignalement.commentaireAgentTerrain}
 										</label>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 											<input type="text" value="${filter.commentaireAgentTerrain!}"
-												class="form-control input-sm" name="commentaireAgentTerrain"
+												class="form-control form-control-sm" name="commentaireAgentTerrain"
 												id="filter_commentaireAgentTerrain" maxlength="255" />
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_mailDernierIntervenant">#i18n{dansmarue.reportingList.mailDernierIntervenant}
 										</label>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 											<input type="text" value="${filter.mailDernierIntervenant!}"
-												class="form-control input-sm" name="mailDernierIntervenant"
+												class="form-control form-control-sm" name="mailDernierIntervenant"
 												id="filter_mailDernierIntervenant" maxlength="255" />
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_arrondissement">#i18n{dansmarue.reportingList.arrondissement}
 										</label>
 										
-										<div id="checkbox_arrondissement" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
+										<div id="checkbox_arrondissement" class="col-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
 										
 										</div>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
 											<button type="button" class="btn btn-primary" onClick="select_all_arrondissement()">#i18n{dansmarue.button.select.all}</button>
 											<button type="button" class="btn btn-primary" onClick="un_select_all_arrondissement()">#i18n{dansmarue.button.deselect.all}</button>
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+								<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_quartier">#i18n{dansmarue.reportingList.quartier}
 										</label>
-										<div id="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
+										<div id="" class="col-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
 											<select name="listIdQuartierParam"  id="conseilQuartier" class="selectpicker show-menu-arrow form-control" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
 											</select>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_dateDoneBegin">
 											#i18n{dansmarue.reportingList.serviceFaitDate}</label>
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 											<div class="input-daterange">
-												<div class="col-xs-1">
+												<div class="col-1">
 													#i18n{dansmarue.reportingList.from}</div>
-												<div class="col-xs-3 ">
+												<div class="col-3 ">
 													<div class="input-group">
-														<div class="input-group-addon">
-															<span class="glyphicon glyphicon-calendar"></span>
+														<div class="input-group-text">
+															<span class="bi bi-calendar"></span>
 														</div>
-														<input class="form-control input-sm" type="text"
+														<input class="form-control form-control-sm" type="text"
 															value="${filter.dateDoneBegin!}" name="dateDoneBegin"
 															id="filter_dateDoneBegin" maxlength="10" />
 													</div>
 												</div>
 											</div>
 											<div class="input-daterange">
-												<div class="col-xs-1">#i18n{dansmarue.reportingList.to}
+												<div class="col-1">#i18n{dansmarue.reportingList.to}
 												</div>
-												<div class="col-xs-3">
+												<div class="col-3">
 													<div class="input-group">
-														<div class="input-group-addon">
-															<span class="glyphicon glyphicon-calendar"></span>
+														<div class="input-group-text">
+															<span class="bi bi-calendar"></span>
 														</div>
-														<input class="form-control input-sm" type="text"
+														<input class="form-control form-control-sm" type="text"
 															value="${filter.dateDoneEnd!}" name="dateDoneEnd"
 															id="filter_dateDoneEnd" />
 													</div>
@@ -606,7 +620,7 @@ function updateSectorList(idDirection, idDomaine){
 						</div>
 						<div class="text-center">
 							<div class="form-group">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 									<span class="advanced-search-block display-advanced-search">#i18n{dansmarue.reportingList.displayAdvancedSearch}</span>
 									<span class="advanced-search-block hidden display-advanced-search">#i18n{dansmarue.reportingList.hideAdvancedSearch}</span>
 								</div>
@@ -615,7 +629,7 @@ function updateSectorList(idDirection, idDomaine){
 							
 							</style>
 							<div class="form-group">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 									<button type="submit" class="btn btn-paris btn-red btn-lg"
 										id="search-button" name="search">
 										#i18n{dansmarue.reportingList.search}
@@ -633,7 +647,7 @@ function updateSectorList(idDirection, idDomaine){
 			<#if ((paginator.itemsCount) <= map_max_results)>
 			<fieldset>
 				<div class="row">
-					<div id="toggle-map-btns" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div id="toggle-map-btns" class="col-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="btn-group" data-toggle="buttons">
 						  <label class="btn toggle-map-btns"  id="display-map-btn">
 							<input type="radio" name="options" autocomplete="off"><img id="map-icon" class="svg toggle-icon" src="images/admin/skin/plugins/signalement/map-icon.svg"/><label>Carte</label>
@@ -642,7 +656,7 @@ function updateSectorList(idDirection, idDomaine){
 							<input type="radio" name="options"  autocomplete="off" checked><img id="list-icon" class="svg toggle-icon" src="images/admin/skin/plugins/signalement/list-icon.svg"/><label>Liste</label>
 						  </label>
 						</div>
-						<div id="map_nb_result_div" class="map_item pull-right hidden">
+						<div id="map_nb_result_div" class="map_item float-end hidden">
 							<label class="label-title">#i18n{dansmarue.reportingList.search.results} : </label><span> ${(paginator.itemsCount)} #i18n{dansmarue.reportingList.present.anomalies}</span>
 						</div>
 					</div>
@@ -650,7 +664,7 @@ function updateSectorList(idDirection, idDomaine){
 			</fieldset>
 			<fieldset id="map-block" class="map_item">
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 						<div id="map_spinner" class="text-center"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i><br/>#i18n{dansmarue.map.loading}</div>
 						<div id="map_canvas" style="height:400px;z-index:1;">
 						</div>
@@ -660,9 +674,9 @@ function updateSectorList(idDirection, idDomaine){
 			<#else>
 				<fieldset>
 				<div class="row">
-					<div id="toggle-map-btns" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div id="toggle-map-btns" class="col-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="btn-group">
-						  <button class="btn toggle-map-btns" data-toggle="modal" data-target="#map-modal"><img id="map-icon" class="svg toggle-icon" src="images/admin/skin/plugins/signalement/map-icon.svg"/><label>Carte</label></button>
+						  <button class="btn toggle-map-btns" data-bs-toggle="modal" data-bs-target="#map-modal"><img id="map-icon" class="svg toggle-icon" src="images/admin/skin/plugins/signalement/map-icon.svg"/><label>Carte</label></button>
 						  <button class="btn toggle-map-btns active"><img id="list-icon" class="svg toggle-icon" src="images/admin/skin/plugins/signalement/list-icon.svg"/><label>Liste</label></button>
 						</div>
 					</div>
@@ -673,14 +687,14 @@ function updateSectorList(idDirection, idDomaine){
 				<@paginationSig paginator=paginator combo=1 />
 				<form action="jsp/admin/plugins/signalement/ProcessAction.jsp"
 					method="post">
-					<div class="pull-left">
+					<div class="float-start">
 						<!-- export en input pour r�cup�rer les dossiers coch�s -->
 						<@estAutoriseMacro ressourceType="GESTION_DES_SIGNALEMENTS"
 						permission="EXPORTER_SIGNALEMENT">
 						<button type="submit" value="exportcsvdisplay"
 							title="#i18n{dansmarue.caseList.ExportSignalement}"
 							name="exportcsvdisplay" class="btn btn-xs btn-primary">
-							<i class="glyphicon glyphicon-save"></i>
+							<i class="bi bi-save"></i>
 						</button>
 						</@estAutoriseMacro>
 					</div>
@@ -749,11 +763,11 @@ function updateSectorList(idDirection, idDomaine){
                                         href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
                                         params="?signalement_id=${signalement.id}&from_page=display_page"
                                         additionalParameters="title='#i18n{dansmarue.reportingList.alt.view}'"> <i
-                                        class="glyphicon glyphicon-eye-open"></i> </@a> <a
+                                        class="bi bi-eye"></i> </@a> <a
                                         class="btn btn-xs btn-primary"
                                         title="#i18n{dansmarue.reportingList.alt.history}"
                                         href="jsp/admin/plugins/signalement/ViewHistory.jsp?signalement_id=${signalement.id}&from_page=display_page">
-                                            <i class="glyphicon glyphicon-book"></i>
+                                            <i class="bi bi-book"></i>
                                        </a>
                                        <#if action?has_content>
                                        <a title="${action.name}"
@@ -766,7 +780,7 @@ function updateSectorList(idDirection, idDomaine){
                                     </td>
                                     <td class="signalement-photo">
                                         <#if signalement.photos?has_content>
-                                            <a href='#' data-toggle="modal" data-target="#imageModal" image-url='${signalement.photos[0].imageUrl}'>
+                                            <a href='#' data-bs-toggle="modal" data-bs-target="#imageModal" image-url='${signalement.photos[0].imageUrl}'>
                                                 <img src="${signalement.photos[0].imageThumbnailUrl}" width="100" />
                                             </a>
                                         </#if>
@@ -796,14 +810,14 @@ function updateSectorList(idDirection, idDomaine){
                             </tbody>
                         </table>
                     </div>
-					<div class="pull-left">
+					<div class="float-start">
 						<!-- export en input pour r�cup�rer les dossiers coch�s -->
 						<@estAutoriseMacro ressourceType="GESTION_DES_SIGNALEMENTS"
 						permission="EXPORTER_SIGNALEMENT">
 						<button type="submit" value="exportcsvdisplay"
 							title="#i18n{dansmarue.caseList.ExportSignalement}"
 							name="exportcsvdisplay" class="btn btn-xs btn-primary">
-							<i class="glyphicon glyphicon-save"></i>
+							<i class="bi bi-save"></i>
 						</button>
 						</@estAutoriseMacro>
 					</div>

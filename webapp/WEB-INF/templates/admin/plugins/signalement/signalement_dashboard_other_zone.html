@@ -21,98 +21,49 @@
 }
 </style>
 
-<!-- Dashbord Bien Vu -->
+<#-- Dashboard Bien Vu — macro-isé (@box = carte Tabler ; box-tools AdminLTE collapse/remove retirés) -->
 <div class="col-sm-12">
-	<div class="box box-solid box-info">
-		<div class="box-header">
-			<h3 class="box-title">#i18n{dansmarue.adminDashboard.pageTitle}</h3>
-			<div class="box-tools">
-				<button class="btn btn-box-tool" data-widget="collapse">
-					<i class="fa fa-minus"></i>
-				</button>
-				<button class="btn btn-box-tool" data-widget="remove">
-					<i class="fa fa-times"></i>
-				</button>
-			</div>
-		</div>
-	
-		<div class="box-body"><#include "signalement_dashboard.html" /></div>
-		<!-- /.box-body -->
-	
-		<div class="box-footer text-center">
-			<a href="${url}"> #i18n{dansmarue.adminDashboard.pageTitle} <i
-				class="fa fa-arrow-circle-right"></i>
-			</a>
-		</div>
-		<!-- /.box-footer-->
-	</div>
+	<@box color='info'>
+		<@boxHeader i18nTitleKey='dansmarue.adminDashboard.pageTitle' />
+		<@boxBody><#include "signalement_dashboard.html" /></@boxBody>
+		<@boxFooter align='center'>
+			<a href="${url}">#i18n{dansmarue.adminDashboard.pageTitle}</a>
+		</@boxFooter>
+	</@box>
 </div>
 
 <#if rights.hasRight("FEUILLE_DE_TOURNEE")>
-	<!-- Dashboard feuilles de tournéess -->
+	<#-- Dashboard feuilles de tournée -->
 	<div class="col-sm-12">
-		<div class="box box-solid box-info">
-			<div class="box-header">
-				<h3 class="box-title">#i18n{dansmarue.adminDashboard.pageFeuillesTournee}</h3>
-				<div class="box-tools">
-					<button class="btn btn-box-tool" data-widget="collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
-		
-			<div class="box-body"><#include "signalement_dashboard_feuilles_tournee.html" /></div>
-		</div>
+		<@box color='info'>
+			<@boxHeader i18nTitleKey='dansmarue.adminDashboard.pageFeuillesTournee' />
+			<@boxBody><#include "signalement_dashboard_feuilles_tournee.html" /></@boxBody>
+		</@box>
 	</div>
 </#if>
 
-<!-- Dashboard video -->
-<!-- 
+<#-- Dashboard vidéo (désactivé)
 <div class="col-sm-12">
-	<div class="box box-solid box-info">
-		<div class="box-header">
-			<h3 class="box-title">#i18n{dansmarue.adminDashboard.pageTitleVideo}</h3>
-			<div class="box-tools">
-				<button class="btn btn-box-tool" data-widget="collapse">
-					<i class="fa fa-minus"></i>
-				</button>
-				<button class="btn btn-box-tool" data-widget="remove">
-					<i class="fa fa-times"></i>
-				</button>
-			</div>
-		</div>
-	
-		<div class="box-body"><#include "signalement_dashboard_video.html" /></div>
-	</div>
+	<@box color='info'>
+		<@boxHeader i18nTitleKey='dansmarue.adminDashboard.pageTitleVideo' />
+		<@boxBody><#include "signalement_dashboard_video.html" /></@boxBody>
+	</@box>
 </div>
- -->
-<!-- Dashboard profil -->
+-->
+
+<#-- Dashboard profil -->
 <div class="col-sm-12">
-	<div class="box box-solid box-info">
-		<div class="box-header">
-			<h3 class="box-title">#i18n{dansmarue.adminDashboard.pageTitleProfil}</h3>
-			<div class="box-tools">
-				<button class="btn btn-box-tool" data-widget="collapse">
-					<i class="fa fa-minus"></i>
-				</button>
-				<button class="btn btn-box-tool" data-widget="remove">
-					<i class="fa fa-times"></i>
-				</button>
-			</div>
-		</div>
-	
-		<div class="box-body"><#include "signalement_dashboard_profil.html" /></div>
-	</div>
+	<@box color='info'>
+		<@boxHeader i18nTitleKey='dansmarue.adminDashboard.pageTitleProfil' />
+		<@boxBody><#include "signalement_dashboard_profil.html" /></@boxBody>
+	</@box>
 </div>
 
 <script>
 
 $( document ).ready(function() {
 	//Affichage d'une popup d'avertissement si le navigateur n'est pas firefox
-	//Si la popup n'as pas été affichée 
+	//Si la popup n'as pas été affichée
 	if (sessionStorage.getItem('showpopup') !== 'true') {
 		var sBrowser, sUsrAg = navigator.userAgent;
 		//Test si le navigateur est firefox
@@ -120,7 +71,7 @@ $( document ).ready(function() {
 			//Affichage de la popup
 			swal({
 			  title: "Information",
-			  text: "Le site est optimis\u00e9 pour le navigateur Firefox.\nL'utilisation d'un autre navigateur peut emp\u00eacher l'acc\u00e8s \u00e0 certaines fonctionnalit\u00e9s.",
+			  text: "Le site est optimisé pour le navigateur Firefox.\nL'utilisation d'un autre navigateur peut empêcher l'accès à certaines fonctionnalités.",
 			  icon: "info",
 			  button: "Ok",
 			});

@@ -1,25 +1,10 @@
 <#include "macro/commons_signalement.html" />
 
-<div class="box box-solid box-info">
-	<div class="box-header">
-		<h3 class="box-title">#i18n{dansmarue.adminDashboard.pageTitle}</h3>
-		<div class="box-tools">
-			<button class="btn btn-box-tool" data-widget="collapse">
-				<i class="fa fa-minus"></i>
-			</button>
-			<button class="btn btn-box-tool" data-widget="remove">
-				<i class="fa fa-times"></i>
-			</button>
-		</div>
-	</div>
-
-	<div class="box-body"><#include "signalement_dashboard.html" /></div>
-	<!-- /.box-body -->
-
-	<div class="box-footer text-center">
-		<a href="${url}"> #i18n{dansmarue.adminDashboard.pageTitle} <i
-			class="fa fa-arrow-circle-right"></i>
-		</a>
-	</div>
-	<!-- /.box-footer-->
-</div>
+<#-- Dashboard Bien Vu (zone 1) — macro-isé (@box = carte Tabler ; box-tools AdminLTE retirés) -->
+<@box color='info'>
+	<@boxHeader i18nTitleKey='dansmarue.adminDashboard.pageTitle' />
+	<@boxBody><#include "signalement_dashboard.html" /></@boxBody>
+	<@boxFooter align='center'>
+		<a href="${url}">#i18n{dansmarue.adminDashboard.pageTitle}</a>
+	</@boxFooter>
+</@box>

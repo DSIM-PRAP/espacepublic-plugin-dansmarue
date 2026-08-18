@@ -17,18 +17,18 @@
 			</#if>			
 		<#else>
 		#i18n{dansmarue.adminFeature.typeSignalementManagement.name} </#if> <span
-			class="pull-right">
+			class="float-end">
 			<div style="display: flex">
 				<form action="jsp/admin/plugins/signalement/ExportTypeAno.jsp" method="post" style="padding-right: 15px;">
 					<button type="submit" value="exportcsv" title="Exporter en csv" name="exportcsv" class="btn btn-sm btn-primary">
-						<i class="glyphicon glyphicon-download"></i>
+						<i class="bi bi-download"></i>
 						#i18n{dansmarue.listtypesignalement.addntypesignalement.export}
 					</button>
 				</form>
 				<form action="jsp/admin/plugins/signalement/SaveTypeSignalement.jsp"
 					method="get" id="formSaveType">
 					<button type="submit" class="btn btn-sm btn-primary">
-						<i class="glyphicon glyphicon-plus"></i>
+						<i class="bi bi-plus-lg"></i>
 						#i18n{dansmarue.listtypesignalement.addntypesignalement.title}
 					</button>
 					<#if typesignalement_id?has_content && typesignalement_id?length !=
@@ -55,11 +55,11 @@
 			<td><a alt="#i18n{dansmarue.listtypesignalement.flechehaut.alt}"
 				title="#i18n{dansmarue.listtypesignalement.flechehaut.title}"
 				href="jsp/admin/plugins/signalement/ManageTypeSignalement.jsp?typesignalement_id=${typesignalement.id}&action=monter">
-					<i class="glyphicon glyphicon-arrow-up"></i>
+					<i class="bi bi-arrow-up"></i>
 			</a> <a alt="#i18n{dansmarue.listtypesignalement.flechebas.alt}"
 				title="#i18n{dansmarue.listtypesignalement.flechebas.title}"
 				href="jsp/admin/plugins/signalement/ManageTypeSignalement.jsp?typesignalement_id=${typesignalement.id}&action=descendre">
-					<i class="glyphicon glyphicon-arrow-down"></i>
+					<i class="bi bi-arrow-down"></i>
 			</a></td>
 			<td><#if typesignalement.unit.idUnit?has_content &&
 				typesignalement.unit.idUnit?number != 0> ${typesignalement.libelle}
@@ -76,17 +76,17 @@
 				alt="#i18n{dansmarue.listtypesignalement.soustypesignalement.alt}"
 				title="#i18n{dansmarue.listtypesignalement.soustypesignalement.title}"
 				href="jsp/admin/plugins/signalement/ManageTypeSignalement.jsp?typesignalement_id=${typesignalement.id}">
-					<i class="glyphicon glyphicon-folder-open"></i>
+					<i class="bi bi-folder2-open"></i>
 			</a> </#if> <a class="btn btn-primary btn-sm"
 				alt="#i18n{dansmarue.listtypesignalement.modifytypesignalement.alt}"
 				title="#i18n{dansmarue.listtypesignalement.modifytypesignalement.title}"
 				href="jsp/admin/plugins/signalement/ModifyTypeSignalement.jsp?typesignalement_id=${typesignalement.id}">
-					<i class="glyphicon glyphicon-edit"></i>
+					<i class="bi bi-pencil-square"></i>
 			</a> <a class="btn btn-danger btn-sm"
 				alt="#i18n{dansmarue.listtypesignalement.deletetypesignalement.alt}"
 				title="#i18n{dansmarue.listtypesignalement.deletetypesignalement.title}"
 				href="jsp/admin/plugins/signalement/DeleteTypeSignalement.jsp?typesignalement_id=${typesignalement.id}&typesignalementparent_id=${typesignalement_id!}">
-					<i class="glyphicon glyphicon-trash"></i>
+					<i class="bi bi-trash"></i>
 			</a>
 			</td>
 		</tr>

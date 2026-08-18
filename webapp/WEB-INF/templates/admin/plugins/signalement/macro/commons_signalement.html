@@ -50,7 +50,7 @@ rights.hasAutorisation(ressourceType, permissions, sector)> <#nested> </#if>
 
 
 <#macro paginationSig paginator combo=0 form=1 nb_items_per_page=nb_items_per_page showcount=1 showall=0>
-		<div id="signalement-paginator" class="pull-right">
+		<div id="signalement-paginator" class="float-end">
 			<#if form == 1 >
 				<form method="post" class="paginator-items-count form-inline">
 			</#if>
@@ -168,7 +168,7 @@ rights.hasAutorisation(ressourceType, permissions, sector)> <#nested> </#if>
   		</#if>
 	  </select>
 	  <span class="input-group-btn">
-		<button class="btn btn-default btn-xs" type="submit" title="#i18n{portal.util.labelRefresh}">
+		<button class="btn btn-default btn-sm" type="submit" title="#i18n{portal.util.labelRefresh}">
 			<i class="fa fa-repeat"></i>
 		</button>
 	</span>

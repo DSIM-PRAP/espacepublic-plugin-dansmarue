@@ -3,10 +3,10 @@
 	<!-- Critères de recherche -->
 	<form method="post" action="jsp/admin/plugins/signalement/ManageSignalementDashboard.jsp">
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+			<div class="col-12 col-sm-12 col-md-4 col-lg-4">
 				<div class="form-group">
 					<label>#i18n{dansmarue.dashboard.criterias.period}</label>
-					<div data-toggle="buttons">
+					<div data-bs-toggle="buttons">
 						<label id="periode30" class="radio-period btn btn-radio <#if filter.periodId?? && (filter.periodId==2)>active</#if>">
 							<input type="radio" name="periodId" value="2" <#if filter.periodId?? && (filter.periodId==2)>checked</#if>>
 							#i18n{dansmarue.dashboard.criterias.period.30jours}
@@ -22,34 +22,34 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 				<div class="form-group">
-					<label class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+					<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 						for="filter_dateBegin">
 						#i18n{dansmarue.dashboard.criterias.date.period}</label>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="input-daterange">
-							<div class="col-xs-1">
+							<div class="col-1">
 								#i18n{dansmarue.reportingList.from}
 							</div>
-							<div class="col-xs-3 ">
+							<div class="col-3 ">
 								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar"></span>
+									<div class="input-group-text">
+										<span class="bi bi-calendar"></span>
 									</div>
-									<input disabled class="form-control input-sm" type="text" name="dateBegin" id="filter_dateBegin" maxlength="10" />
+									<input disabled class="form-control form-control-sm" type="text" name="dateBegin" id="filter_dateBegin" maxlength="10" />
 								</div>
 							</div>
 						</div>
 						<div class="input-daterange">
-							<div class="col-xs-1">#i18n{dansmarue.reportingList.to}
+							<div class="col-1">#i18n{dansmarue.reportingList.to}
 							</div>
-							<div class="col-xs-3">
+							<div class="col-3">
 								<div class="input-group">
-									<div class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar"></span>
+									<div class="input-group-text">
+										<span class="bi bi-calendar"></span>
 									</div>
-									<input disabled class="form-control input-sm" type="text" name="dateEnd" id="filter_dateEnd" />
+									<input disabled class="form-control form-control-sm" type="text" name="dateEnd" id="filter_dateEnd" />
 								</div>
 							</div>
 						</div>
@@ -58,7 +58,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="form-group">
 					<label>#i18n{dansmarue.dashboard.criterias.unit}</label>
 					<#list 0..maxDepth as depth>
@@ -69,15 +69,15 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 				<span id="other-criterias-label" class="expandable collapsed" 
-					data-toggle="collapse" data-target="#other-criterias" aria-expanded="true" aria-controls="other-criterias">
+					data-bs-toggle="collapse" data-bs-target="#other-criterias" aria-expanded="true" aria-controls="other-criterias">
 					<label>#i18n{dansmarue.dashboard.criterias.others}</label>
 				</span>
 				<div id="other-criterias" class="collapse">
 					<div class="form-group">
 							<label>#i18n{dansmarue.dashboard.criterias.arrondissements}</label>
-							<div id="arrondissementCheckboxes" data-toggle="buttons">
+							<div id="arrondissementCheckboxes" data-bs-toggle="buttons">
 								<#if arrondissement_list?has_content>		
 									<#list arrondissement_list as arrondissement>
 										<label class="checkbox-arrondissement btn btn-checkbox
@@ -97,7 +97,7 @@
 					</div>
 					<div class="form-group">
 						<label>#i18n{dansmarue.dashboard.criterias.categories}</label>
-						<div id="categoryCheckboxes" data-toggle="buttons">		
+						<div id="categoryCheckboxes" data-bs-toggle="buttons">		
 							<#list 0..2 as depthCategory>
 								<@typeCategorie category_list=category_list depthCategory=depthCategory/>
 							</#list>
@@ -111,7 +111,7 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 				<button class="btn btn-paris btn-blue btn-lg" type="submit" name="action" value="search">Rechercher</button>
 				<button type="button" class="btn btn-paris btn-blue btn-lg"
 					id="re-init-button" onclick="deleteFields()">
@@ -124,23 +124,23 @@
 	<!-- Résultats -->
 	<div class="dashboard-result">
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+			<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
 				<!-- Tableau 1 -->
 				<@tableau states_list=states_list_1/>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+				<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
 					<i>#i18n{dansmarue.dashboard.tranche2.explication}</i>
 				</div>
 			</div>
 			<br><br><br><br>
-			<div class="col-xs-12 col-sm-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+			<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
 				<!-- Tableau 2 -->
 				<@tableau states_list=states_list_2/>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+			<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
 				<i>#i18n{dansmarue.dashboard.tranche2.explication}</i>
 			</div>
 		</div>
@@ -152,7 +152,7 @@
 <#macro tableau states_list>
 	<div class="row state-row">
 		<#list states_list as state>
-			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 state-block">
+			<div class="col-2 col-sm-2 col-md-2 col-lg-2 state-block">
 				<#assign isStateAffiche=false>
 				<!-- Itération sur la map <statut, <tranche, nbSignalement>> -->
 				<#list signalements_list as statutSignalement, listByTranche>
@@ -177,7 +177,7 @@
 							<input type="hidden" name="selectedState" value="${state}"/>
 							<div class="row state-header">
 								<button type="submit">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 state-block-content">
+								<div class="col-12 col-sm-12 col-md-12 col-lg-12 state-block-content">
 									<@findState idState=state/>
 									<br>							
 									${nbTotalSignalement}
@@ -216,7 +216,7 @@
 					<form method="post" action="jsp/admin/plugins/signalement/ManageSignalementDashboard.jsp">
 						<div class="row state-header">
 							<button type="submit">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 state-block-content">
+							<div class="col-12 col-sm-12 col-md-12 col-lg-12 state-block-content">
 								<@findState idState=state/>
 								<br>							
 								0

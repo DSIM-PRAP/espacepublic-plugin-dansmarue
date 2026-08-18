@@ -15,7 +15,7 @@
 					<p class="lvl1"> 
 					<#if typesignalementLvl1.listChild?has_content && typesignalementLvl1.listChild?size !=0>
 						<span class="toggle" onclick="toggleSousType(${typesignalementLvl1.id})">
-							<span class="glyphicon glyphicon-menu-down"></span>
+							<span class="bi bi-chevron-down"></span>
 							${typesignalementLvl1.libelle}
 						</span>
 					<#else>
@@ -23,7 +23,7 @@
 					</#if>
 					<#if typesignalementLvl1.nbSousNiveau!=2 >
 						<button type="button" class="btn btn-default btn-sm" onclick="showPopUp(${typesignalementLvl1.id}, '${typesignalementLvl1.libelle?js_string}', ${typesignalementLvl1.nbSousNiveau}, ${typesignalementLvl1.niveau})">
-				          <span class="glyphicon glyphicon-pencil"></span> #i18n{dansmarue.listtypesignalement.deplacement.deplacer} 
+				          <span class="bi bi-pencil"></span> #i18n{dansmarue.listtypesignalement.deplacement.deplacer} 
 				        </button>
 				    </#if>
 					</p>
@@ -31,20 +31,20 @@
 						<span class="lvl2 ${typesignalementLvl1.id}">
 							<#if typesignalementLvl2.listChild?has_content && typesignalementLvl2.listChild?size !=0>
 								<span class="toggle" onclick="toggleSousType(${typesignalementLvl2.id})">
-								<span class="glyphicon glyphicon-menu-down"></span>
+								<span class="bi bi-chevron-down"></span>
 								${typesignalementLvl2.libelle}
 								</span>
 							<#else>
 								${typesignalementLvl2.libelle}
 							</#if>
 							<button type="button" class="btn btn-default btn-sm" onclick="showPopUp(${typesignalementLvl2.id}, '${typesignalementLvl2.libelle?js_string}', ${typesignalementLvl2.nbSousNiveau}, ${typesignalementLvl2.niveau})">
-					          <span class="glyphicon glyphicon-pencil"></span> #i18n{dansmarue.listtypesignalement.deplacement.deplacer} 
+					          <span class="bi bi-pencil"></span> #i18n{dansmarue.listtypesignalement.deplacement.deplacer} 
 					        </button>
 		 			        <br> 
 							<#list typesignalementLvl2.listChild as typesignalementLvl3>
 								<span class="lvl3 ${typesignalementLvl2.id}">${typesignalementLvl3.libelle}
 								<button type="button" class="btn btn-default btn-sm" onclick="showPopUp(${typesignalementLvl3.id}, '${typesignalementLvl3.libelle?js_string}, ${typesignalementLvl3.nbSousNiveau}, ${typesignalementLvl3.niveau}')">
-						          <span class="glyphicon glyphicon-pencil"></span> #i18n{dansmarue.listtypesignalement.deplacement.deplacer} 
+						          <span class="bi bi-pencil"></span> #i18n{dansmarue.listtypesignalement.deplacement.deplacer} 
 						        </button>
 								<br> </span>
 							</#list>
@@ -59,7 +59,7 @@
 
 <div id="popupChoixPosition">
 	<div id="headerPopUp" class="sticky">
-		<span id="closePopup" class="glyphicon glyphicon-remove" onclick="closePopup()"></span>
+		<span id="closePopup" class="bi bi-x-lg" onclick="closePopup()"></span>
 		<div id="divChoixType">
 			<h3>#i18n{dansmarue.listtypesignalement.deplacement.type.select} <span id='choixType'></span></h3>
 		</div>
@@ -76,7 +76,7 @@
 				<p class="lvl1"> 
 				<#if typesignalementLvl1.listChild?has_content && typesignalementLvl1.listChild?size !=0>
 					<span class="toggle" onclick="toggleSousType('popin${typesignalementLvl1.id}')">
-						<span class="glyphicon glyphicon-menu-down"></span>
+						<span class="bi bi-chevron-down"></span>
 						${typesignalementLvl1.libelle} 
 					</span>
 				<#else>
@@ -95,7 +95,7 @@
 					<span class="lvl2 popin${typesignalementLvl1.id}">
 						<#if typesignalementLvl2.listChild?has_content && typesignalementLvl2.listChild?size !=0>
 							<span class="toggle" onclick="toggleSousType('popin${typesignalementLvl2.id}')">
-							<span class="glyphicon glyphicon-menu-down"></span>
+							<span class="bi bi-chevron-down"></span>
 							${typesignalementLvl2.libelle} 
 							</span>
 						<#else>

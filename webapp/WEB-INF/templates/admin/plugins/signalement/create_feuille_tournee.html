@@ -5,16 +5,16 @@
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 
 <@box color='primary'>
-	<div class="box-header">
-		<h3 class="box-title">#i18n{dansmarue.tournee.creation.titre}</h3>
+	<div class="card-header">
+		<h3 class="card-title">#i18n{dansmarue.tournee.creation.titre}</h3>
 	</div>
 	<!-- Filtres sauvegardés-->
 	<@boxBody>
 		<@tform method='post' action='jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp'>
-				<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+				<div class="col-12 col-sm-12 col-md-10 col-lg-10">
 					  <div class="form-group">
-						<label class="col-xs-12 col-sm-2 col-lg-2 control-label" for="filtre">#i18n{dansmarue.tournee.creation.filtre}</label>
-				 		<div class="col-xs-8 col-sm-8 col-md-4 col-lg-4">
+						<label class="col-12 col-sm-2 col-lg-2 form-label" for="filtre">#i18n{dansmarue.tournee.creation.filtre}</label>
+				 		<div class="col-8 col-sm-8 col-md-4 col-lg-4">
 					 		<@select id='filtre' name='param_filter' title='filtre' size='sm'>
 							  <#if id_filter_select == -1 >
 							      <option value=-1 selected ></option>
@@ -29,9 +29,9 @@
 							  </#list>
 							</@select>
 						</div>
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+						<div class="col-2 col-sm-2 col-md-2 col-lg-2">
 							<@button type='submit' class="" name='action_doLoadFilter' title='#i18n{dansmarue.charger}' />
-							<@button id='deleteFilterButton' buttonIcon='trash' class="btn btn-paris btn-red" params='data-toggle="modal" onClick="deleteFilter()"'/>
+							<@button id='deleteFilterButton' buttonIcon='trash' class="btn btn-paris btn-red" params='data-bs-toggle="modal" onClick="deleteFilter()"'/>
 						</div>
 					</div>	
 				</div>
@@ -62,7 +62,7 @@
 
 <!-- Filtres -->
 <@tform method='post' action='jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp' id="creationFeuilleTournee">
-	<div class="box" style="border-top-width:0px !important;">
+	<div class="card" style="border-top-width:0px !important;">
 		<@boxBody>
 			<!-- Types -->
 			<select name="typologieSelect" id="typologieSelect" multiple="multiple">
@@ -73,8 +73,8 @@
 			<br><br>
 			
 			<!-- Etat -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5" labelFor='checkbox_etat' labelKey='#i18n{dansmarue.reportingList.etat}'>
-				<div id="checkbox_etat"  data-toggle="buttons">
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5" labelFor='checkbox_etat' labelKey='#i18n{dansmarue.reportingList.etat}'>
+				<div id="checkbox_etat"  data-bs-toggle="buttons">
 					<#list etat_list as etat>
 						<label checkType="etat" class="btn btn-checkbox
 							<#list filter.etats as filterEtat> 
@@ -90,16 +90,16 @@
 							${etat.name!}
 						</label>
 					</#list>
-					<div data-toggle="buttons">
+					<div data-bs-toggle="buttons">
 						<button type="button" class="btn btn-primary" onClick="select_all_states()">#i18n{dansmarue.button.select.all}</button>
 						<button type="button" class="btn btn-primary" onClick="un_select_all_states();">#i18n{dansmarue.button.deselect.all}</button>
 					</div>
 				</div>
 			</@formGroup>
-			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
+			<div class="col-12 col-sm-12 col-md-2 col-lg-2"></div>
 			<!-- Priorité -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5" labelFor='checkbox_priorite' labelKey='#i18n{dansmarue.saveSignalement.priorite}'>
-				<div id="checkbox_priorite"  data-toggle="buttons">
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5" labelFor='checkbox_priorite' labelKey='#i18n{dansmarue.saveSignalement.priorite}'>
+				<div id="checkbox_priorite"  data-bs-toggle="buttons">
 					<#list priorite_list as priorite>
 						<label checkType="priorite" class="btn btn-checkbox
 							<#list filter.priorites as filterPriorite> 
@@ -115,16 +115,16 @@
 							${priorite.libelle!}
 						</label>
 					</#list>
-					<div data-toggle="buttons">
+					<div data-bs-toggle="buttons">
 						<button type="button" class="btn btn-primary" onClick="select_all_priorite()">#i18n{dansmarue.button.select.all}</button>
 						<button type="button" class="btn btn-primary" onClick="un_select_all_priorite();">#i18n{dansmarue.button.deselect.all}</button>
 					</div>
 				</div>
 			</@formGroup>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12"></div>
 			<!-- Arrondissement -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" labelFor='checkbox_arrondissement' labelKey='#i18n{dansmarue.reportingList.arrondissement}'>
-				<div id="checkbox_arrondissement"  data-toggle="buttons">
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-12 col-lg-12" labelFor='checkbox_arrondissement' labelKey='#i18n{dansmarue.reportingList.arrondissement}'>
+				<div id="checkbox_arrondissement"  data-bs-toggle="buttons">
 					<#list arrondissement_list as arrondissement>
 						<label checkType="arrondissement" class="btn btn-checkbox
 							<#list filter.listIdArrondissements as filterArrondissement> 
@@ -140,7 +140,7 @@
 							${arrondissement.numero!}
 						</label>
 					</#list>
-					<div data-toggle="buttons">
+					<div data-bs-toggle="buttons">
 						<button type="button" class="btn btn-primary" onClick="select_all_arrondissement()">#i18n{dansmarue.button.select.all}</button>
 						<button type="button" class="btn btn-primary" onClick="un_select_all_arrondissement();">#i18n{dansmarue.button.deselect.all}</button>
 					</div>
@@ -148,8 +148,8 @@
 			</@formGroup>
 			
 			<!-- Quartier -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" labelFor='select_quartier' labelKey='#i18n{dansmarue.reportingList.quartier}'>
-				<div id="select_quartier"  data-toggle="buttons">
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-12 col-lg-12" labelFor='select_quartier' labelKey='#i18n{dansmarue.reportingList.quartier}'>
+				<div id="select_quartier"  data-bs-toggle="buttons">
 					<select name="listIdQuartierParam"  id="conseilQuartier" class="selectpicker show-menu-arrow form-control" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
 						<#list  conseilQuartier_list as conseilQuartier>
 							<option value="${conseilQuartier.idConsqrt}" <#if (filter.listIdQuartier?has_content && filter.listIdQuartier?seq_contains(conseilQuartier.idConsqrt?number))>selected</#if> >${conseilQuartier.nomConsqrt}</option>
@@ -159,47 +159,47 @@
 			</@formGroup>
 			
 			<!-- Date Creation -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.creationDate}'>
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.creationDate}'>
 				<div>
 					<div class="input-daterange">
-						<div class="col-xs-1">#i18n{dansmarue.reportingList.from}</div>
-						<div class="col-xs-3 ">
+						<div class="col-1">#i18n{dansmarue.reportingList.from}</div>
+						<div class="col-3 ">
 							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-								<input class="form-control input-sm" type="text" value="${filter.dateBegin!}" name="dateBegin" id="filter_dateBegin" maxlength="10" />
+								<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+								<input class="form-control form-control-sm" type="text" value="${filter.dateBegin!}" name="dateBegin" id="filter_dateBegin" maxlength="10" />
 							</div>
 						</div>
 					</div>
 					<div class="input-daterange">
-						<div class="col-xs-1">#i18n{dansmarue.reportingList.to}</div>
-						<div class="col-xs-3">
+						<div class="col-1">#i18n{dansmarue.reportingList.to}</div>
+						<div class="col-3">
 							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-									<input class="form-control input-sm" type="text" value="${filter.dateEnd!}" name="dateEnd" id="filter_dateEnd" />
+								<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+									<input class="form-control form-control-sm" type="text" value="${filter.dateEnd!}" name="dateEnd" id="filter_dateEnd" />
 							</div>
 						</div>
 					</div>
 				</div>
 			</@formGroup>
-			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
+			<div class="col-12 col-sm-12 col-md-2 col-lg-2"></div>
 			<!-- Date de requalification -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.requalificationDate}'>
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.requalificationDate}'>
 				<div>
 					<div class="input-daterange">
-						<div class="col-xs-1">#i18n{dansmarue.reportingList.from}</div>
-						<div class="col-xs-3 ">
+						<div class="col-1">#i18n{dansmarue.reportingList.from}</div>
+						<div class="col-3 ">
 							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-								<input class="form-control input-sm" type="text" value="${filter.dateRequalificationBegin!}" name="dateRequalificationBegin" id="filter_dateRequalificationBegin" maxlength="10" />
+								<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+								<input class="form-control form-control-sm" type="text" value="${filter.dateRequalificationBegin!}" name="dateRequalificationBegin" id="filter_dateRequalificationBegin" maxlength="10" />
 							</div>
 						</div>
 					</div>
 					<div class="input-daterange">
-						<div class="col-xs-1">#i18n{dansmarue.reportingList.to}</div>
-						<div class="col-xs-3">
+						<div class="col-1">#i18n{dansmarue.reportingList.to}</div>
+						<div class="col-3">
 							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-								<input class="form-control input-sm" type="text" value="${filter.dateRequalificationEnd!}" name="dateRequalificationEnd" id="filter_dateRequalificationEnd" />
+								<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+								<input class="form-control form-control-sm" type="text" value="${filter.dateRequalificationEnd!}" name="dateRequalificationEnd" id="filter_dateRequalificationEnd" />
 							</div>
 						</div>
 					</div>
@@ -207,51 +207,51 @@
 			</@formGroup>
 			
 			<!-- Date de programmation -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.programmingDate}'>
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.programmingDate}'>
 				<div>
 					<div class="input-daterange">
-						<div class="col-xs-1">#i18n{dansmarue.reportingList.from}</div>
-						<div class="col-xs-3 ">
+						<div class="col-1">#i18n{dansmarue.reportingList.from}</div>
+						<div class="col-3 ">
 							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-								<input class="form-control input-sm" type="text" value="${filter.dateProgrammationBegin!}" name="dateProgrammationBegin" id="filter_dateProgrammationBegin" maxlength="10" />
+								<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+								<input class="form-control form-control-sm" type="text" value="${filter.dateProgrammationBegin!}" name="dateProgrammationBegin" id="filter_dateProgrammationBegin" maxlength="10" />
 							</div>
 						</div>
 					</div>
 					<div class="input-daterange">
-						<div class="col-xs-1">#i18n{dansmarue.reportingList.to}</div>
-						<div class="col-xs-3">
+						<div class="col-1">#i18n{dansmarue.reportingList.to}</div>
+						<div class="col-3">
 							<div class="input-group">
-								<div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-								<input class="form-control input-sm" type="text" value="${filter.dateProgrammationEnd!}" name="dateProgrammationEnd" id="filter_dateProgrammationEnd" />
+								<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+								<input class="form-control form-control-sm" type="text" value="${filter.dateProgrammationEnd!}" name="dateProgrammationEnd" id="filter_dateProgrammationEnd" />
 							</div>
 						</div>
 					</div>
 				</div>
 			</@formGroup>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12"></div>
 			<!-- Commentaire agent terrain -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.saveSignalement.commentaireAgentTerrain}'>
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.saveSignalement.commentaireAgentTerrain}'>
 				<div>
-					<input type="text" value="${filter.commentaireAgentTerrain!}" class="form-control input-sm" name="commentaireAgentTerrain"
+					<input type="text" value="${filter.commentaireAgentTerrain!}" class="form-control form-control-sm" name="commentaireAgentTerrain"
 						id="filter_commentaireAgentTerrain" maxlength="255" />
 				</div>
 			</@formGroup>
-			<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
+			<div class="col-12 col-sm-12 col-md-2 col-lg-2"></div>
 			<!-- Commentaire usager -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.saveSignalement.commentaireUsager}'>
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.saveSignalement.commentaireUsager}'>
 				<div>
-					<input type="text" value="${filter.commentaire!}" class="form-control input-sm" name="commentaire"
+					<input type="text" value="${filter.commentaire!}" class="form-control form-control-sm" name="commentaire"
 						id="filter_commentaire" maxlength="255" />
 				</div>
 			</@formGroup>
 			
 			<!-- Entite -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.entite}'>
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.entite}'>
 				<div>
 					<#if secteur_list?has_content && secteur_list?size != 0>
 						<@comboWithParams additionalParameters="class='form-control
-							input-sm'" name="idSector" default_value="${filter.idSector!}"
+							form-control-sm'" name="idSector" default_value="${filter.idSector!}"
 							items=secteur_list /> 
 					<#else>
 						#i18n{dansmarue.reportingList.listEmpty} 
@@ -265,11 +265,11 @@
 				</div>
 				<input type="hidden" value="${filter.idSector!}" class="<@inputStyle />" name="idSelectedSector" id="idSelectedSector" />
 			</@formGroup>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12"></div>
 			<!-- Adresse -->
-			<@formGroup formStyle="inline" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.adress}'>
+			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5"  labelKey='#i18n{dansmarue.reportingList.adress}'>
 				<div>
-					<input type="text" value="${filter.adresse!}" class="form-control input-sm" name="adresse"
+					<input type="text" value="${filter.adresse!}" class="form-control form-control-sm" name="adresse"
 						id="filter_adresse" maxlength="255" />
 				</div>
 			</@formGroup>
@@ -277,10 +277,10 @@
 		</@boxBody>
 	</div>
 	
-	<div class="box" style="border-top-width:0px !important;">
+	<div class="card" style="border-top-width:0px !important;">
 		<@boxBody>
 			<@button name='reinit' class="btn btn-paris btn-blue" params='onclick="deleteFields()"' title='#i18n{dansmarue.reinitialiser}' color='btn-secondary' />
-			<@button buttonIcon='save' class="btn btn-paris btn-blue" params='data-toggle="modal" data-target="#saveFilterModal"' title='#i18n{dansmarue.tournee.creation.btn.sauvegarder.filtre}' color='btn-secondary' />
+			<@button buttonIcon='save' class="btn btn-paris btn-blue" params='data-bs-toggle="modal" data-bs-target="#saveFilterModal"' title='#i18n{dansmarue.tournee.creation.btn.sauvegarder.filtre}' color='btn-secondary' />
 			<@button buttonIcon='search' class="btn btn-paris btn-red" type='submit' name='action_doInitSearchAno' title='#i18n{dansmarue.rechercher}' />
 		</@boxBody>
 	</div>

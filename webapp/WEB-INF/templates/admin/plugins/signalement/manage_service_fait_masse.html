@@ -3,18 +3,18 @@
 <script src="js/sweetalert.min.js"></script>
 <@getDatePickerRangeBootstrap language="${locale.language!}" />
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<div class="box box-info">
-			<div class="box-header">
-				<h3 class="box-title">#i18n{dansmarue.manageServiceFaitMasse.name} </h3>
+	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">#i18n{dansmarue.manageServiceFaitMasse.name} </h3>
 			</div>
-			<div class="box-body">
+			<div class="card-body">
 				<div class="col-sm-12">
 					<div class="col-sm-8 text-center font-italic text-primary">
 						<h4> #i18n{dansmarue.manageServiceFaitMasse.aide} </h4>
 					</div>
 					<br><br><br><br>
-					<div class="col-sm-6 col-sm-offset-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.recherche}</label></div>
+					<div class="col-sm-6 offset-sm-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.recherche}</label></div>
 					<br><br>
 					<@tform id='search' method='post' action='jsp/admin/plugins/signalement/ManageServiceFaitMasse.jsp'>
 						<!-- Date de création -->
@@ -22,24 +22,24 @@
 							<div class="form-group col-sm-8">
 								<label class="<@labelStyle />" for="type">#i18n{dansmarue.reportingList.creationDate}</label>
 								<div class="input-daterange">
-									<div class="col-xs-1"> #i18n{dansmarue.reportingList.from}</div>
-									<div class="col-xs-3 ">
+									<div class="col-1"> #i18n{dansmarue.reportingList.from}</div>
+									<div class="col-3 ">
 										<div class="input-group">
-											<div class="input-group-addon">
-												<span class="glyphicon glyphicon-calendar"></span>
+											<div class="input-group-text">
+												<span class="bi bi-calendar"></span>
 											</div>
-											<input class="form-control input-sm" type="text" name="dateBegin" id="filter_dateBegin" maxlength="10" value="${filter.dateBegin!}"/>
+											<input class="form-control form-control-sm" type="text" name="dateBegin" id="filter_dateBegin" maxlength="10" value="${filter.dateBegin!}"/>
 										</div>
 									</div>
 								</div>
 								<div class="input-daterange">
-									<div class="col-xs-1">#i18n{dansmarue.reportingList.to} </div>
-									<div class="col-xs-3">
+									<div class="col-1">#i18n{dansmarue.reportingList.to} </div>
+									<div class="col-3">
 										<div class="input-group">
-											<div class="input-group-addon">
-												<span class="glyphicon glyphicon-calendar"></span>
+											<div class="input-group-text">
+												<span class="bi bi-calendar"></span>
 											</div>
-											<input class="form-control input-sm" type="text" name="dateEnd"	id="filter_dateEnd" value="${filter.dateEnd!}" />
+											<input class="form-control form-control-sm" type="text" name="dateEnd"	id="filter_dateEnd" value="${filter.dateEnd!}" />
 										</div>
 									</div>
 								</div>
@@ -50,7 +50,7 @@
 							<div class="form-group col-sm-8">
 								<label class="<@labelStyle />" for="commentaire">#i18n{dansmarue.manageServiceFaitMasse.label.etat}</label>
 								<div class="col-sm-8">
-									<div id="etatsCheckboxes" data-toggle="buttons">
+									<div id="etatsCheckboxes" data-bs-toggle="buttons">
 										<#if list_state?has_content>		
 											<#list list_state as state>
 												<label class="btn btn-checkbox <#if (filter.idEtats)?has_content && filter.idEtats?seq_contains(state.id)>active</#if> ">
@@ -83,7 +83,7 @@
 						<div class="row">
 							<div class="form-group col-sm-12 text-center" >
 								<div class="form-group">
-									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 										<button type="submit" class="btn btn-paris btn-red btn-lg"
 											id="search-button" name='action_search'>
 											#i18n{dansmarue.rechercher}
@@ -112,7 +112,7 @@
 							<!-- Tableau de répartition -->
 							<div class="row">
 								<div class="form-group col-sm-12">
-									<div class="col-sm-6 col-sm-offset-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.recherche.resultat}</label></div>
+									<div class="col-sm-6 offset-sm-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.recherche.resultat}</label></div>
 									<br><br>
 									<div>
 										<table class="table table-striped table-condensed" id="typesAjoutes">
@@ -138,7 +138,7 @@
 							<!--  Paramètres d'exécution -->
 							<div class="row">
 								<div class="form-group col-sm-12">
-									<div class="col-sm-6 col-sm-offset-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.parametre}</label></div>
+									<div class="col-sm-6 offset-sm-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.parametre}</label></div>
 								</div>
 							</div>
 							<!-- Commentaire -->
@@ -167,7 +167,7 @@
 							<div class="row">
 								<div class="form-group col-sm-12 text-center" >
 									<div class="form-group">
-										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 											<button class="btn btn-paris btn-red btn-lg"
 												id="execute-button" name=''>
 												#i18n{dansmarue.manageServiceFaitMasse.label.lancer.traitement}

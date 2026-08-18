@@ -1,9 +1,9 @@
 <#macro table_feuille_de_tournee_edit>
 	<fieldset id="list-block">
-	  <div class="pull-left">
+	  <div class="float-start">
 	     <label class="fdt-generate-vue">#i18n{dansmarue.tournee.select.vuelist}</label><br>
 	  </div>
-	  <div class="pull-right">
+	  <div class="float-end">
 	      <label>#i18n{dansmarue.tournee.select.nb.select} <span class="nbSigSelect"></span></label></br>
 	      <label>#i18n{dansmarue.tournee.select.nb.unselect} <span class="nbSigUnselect">${paginator.itemsCount}</span></label>
 	  </div>
@@ -33,8 +33,8 @@
 			      <td><input type="checkbox" checked id="checkboxSignalement-${signalement.idSignalement}" class="checkboxSignalement" onchange="checkSignalement(this, ${signalement.idSignalement})"></td>
 			      <td class="signalement-actions">
 			      	<span title="Afficher" style="color: #ff0c0c; font-size: 25px; cursor:pointer" onclick="showMarker(${signalement.idSignalement})"><i class="fa fa-map-marker"></i></span>
-			      	<a href="jsp/admin/plugins/signalement/ViewSignalement.jsp?signalement_id=${signalement.idSignalement}" class="btn btn-xs btn-primary" title="Details" target="blank" style="margin-bottom: 25%;">
-						<i class="glyphicon glyphicon-eye-open"></i>  
+			      	<a href="jsp/admin/plugins/signalement/ViewSignalement.jsp?signalement_id=${signalement.idSignalement}" class="btn btn-sm btn-primary" title="Details" target="blank" style="margin-bottom: 25%;">
+						<i class="bi bi-eye"></i>  
 					</a>	
 			      </td>	
 				  <td class="signalement-actions">
@@ -47,7 +47,7 @@
 						<#assign isHidden = false>
 							<#list signalement.photos as photo> 
 								<span id='${signalement.idSignalement}'>
-									<a href='#' data-toggle="modal" data-target="#imageModal" id-vue='${photo.vue}' id-signalement='${signalement.idSignalement}' image-url='${photo.imageUrl}' <#if isHidden> style='display: none'</#if>>
+									<a href='#' data-bs-toggle="modal" data-bs-target="#imageModal" id-vue='${photo.vue}' id-signalement='${signalement.idSignalement}' image-url='${photo.imageUrl}' <#if isHidden> style='display: none'</#if>>
 								      <img src="${photo.imageThumbnailUrl}" width="100" />
 									</a>
 								</span>
@@ -80,11 +80,11 @@
 	</fieldset>
 	
 	<div class="row">
-		<div class="col-xs-2 col-sm-12 col-md-12 col-lg-12">
+		<div class="col-2 col-sm-12 col-md-12 col-lg-12">
 			<a class="btn btn-paris btn-blue" href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp">#i18n{dansmarue.button.return} </a>
-			<div class="pull-right">
+			<div class="float-end">
 				<@button id="export" params='disabled' class="btn btn-paris btn-red" title='#i18n{dansmarue.tournee.exportpdf}' />
-				<@button params='data-toggle="modal" data-target="#saveFDTModal"' class="btn btn-paris btn-red save" title='#i18n{dansmarue.tournee.sauvegarder}' />
+				<@button params='data-bs-toggle="modal" data-bs-target="#saveFDTModal"' class="btn btn-paris btn-red save" title='#i18n{dansmarue.tournee.sauvegarder}' />
 			</div>
 		</div>
 	</div>
@@ -209,11 +209,11 @@
 	</div>
 	
 	<style type="text/css">
-	  div.pull-left {
+	  div.float-start {
 	    color: #0C518A;
 	  }
 	  
-	  div.pull-right {
+	  div.float-end {
 	    color: #0C518A;
 	  }
 	</style>

@@ -1,27 +1,27 @@
 <#include "macro/commons_signalement.html" />
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<div class="box box-info">
-			<div class="box-header">
-				<h3 class="box-title">#i18n{dansmarue.manageServiceFaitMasse.label.rapport} </h3>
+	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">#i18n{dansmarue.manageServiceFaitMasse.label.rapport} </h3>
 			</div>
-			<div class="box-body">
+			<div class="card-body">
 				<div class="col-sm-12">
 					<!-- Dates sélectionnées -->
 					<div class="row">
 						<div class="form-group col-sm-10">
-							<div class="col-sm-2"><label class="control-label" for="type">#i18n{dansmarue.reportingList.creationDate}: </label></div>
+							<div class="col-sm-2"><label class="form-label" for="type">#i18n{dansmarue.reportingList.creationDate}: </label></div>
 							<div class="input-daterange">
-								<div class="col-xs-1"> #i18n{dansmarue.reportingList.from}</div>
-								<div class="col-xs-3 ">
+								<div class="col-1"> #i18n{dansmarue.reportingList.from}</div>
+								<div class="col-3 ">
 									${filter.dateBegin!}
 								</div>
 							</div>
 							<br>
 							<div class="input-daterange">
-								<div class="col-xs-1">#i18n{dansmarue.reportingList.to} </div>
-								<div class="col-xs-3 ">
+								<div class="col-1">#i18n{dansmarue.reportingList.to} </div>
+								<div class="col-3 ">
 									${filter.dateEnd!}
 								</div>
 							</div>
@@ -31,7 +31,7 @@
 					<!-- Etats sélectionnées -->
 					<div class="row">
 						<div class="form-group col-sm-10">
-							<div class="col-sm-2"><label class="control-label" for="type">#i18n{dansmarue.manageServiceFaitMasse.label.etat.select}:</label></div>
+							<div class="col-sm-2"><label class="form-label" for="type">#i18n{dansmarue.manageServiceFaitMasse.label.etat.select}:</label></div>
 							<#if list_state?has_content>
 								<#list list_state as state> ${state.name!} <#if state?counter != (list_state?size)> - </#if> </#list>
 							</#if>
@@ -100,7 +100,7 @@ $( "#ajouterType" ).click(function() {
 	
 	
 	if($("#typeAdd"+idTypeSelect).length == 0) {
-		$("#typesAjoutes").append( "<tr id=typeAdd"+idTypeSelect+"><td><input name='idTypeSignalements' type='hidden' value="+idTypeSelect+">"+libelle+"</td><td class='text-right'><i onclick='supprimerType("+idTypeSelect+")' class='glyphicon glyphicon-trash btn btn-danger btn-sm'></i></td></tr>" );	
+		$("#typesAjoutes").append( "<tr id=typeAdd"+idTypeSelect+"><td><input name='idTypeSignalements' type='hidden' value="+idTypeSelect+">"+libelle+"</td><td class='text-right'><i onclick='supprimerType("+idTypeSelect+")' class='bi bi-trash btn btn-danger btn-sm'></i></td></tr>" );	
 	}
 });
 

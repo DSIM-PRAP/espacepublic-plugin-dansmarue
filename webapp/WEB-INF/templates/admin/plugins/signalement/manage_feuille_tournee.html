@@ -6,7 +6,7 @@
 <@box color='primary'>
 	<@boxBody>
 		<@tform method='post' action='jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp'>
-			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+			<div class="col-12 col-sm-12 col-md-9 col-lg-9">
 				<@formGroup labelFor='nom' labelKey='#i18n{dansmarue.tournee.recherche.nom}'>
 					<@input type='text' name='nom' id='nom' value="${filter_fdt.nom!}" />
 				</@formGroup>
@@ -14,29 +14,29 @@
 					<@input type='text' name='createur' id='createur' value="${filter_fdt.createur!}" />
 				</@formGroup>
 			</div>
-			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+			<div class="col-12 col-sm-12 col-md-9 col-lg-9">
 				<@formGroup labelFor='dateCreationDebut' labelKey='#i18n{dansmarue.tournee.recherche.date.creation}'>
 					<div class="input-daterange">
-						<div class="col-xs-1"> #i18n{dansmarue.tournee.recherche.date.creation.du}</div>
-						<div class="col-xs-5 ">
+						<div class="col-1"> #i18n{dansmarue.tournee.recherche.date.creation.du}</div>
+						<div class="col-5 ">
 							<div class="input-group">
-								<div class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar"></span>
+								<div class="input-group-text">
+									<span class="bi bi-calendar"></span>
 								</div>
-								<input class="form-control input-sm" type="text" name="dateCreationDebut" 
+								<input class="form-control form-control-sm" type="text" name="dateCreationDebut" 
 								id="dateCreationDebut" maxlength="10" value="${filter_fdt.dateCreationDebut!}" />
 							</div>
 						</div>
 					</div>
 					<div class="input-daterange">
-						<div class="col-xs-1">#i18n{dansmarue.tournee.recherche.date.creation.au}
+						<div class="col-1">#i18n{dansmarue.tournee.recherche.date.creation.au}
 						</div>
-						<div class="col-xs-5">
+						<div class="col-5">
 							<div class="input-group">
-								<div class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar"></span>
+								<div class="input-group-text">
+									<span class="bi bi-calendar"></span>
 								</div>
-								<input class="form-control input-sm" type="text" name="dateCreationFin" 
+								<input class="form-control form-control-sm" type="text" name="dateCreationFin" 
 								id="dateCreationFin" value="${filter_fdt.dateCreationFin!}" />
 							</div>
 						</div>
@@ -64,7 +64,7 @@
 			<b><a href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp?view=create">#i18n{dansmarue.tournee.lien.creation}</a></b>
 		</@hasAutorisationMacro> 
 		<#assign nbresult=fdt_list?size>
-		<span class="pull-right"><b>#i18n{dansmarue.reportingList.search.results}:</b> ${nbresult} #i18n{dansmarue.tournee.recherche.resultat.nb}</span>
+		<span class="float-end"><b>#i18n{dansmarue.reportingList.search.results}:</b> ${nbresult} #i18n{dansmarue.tournee.recherche.resultat.nb}</span>
 		<br>
 		<@table>
 			<thead>
@@ -100,16 +100,16 @@
 							<input type="checkbox" name="id" value="${fdt.id}" title="#i18n{dansmarue.reportingList.alt.select}" /> 
 						</td>
 						<td> 
-							<a href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp?view=load&idFeuilleDeTournee=${fdt.id}" class="btn btn-xs btn-primary" 
-								title="#i18n{dansmarue.tournee.pdf.param.btn.consult}"> <i class="glyphicon glyphicon-eye-open"></i>
+							<a href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp?view=load&idFeuilleDeTournee=${fdt.id}" class="btn btn-sm btn-primary" 
+								title="#i18n{dansmarue.tournee.pdf.param.btn.consult}"> <i class="bi bi-eye"></i>
 							</a>
 							<@hasAutorisationMacro ressourceType="SIGNALEMENT_FEUILLE_DE_TOURNEE" permissions=["MODIFY"]>
-								<a href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp?view=edit&idFeuilleDeTournee=${fdt.id}" class="btn btn-xs btn-primary" 
-									title="#i18n{dansmarue.tournee.pdf.param.btn.edit}"> <i class="glyphicon glyphicon-edit"></i>
+								<a href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp?view=edit&idFeuilleDeTournee=${fdt.id}" class="btn btn-sm btn-primary" 
+									title="#i18n{dansmarue.tournee.pdf.param.btn.edit}"> <i class="bi bi-pencil-square"></i>
 								</a>
 							</@hasAutorisationMacro>
-							<a href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp?action=getDeleteFDT&idFeuilleDeTournee=${fdt.id}" class="btn btn-xs btn-danger" 
-								title="#i18n{dansmarue.tournee.pdf.param.btn.delete}"> <i class="glyphicon glyphicon-trash"></i>
+							<a href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp?action=getDeleteFDT&idFeuilleDeTournee=${fdt.id}" class="btn btn-sm btn-danger" 
+								title="#i18n{dansmarue.tournee.pdf.param.btn.delete}"> <i class="bi bi-trash"></i>
 							</a>
 						</td>
 						<td> 

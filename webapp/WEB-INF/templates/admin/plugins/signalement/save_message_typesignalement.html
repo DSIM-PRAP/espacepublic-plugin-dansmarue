@@ -12,7 +12,7 @@
 				<p>${error.message}</p> 		        
 			</#list>
 		</#if>
-		<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="col-12 col-sm-12 col-md-12">
 			<div class="form-group">
 				<label class="<@labelStyle />" for="fkIdTypeSignalement">#i18n{dansmarue.messageTypeSignalement.manage.type}
 					* : </label>
@@ -25,17 +25,17 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="col-12 col-sm-12 col-md-12">
 			<div class="form-group">
 				<label class="<@labelStyle />" for="typeMessage">#i18n{dansmarue.messageTypeSignalement.edit.typeMessage}
 					* : </label>
 				<div class="<@inputStyle />">
-					<input type="text" class="form-control input-sm" id="typeMessage"
+					<input type="text" class="form-control form-control-sm" id="typeMessage"
 						name="typeMessage" value=""/>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="col-12 col-sm-12 col-md-12">
 			<div class="form-group">
 				<label class="<@labelStyle />" for="contenuMessage">#i18n{dansmarue.messageTypeSignalement.edit.message.content}
 					* : </label>
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="col-12 col-sm-12 col-md-12">
 			<div class="form-group">
 				<label class="<@labelStyle />" for="actif">#i18n{dansmarue.messageTypeSignalement.manage.actif}
 					* :</label>
@@ -54,18 +54,18 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="col-12 col-sm-12 col-md-12">
 			<div class="form-group">
 				<div
-					class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6">
+					class="col-12 offset-sm-3 col-sm-6 offset-md-3 col-md-6">
 					<button type="submit" value="#i18n{dansmarue.commons.save}"
 						name="#i18n{dansmarue.commons.save}"
 						class="btn btn-primary btn-sm" tabindex="3">
-						<i class="glyphicon glyphicon-ok"></i>
+						<i class="bi bi-check-lg"></i>
 						#i18n{dansmarue.commons.save}
 					</button>
 					<a class="btn btn-default btn-sm" href="jsp/admin/plugins/signalement/ManageMessageTypeSignalement.jsp">
-						<i class="glyphicon glyphicon-remove-circle"></i>
+						<i class="bi bi-x-circle"></i>
 						#i18n{dansmarue.commons.cancel}
 					</a>
 				</div>

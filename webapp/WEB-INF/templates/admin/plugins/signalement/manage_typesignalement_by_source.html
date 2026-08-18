@@ -1,10 +1,10 @@
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<div class="box box-info">
-			<div class="box-header">
-				<h3 class="box-title">#i18n{dansmarue.manageTypeSignalement.source.manage.name} </h3>
+	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">#i18n{dansmarue.manageTypeSignalement.source.manage.name} </h3>
 			</div>
-			<div class="box-body">
+			<div class="card-body">
 				<h3>${source.libelle}</h3>
 				<hr>
 				<!-- Form modify source -->
@@ -26,11 +26,11 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="form-group">
-							<div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6">
+							<div class="col-12 offset-sm-3 col-sm-6 offset-md-3 col-md-6">
 								<button type="submit" class="btn btn-primary btn-sm" name="action_doModifySource">	    	
-									<i class="glyphicon glyphicon-ok"></i>&nbsp;
+									<i class="bi bi-check-lg"></i>&nbsp;
 									#i18n{dansmarue.valider}
 								</button>
 							</div>
@@ -43,7 +43,7 @@
 				<!-- Form add type -->
 				<form class="form-horizontal" method="post" action="jsp/admin/plugins/signalement/ManageTypeSignalementBySource.jsp">
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 							<div class="form-group">
 								<label class="<@labelStyle />" for="typesignalement_id">#i18n{dansmarue.manageTypeSignalement.source.manage.choix} :</label>
 								<div class="<@inputStyle />" style="text-align:left">
@@ -60,11 +60,11 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 							<div class="form-group">
-								<div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6">
+								<div class="col-12 offset-sm-3 col-sm-6 offset-md-3 col-md-6">
 									<button type="submit" class="btn btn-primary btn-sm" name="action_doAddTypeToSource">	    	
-										<i class="glyphicon glyphicon-plus"></i>&nbsp;
+										<i class="bi bi-plus-lg"></i>&nbsp;
 										#i18n{dansmarue.commons.ajouter}
 									</button>
 								</div>
@@ -72,14 +72,14 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 							<div class="form-group">
 								<label class="<@labelStyle />">#i18n{dansmarue.manageTypeSignalement.source.liste} :</label>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 							<table class="table table-striped table-condensed">
 								<tr>
 									<th>#i18n{dansmarue.commons.libelle}</th>
@@ -93,7 +93,7 @@
 												alt="#i18n{dansmarue.listtypesignalement.deletetypesignalement.alt}"
 												title="#i18n{dansmarue.listtypesignalement.deletetypesignalement.title}"
 												href="jsp/admin/plugins/signalement/ManageTypeSignalementBySource.jsp?action=doRemoveTypeFromSource&typesignalement_id=${typesignalement.id}&source_id=${source.id}">
-													<i class="glyphicon glyphicon-trash"></i>
+													<i class="bi bi-trash"></i>
 											</a>
 										</td>
 									</tr>
@@ -104,7 +104,7 @@
 					<div class="row">
 					<div class="form-group col-sm-8 text-center" >
 						<div class="form-group">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 								<a style="color:white;" href="jsp/admin/plugins/signalement/ManageTypeSignalementBySource.jsp">
 									<button type="button" class="btn btn-paris btn-blue btn-lg" id="retour">
 										#i18n{dansmarue.retour}

@@ -8,17 +8,17 @@
 <#include "macro/modal_export_pdf.html" />
 
 <@box color='primary'>
-	<div class="box-header">
-		<h3 class="box-title">#i18n{dansmarue.tournee.consult.titre}</h3>
+	<div class="card-header">
+		<h3 class="card-title">#i18n{dansmarue.tournee.consult.titre}</h3>
 	</div>
 </@box>
 
 <div class="row">
-	<div class="col-xs-2 col-sm-12 col-md-12 col-lg-12">
+	<div class="col-2 col-sm-12 col-md-12 col-lg-12">
 		<a class="btn btn-paris btn-blue" href="jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp">#i18n{dansmarue.button.return} </a>
 		<@hasAutorisationMacro ressourceType="SIGNALEMENT_FEUILLE_DE_TOURNEE" permissions=["EXPORT"]>
-			<div class="pull-right">
-				<@button id="export" class="btn btn-paris btn-red" title='#i18n{dansmarue.tournee.exportpdf}' params='onclick="addFeuilleDeTourneeId(${feuille_de_tournee.id}); carteToBase64();" data-toggle="modal" data-target="#exportFDTModal"' />
+			<div class="float-end">
+				<@button id="export" class="btn btn-paris btn-red" title='#i18n{dansmarue.tournee.exportpdf}' params='onclick="addFeuilleDeTourneeId(${feuille_de_tournee.id}); carteToBase64();" data-bs-toggle="modal" data-bs-target="#exportFDTModal"' />
 			</div>
 		</@hasAutorisationMacro>
 	</div>

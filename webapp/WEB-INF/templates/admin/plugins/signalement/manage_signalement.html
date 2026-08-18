@@ -370,6 +370,9 @@ $(document).ready(function() {
     overflow-y: auto;
     overflow-x: hidden;
   }
+/* BS5/Tabler ne definit plus .hidden (BS3) : on restaure display:none pour les
+   bascules de la page (recherche avancee masquee par defaut, vue liste/carte). */
+.hidden { display: none !important; }
 </style>
 <div id="overlay"> <div id="text">#i18n{dansmarue.gerenation.carte}</div> </div>
 <div id="manage-signalement" class="row">

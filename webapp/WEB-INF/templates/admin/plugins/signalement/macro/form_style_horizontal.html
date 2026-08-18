@@ -1,0 +1,20 @@
+<#--
+  Restaure la disposition horizontale des formulaires (label a gauche, champ a droite)
+  telle qu'en core 6. En core 7 / Tabler, les macros labelStyle/inputStyle rendent le
+  formulaire empile (label au-dessus) par defaut. On retablit l'horizontal pour les
+  ecrans de saisie du plugin (referentiel, mail...), avec une colonne de libelles a
+  largeur fixe et des champs a largeur raisonnable (pas toute la page).
+  A inclure uniquement dans ces ecrans (pas display/manage qui ont leur grille row).
+-->
+<style>
+.form-horizontal .form-group { display: flex; flex-wrap: wrap; align-items: center; margin-bottom: .6rem; }
+.form-horizontal .form-group > label { flex: 0 0 210px; max-width: 210px; text-align: right; padding-right: 1rem; margin-bottom: 0; }
+.form-horizontal .form-group > div { flex: 1 1 auto; max-width: 560px; }
+/* Groupe sans label (boutons de pied) : aligne sous les champs. */
+.form-horizontal .form-group > div:only-child { margin-left: 210px; }
+
+/* add_source utilise @tform (pas .form-horizontal) : meme rendu horizontal. */
+#addSource .form-group { display: flex; flex-wrap: wrap; align-items: center; width: 100%; max-width: 100%; flex: 0 0 100%; margin-bottom: .6rem; }
+#addSource .form-group > label { flex: 0 0 210px; max-width: 210px; text-align: right; padding-right: 1rem; margin-bottom: 0; }
+#addSource .form-group > div { flex: 1 1 auto; max-width: 560px; }
+</style>

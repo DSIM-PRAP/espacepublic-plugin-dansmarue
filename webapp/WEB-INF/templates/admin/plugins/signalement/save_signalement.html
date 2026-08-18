@@ -3,8 +3,15 @@
 	href="js/jquery/plugins/ui/css/jquery-ui.css" />
 
 <@adresse_autocomplete_includes/>
-<@leaflet_map_includes/> 
+<@leaflet_map_includes/>
 <@modalImage/>
+<style>
+/* Edition d'anomalie : 2 colonnes (formulaire / photo) et libelles a gauche (comme v6).
+   Colonne libelles plus etroite qu'un formulaire pleine largeur (le form est dans un col-md-6). */
+.form-horizontal .form-group { display: flex; flex-wrap: wrap; align-items: baseline; margin-bottom: .5rem; }
+.form-horizontal .form-group > label { flex: 0 0 130px; max-width: 130px; text-align: right; padding-right: .75rem; margin-bottom: 0; }
+.form-horizontal .form-group > div { flex: 1 1 auto; max-width: calc(100% - 135px); }
+</style>
 	
 <script type="text/javascript">
 // initialisation de la map
@@ -96,7 +103,7 @@
 		enctype="multipart/form-data"
 		action="jsp/admin/plugins/signalement/DoSaveSignalement.jsp">
 		<div class="row">
-			<fieldset>
+			<fieldset class="row">
 				<#if !(noErrorToDisplay!?has_content)> ${error!} </#if> 
 				<input type="hidden" id="jsp_back" name="jsp_back" value="${jsp_back!}" />
 				<input type="hidden" id="lng" name="lng"<#if

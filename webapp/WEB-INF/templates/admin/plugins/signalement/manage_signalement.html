@@ -387,6 +387,16 @@ td.signalement-actions .actions-grid .btn { padding: .15rem .3rem; margin: 0; }
 td.signalement-actions .actions-grid > a { flex: 0 0 auto; }
 td.signalement-actions .actions-grid img { vertical-align: middle; }
 td.signalement-number { text-align: center; font-weight: bold; white-space: nowrap; }
+/* Items 4 & 7 : masquer les inputs des toggle-buttons. BS5 a supprime data-bs-toggle="buttons"
+   qui, en v6 (BS3), masquait la case/le radio -> ne restaient que des boutons a bascule. */
+div[data-bs-toggle="buttons"] label.btn > input[type="checkbox"],
+div[data-bs-toggle="buttons"] label.btn > input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; margin: 0; pointer-events: none; }
+/* Item 9 : header du tableau facon v6 (fond bleu marine, texte blanc, tri compact).
+   BS5/Tabler peint le fond des cellules via box-shadow inset var(--bs-table-bg) : il
+   faut surcharger la variable, sinon le blanc recouvre le background. */
+#table-signalements thead th { background-color: #1b3a6b !important; color: #fff !important; box-shadow: none !important; vertical-align: middle; }
+#table-signalements thead th a, #table-signalements thead th i, #table-signalements thead th label { color: #fff !important; }
+#table-signalements thead .btn-group .btn { background: transparent !important; border: 0; box-shadow: none; color: #fff !important; padding: 0 .2rem; }
 </style>
 <div id="overlay"> <div id="text">#i18n{dansmarue.gerenation.carte}</div> </div>
 <div id="manage-signalement" class="row">
@@ -1113,6 +1123,11 @@ td.signalement-number { text-align: center; font-weight: bold; white-space: nowr
 <link rel="stylesheet" href="css/admin/bootstrap-datepicker.min.css" type="text/css" />
 <script>
 $(function () {
+    // Item 5 : le critere Direction affichait "Vide" pour l'option par defaut (nom vide -> la macro
+    // core @select applique label=portal.util.labelEmpty="Vide"). On retire ce libelle (rendu v6 = blanc).
+    $('#idDirection option').each(function () {
+        if (this.getAttribute('label') === 'Vide' || this.value === '-1') { this.removeAttribute('label'); this.textContent = ''; }
+    });
     // la locale FR doit etre chargee APRES la lib bootstrap-datepicker (chargee en pied de page)
     $.getScript('js/admin/locales/bootstrap-datepicker.fr.min.js').always(function () {
         $('.input-daterange').datepicker({

@@ -58,3 +58,43 @@
 		</#if>
 	</ul>
 </div>
+<#-- MPT Lutece 7 : confort v6 sur les blocs du dashboard d'accueil (header bleu + reduire/fermer).
+     Le theme Tabler ne fournit plus les box-tools ; script auto-porte, stylise toutes les cartes dashboard. -->
+<style>
+.dmr-dashboard-panel > .card-header { background:#1b3a6b; display:flex; align-items:center; justify-content:space-between; }
+.dmr-dashboard-panel > .card-header .card-title { color:#fff; margin:0; }
+.dmr-dashboard-panel > .card-header .dmr-card-tools .btn { color:#fff; background:transparent; border:0; box-shadow:none; padding:.1rem .4rem; line-height:1; font-size:1.15rem; }
+.dmr-dashboard-panel > .card-header .dmr-card-tools .btn:hover { opacity:.7; }
+</style>
+<script>
+(function () {
+    if (window.__dmrDashboardEnhanced) { return; }
+    window.__dmrDashboardEnhanced = true;
+    function enhance() {
+        document.querySelectorAll('.card').forEach(function (card) {
+            var header = card.querySelector(':scope > .card-header');
+            var body = card.querySelector(':scope > .card-body');
+            if (!header || !body || !header.querySelector('.card-title') || header.querySelector('.dmr-card-tools')) { return; }
+            card.classList.add('dmr-dashboard-panel');
+            var tools = document.createElement('div');
+            tools.className = 'dmr-card-tools';
+            var btnMin = document.createElement('button');
+            btnMin.type = 'button';
+            btnMin.className = 'btn btn-sm dmr-min';
+            btnMin.title = 'Reduire le bloc';
+            btnMin.innerHTML = '<i class="bi bi-dash"></i>';
+            btnMin.addEventListener('click', function () { body.style.display = (body.style.display === 'none') ? '' : 'none'; });
+            var btnClose = document.createElement('button');
+            btnClose.type = 'button';
+            btnClose.className = 'btn btn-sm dmr-close';
+            btnClose.title = 'Fermer le bloc';
+            btnClose.innerHTML = '<i class="bi bi-x"></i>';
+            btnClose.addEventListener('click', function () { card.style.display = 'none'; });
+            tools.appendChild(btnMin);
+            tools.appendChild(btnClose);
+            header.appendChild(tools);
+        });
+    }
+    if (document.readyState !== 'loading') { enhance(); } else { document.addEventListener('DOMContentLoaded', enhance); }
+})();
+</script>

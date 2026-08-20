@@ -379,11 +379,14 @@ $(document).ready(function() {
 #filter_dateBegin, #filter_dateEnd { width: 90px; }
 /* Vignette photo : bornee en hauteur (sinon une image verticale etire la ligne). */
 .signalement-photo img { width: auto; max-width: 100px; max-height: 80px; }
-/* Colonne Actions : conteneur flex-wrap -> ~2 icones par ligne (comme en v6). */
-.signalement-actions { display: flex; flex-wrap: wrap; width: 74px; gap: 2px; align-content: flex-start; }
-.signalement-actions .btn { padding: .15rem .3rem; margin: 0; }
-.signalement-actions > a { flex: 0 0 auto; }
-.signalement-actions img { vertical-align: middle; }
+/* Colonne Actions : le <td> reste une cellule de tableau (alignement) ; le flex-wrap
+   2-colonnes est porte par un <div> interne (.actions-grid). Mettre display:flex sur
+   le <td> le sort du modele table -> colonnes decalees. */
+td.signalement-actions .actions-grid { display: flex; flex-wrap: wrap; width: 74px; gap: 2px; align-content: flex-start; }
+td.signalement-actions .actions-grid .btn { padding: .15rem .3rem; margin: 0; }
+td.signalement-actions .actions-grid > a { flex: 0 0 auto; }
+td.signalement-actions .actions-grid img { vertical-align: middle; }
+td.signalement-number { text-align: center; font-weight: bold; white-space: nowrap; }
 </style>
 <div id="overlay"> <div id="text">#i18n{dansmarue.gerenation.carte}</div> </div>
 <div id="manage-signalement" class="row">
@@ -905,13 +908,13 @@ $(document).ready(function() {
                                         title="#i18n{dansmarue.reportingList.alt.select}" />
                                     </td>
                                     </@hasAutorisationMacro>
-                                    <td class="signalement-actions">
+                                    <td class="signalement-number">
                                         <#assign itemPerPage=paginator.itemsPerPage currentPage=paginator.pageCurrent>
                                         <#assign signalementNumber=( ( paginator.pageCurrent-1 ) * paginator.itemsPerPage ) + signalement?index + 1>
                                          ${signalementNumber}
                                     </td>
                                     <td class="signalement-actions">
-                                    
+                                    <div class="actions-grid">
                                         <@a class="btn btn-sm
                                         btn-primary" visu=false
                                         href="jsp/admin/plugins/signalement/ViewSignalement.jsp"
@@ -967,7 +970,8 @@ $(document).ready(function() {
                                         params="?signalement_id=${signalement.id}"
                                         additionalParameters="title='#i18n{dansmarue.commons.mail}'"> <i
                                         class="bi bi-envelope"></i> </@a>
-    
+
+                                    </div>
                                     </td>
     
     
@@ -1102,7 +1106,25 @@ $(document).ready(function() {
 	</div>
 </div>
 </div>
-<@getDatePickerRangeBootstrap language="${locale.language!}" />
+<#-- MPT Lutece 7 : la macro depreciee @getDatePickerRangeBootstrap initialisait sur des ids
+     codes en dur (date_begin/date_end) inexistants sur cet ecran. On reinitialise
+     bootstrap-datepicker sur les vraies plages (.input-daterange -> filter_date* / filter_dateDone*).
+     + CSS du datepicker (non chargee par le theme Tabler) pour retrouver le rendu v6. -->
+<link rel="stylesheet" href="css/admin/bootstrap-datepicker.min.css" type="text/css" />
+<script>
+$(function () {
+    // la locale FR doit etre chargee APRES la lib bootstrap-datepicker (chargee en pied de page)
+    $.getScript('js/admin/locales/bootstrap-datepicker.fr.min.js').always(function () {
+        $('.input-daterange').datepicker({
+            format: 'dd/mm/yyyy',
+            language: '${locale.language!"fr"}',
+            autoclose: true,
+            todayHighlight: true,
+            weekStart: 1
+        });
+    });
+});
+</script>
 <@modalImage/>
 <script type="text/javascript">
 	var idEtatsDefault = new Array();

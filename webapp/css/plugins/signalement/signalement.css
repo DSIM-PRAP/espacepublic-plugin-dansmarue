@@ -598,10 +598,16 @@ label.btn-checkbox > [type='checkbox']{
 }
 
 /* --- Fidélité pré-montée (BS5/Tabler) : formulaires horizontaux BO --- */
-/* Libellés de champ à gauche, gras navy (comme avant la montée) */
+/* Libellés de champ : gras + bleu marque + 15px (valeurs mesurées avant la montée : #0C518A) */
 .card-body label.col-form-label {
 	font-weight: 700;
-	color: #1b3a6b;
+	color: #0C518A;
+	font-size: 15px;
+}
+/* Titre d'écran (en-tête de carte) : bleu marque 18px (v6 box-title ; Tabler card-title = 16px gris) */
+.card-header .card-title {
+	color: #0C518A;
+	font-size: 18px;
 }
 /* Boutons d'action du plugin en MAJUSCULES (text-transform perdu avec le thème) */
 .btn-paris {

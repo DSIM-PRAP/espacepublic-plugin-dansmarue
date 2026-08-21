@@ -1,5 +1,5 @@
-<#include "macro/form_style_horizontal.html" />
 <#include "macro/commons_signalement.html" />
+<link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 
 <div class="row">
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -10,95 +10,48 @@
 
 			<div class="card-body">
 				${error!}
-				<form class="form-horizontal" method="post"
-					action="jsp/admin/plugins/signalement/DoSaveDomaineFonctionnel.jsp">
-					<input type="hidden" id="jsp_back" name="jsp_back"
-						value="${jsp_back!}" /> <input type="hidden" name="id"
-						value="${(domaine_fonctionnel.id)!}" />
-					<div class="col-12 col-sm-12 col-md-12">
-						<div class="form-group">
-							<label class="<@labelStyle />" for="libelle">#i18n{dansmarue.commons.libelle}
-								* : </label>
-							<div class="<@inputStyle />">
-								<input type="text" class="form-control form-control-sm" id="libelle"
-									name="libelle" value="${domaine_fonctionnel.libelle!}"/>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="<@labelStyle />" for="actif">#i18n{dansmarue.commons.actif}
-								* :</label>
-							<div class="<@inputStyle />">
-								<INPUT class="checkbox" TYPE=CHECKBOX NAME="actif" value="true"<#if
-								domaine_fonctionnel.actif >checked="checked"</#if>>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="form-group">
-							<label class="<@labelStyle />" for="actif">#i18n{dansmarue.field.domainefonctionnel.arrondissement} :</label>
-							<div class="<@inputStyle />" style="text-align:left">
-								<select name="arrondissements" multiple size="${arrondissement_list_size}">
-								<#list arrondissement_list as arrondissement>
-									<option value="${arrondissement.id}">${arrondissement.numero}</option>
-								</#list>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="form-group">
-							<label class="<@labelStyle />" for="actif">#i18n{dansmarue.field.domainefonctionnel.quartier} :</label>
-							<div class="<@inputStyle />" style="text-align:left">
-							<select name="conseilQuartier"  id="conseilQuartier" class="selectpicker show-menu-arrow form-control" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
-								<#list quartier_list as conseilQuartier>
-									<option value="${conseilQuartier.idConsqrt}">${conseilQuartier.nomConsqrt}</option>
-								</#list>
-							</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="form-group">
-							<label class="<@labelStyle />" for="actif">#i18n{dansmarue.field.domainefonctionnel.categorie} :</label>
-							<div class="<@inputStyle />" style="text-align:left">
-								<select name="categories" multiple size="${category_list_size}">
-								<#list category_list as category>
-									<option value="${category.id}">${category.libelle}</option>
-								</#list>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="form-group">
-							<label class="<@labelStyle />" for="actif">Entit&eacute; :</label>
-							<div class="<@inputStyle />" style="text-align:left">
-								<select name="units" multiple size="${unit_list_size}">
-									<@inputUnitTree node=unit_tree/>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12">
-						<div class="form-group">
-							<div
-								class="col-12 offset-sm-3 col-sm-6 offset-md-3 col-md-6">
-								<button type="submit" value="#i18n{dansmarue.commons.save}"
-									name="#i18n{dansmarue.commons.save}"
-									class="btn btn-primary btn-sm" tabindex="3">
-									<i class="bi bi-check"></i>
-									#i18n{dansmarue.commons.save}
-								</button>
-								<button type="submit" value="#i18n{dansmarue.commons.cancel}"
-									name="cancel" class="btn btn-default btn-sm">
-									<i class="bi bi-x-circle"></i>
-									#i18n{dansmarue.commons.cancel}
-								</button>
-							</div>
-						</div>
-					</div>
+				<form method="post" action="jsp/admin/plugins/signalement/DoSaveDomaineFonctionnel.jsp">
+					<input type="hidden" id="jsp_back" name="jsp_back" value="${jsp_back!}" />
+					<input type="hidden" name="id" value="${(domaine_fonctionnel.id)!}" />
+					<@formGroup labelKey='#i18n{dansmarue.commons.libelle} * :' labelFor='libelle'>
+						<input type="text" class="form-control form-control-sm" id="libelle" name="libelle" value="${domaine_fonctionnel.libelle!}"/>
+					</@formGroup>
+					<@formGroup labelKey='#i18n{dansmarue.commons.actif} * :' labelFor='actif'>
+						<input class="checkbox" type="checkbox" id="actif" name="actif" value="true"<#if domaine_fonctionnel.actif> checked="checked"</#if>>
+					</@formGroup>
+					<@formGroup labelKey='#i18n{dansmarue.field.domainefonctionnel.arrondissement} :' labelFor='arrondissements'>
+						<select name="arrondissements" id="arrondissements" multiple size="${arrondissement_list_size}">
+							<#list arrondissement_list as arrondissement>
+								<option value="${arrondissement.id}">${arrondissement.numero}</option>
+							</#list>
+						</select>
+					</@formGroup>
+					<@formGroup labelKey='#i18n{dansmarue.field.domainefonctionnel.quartier} :' labelFor='conseilQuartier'>
+						<select name="conseilQuartier" id="conseilQuartier" class="form-control dmr-choices" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
+							<#list quartier_list as conseilQuartier>
+								<option value="${conseilQuartier.idConsqrt}">${conseilQuartier.nomConsqrt}</option>
+							</#list>
+						</select>
+					</@formGroup>
+					<@formGroup labelKey='#i18n{dansmarue.field.domainefonctionnel.categorie} :' labelFor='categories'>
+						<select name="categories" id="categories" multiple size="${category_list_size}">
+							<#list category_list as category>
+								<option value="${category.id}">${category.libelle}</option>
+							</#list>
+						</select>
+					</@formGroup>
+					<@formGroup labelKey='Entit&eacute; :' labelFor='units'>
+						<select name="units" id="units" multiple size="${unit_list_size}">
+							<@inputUnitTree node=unit_tree/>
+						</select>
+					</@formGroup>
+					<@formGroup>
+						<button type="submit" value="#i18n{dansmarue.commons.save}" name="#i18n{dansmarue.commons.save}" class="btn btn-primary btn-sm" tabindex="3"><i class="bi bi-check"></i> #i18n{dansmarue.commons.save}</button>
+						<button type="submit" value="#i18n{dansmarue.commons.cancel}" name="cancel" class="btn btn-default btn-sm"><i class="bi bi-x-circle"></i> #i18n{dansmarue.commons.cancel}</button>
+					</@formGroup>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+<#include "macro/choices_init.html" />

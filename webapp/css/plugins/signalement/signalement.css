@@ -598,16 +598,18 @@ label.btn-checkbox > [type='checkbox']{
 }
 
 /* --- Fidélité pré-montée (BS5/Tabler) : formulaires horizontaux BO --- */
-/* Libellés de champ : gras + bleu marque + 15px (valeurs mesurées avant la montée : #0C518A) */
+/* Libellés de champ : gras + bleu marque + 15px (valeurs mesurées avant la montée : #0C518A).
+   !important : la règle Tabler l'emporte sinon sur certains écrans (même spécificité, ordre de chargement). */
 .card-body label.col-form-label {
-	font-weight: 700;
-	color: #0C518A;
-	font-size: 15px;
+	font-weight: 700 !important;
+	color: #0C518A !important;
+	font-size: 15px !important;
 }
-/* Titre d'écran (en-tête de carte) : bleu marque 18px (v6 box-title ; Tabler card-title = 16px gris) */
+/* Titre d'écran (en-tête de carte) : bleu marque 18px (v6 box-title ; Tabler card-title = 16px gris).
+   !important pour gagner sur la règle Tabler .card-title quel que soit l'ordre de chargement. */
 .card-header .card-title {
-	color: #0C518A;
-	font-size: 18px;
+	color: #0C518A !important;
+	font-size: 18px !important;
 }
 /* Boutons d'action du plugin en MAJUSCULES (text-transform perdu avec le thème) */
 .btn-paris {

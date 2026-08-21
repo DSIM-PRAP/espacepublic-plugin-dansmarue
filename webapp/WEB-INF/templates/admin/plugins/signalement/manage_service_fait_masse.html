@@ -60,7 +60,7 @@
 							</select>
 						</@formGroup>
 						<!-- Bouttons formulaire -->
-						<@formGroup>
+						<@formGroup rows=2 class="text-center">
 							<button type="submit" class="btn btn-paris btn-red btn-lg" id="search-button" name='action_search'>#i18n{dansmarue.rechercher}</button>
 							<button type="button" class="btn btn-paris btn-blue btn-lg" id="re-init-button" onclick="deleteFields()">#i18n{dansmarue.reportingList.reInitChamps}</button>
 							<button type="button" class="btn btn-paris btn-blue btn-lg" id="retour"><a style="color:white;" href="jsp/admin/plugins/signalement/ManageReferentiel.jsp?plugin_name=signalement">#i18n{dansmarue.retour}</a></button>
@@ -108,7 +108,7 @@
 								</div>
 							</@formGroup>
 							<!-- Bouttons de confirmation -->
-							<@formGroup>
+							<@formGroup rows=2 class="text-center">
 								<button class="btn btn-paris btn-red btn-lg" id="execute-button" name=''>#i18n{dansmarue.manageServiceFaitMasse.label.lancer.traitement}</button>
 								<button class="btn btn-paris btn-red btn-lg" type='submit' id="action_executeServiceFait" name='action_executeServiceFait' style="display:none;"></button>
 								<button type="button" class="btn btn-paris btn-blue btn-lg" id="retour"><a style="color:white;" href="jsp/admin/plugins/signalement/ManageReferentiel.jsp?plugin_name=signalement">#i18n{dansmarue.retour}</a></button>

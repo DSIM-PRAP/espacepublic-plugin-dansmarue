@@ -109,8 +109,12 @@ public final class DmrJson
         }
         else
         {
-            // beans, Date, etc. : sérialisation Jackson. LUTECE-UPGRADE-SIGNAL : à valider en Phase 3.
-            obj.putPOJO( key, value );
+            // beans, Date, collections : convertir IMMÉDIATEMENT en arbre JSON via le mapper.
+            // putPOJO crée un POJONode qui n'est sérialisé correctement que si l'écriture passe par le
+            // mapper Jackson ; or le code écrit souvent la réponse via result.toString() (JsonNode.toString,
+            // SANS contexte mapper) → les POJO retombent sur leur toString() Java (ex. "Sector@hash" →
+            // JSON invalide, AJAX cassé). valueToTree garantit un JSON valide quel que soit le mode d'écriture.
+            obj.set( key, MAPPER.valueToTree( value ) );
         }
     }
 

@@ -151,9 +151,13 @@ rights.hasAutorisation(ressourceType, permissions, sector)> <#nested> </#if>
 </#macro>
 
 <#macro paginationComboSig paginator nb_items_per_page=nb_items_per_page showall=0>
-  <label class="label-title">#i18n{dansmarue.reportingList.anomalies.per.page}</label>
-  <div class="input-group">
-	  <select data-max-item="${paginator.itemsCount}" class="input-xs" name="${paginator.itemsPerPageParameterName}" id="${paginator.itemsPerPageParameterName}" title="${paginator.labelItemCountPerPage}">
+  <#-- Combo « nombre par page » : libellé À CÔTÉ du select + bouton refresh (comme v6).
+       BS5 : plus de .input-group-btn ni .btn-default (BS3) ; le bouton est enfant direct de .input-group.
+       Icône : FontAwesome absent du thème Tabler v7 -> Bootstrap Icons (bi bi-arrow-clockwise). -->
+  <div class="d-inline-flex align-items-center">
+  <label class="label-title mb-0 me-2">#i18n{dansmarue.reportingList.anomalies.per.page}</label>
+  <div class="input-group input-group-sm" style="width:auto;">
+	  <select data-max-item="${paginator.itemsCount}" class="form-select form-select-sm" name="${paginator.itemsPerPageParameterName}" id="${paginator.itemsPerPageParameterName}" title="${paginator.labelItemCountPerPage}">
   		<#list [ "10" , "20" , "50" , "100" ] as nb>
   			<#if nb_items_per_page = nb >
   				<option selected="selected" value="${nb}">${nb}</option>
@@ -167,12 +171,11 @@ rights.hasAutorisation(ressourceType, permissions, sector)> <#nested> </#if>
   			</#if>
   		</#if>
 	  </select>
-	  <span class="input-group-btn">
-		<button class="btn btn-default btn-sm" type="submit" title="#i18n{portal.util.labelRefresh}">
-			<i class="fa fa-repeat"></i>
+		<button class="btn btn-outline-secondary btn-sm" type="submit" title="#i18n{portal.util.labelRefresh}">
+			<i class="bi bi-arrow-clockwise"></i>
 		</button>
-	</span>
-</div>
+  </div>
+  </div>
 </#macro>
 
 <#macro simpleModal modal_id text>

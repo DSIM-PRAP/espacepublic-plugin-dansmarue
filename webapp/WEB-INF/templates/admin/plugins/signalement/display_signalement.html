@@ -10,6 +10,11 @@
     }
 </style>
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
+<#-- Champ Quartier : bootstrap-select (BS3/4) casse sous Tabler/BS5 (le menu ne s'ouvre pas).
+     On migre #conseilQuartier vers Choices.js, comme manage_signalement (CSS fournie par tabler-vendors).
+     Specificite display : les quartiers sont peuples dynamiquement en AJAX (au choix du domaine) ->
+     on route les mutations via l'instance window.qChoices (setChoices / removeActiveItems). -->
+<script src="js/admin/style/tabler/libs/choices.js/public/assets/scripts/choices.js"></script>
 <script type="text/javascript" src="js/sira.js"></script>
 
 <script type="text/javascript">
@@ -45,6 +50,19 @@ function getSigMarkers(){
 var domains = new Array();
 
 $(document).ready(function(){
+	// Champ Quartier en Choices.js (remplace bootstrap-select casse en BS5). L'instance est exposee
+	// en global pour que les populations AJAX (updateFiltersFromDomain) et le reset y routent leurs mutations.
+	(function(){
+		var qEl = document.getElementById('conseilQuartier');
+		if (window.Choices && qEl && !qEl.dataset.choicesInit) {
+			window.qChoices = new Choices(qEl, { removeItemButton: true, searchEnabled: true, shouldSort: false, itemSelectText: '', searchPlaceholderValue: 'Rechercher' });
+			qEl.dataset.choicesInit = '1';
+			var bAll = document.getElementById('quartier-all');
+			var bNone = document.getElementById('quartier-none');
+			if (bAll) { bAll.addEventListener('click', function(){ window.qChoices.setChoiceByValue(window.qAllVals || []); }); }
+			if (bNone) { bNone.addEventListener('click', function(){ window.qChoices.removeActiveItems(); }); }
+		}
+	})();
 	$(".display-advanced-search").click(function(){
 		$(".advanced-search-block").toggleClass("hidden");
 	});
@@ -116,11 +134,10 @@ $(document).ready(function(){
 					$("input[type='checkbox'][name='listIdArrondissementsParam'][value='"+idArrondissement+"']").parent().addClass("active");
 				});
 
-				//Quartier
-				filterQuartier.forEach(function(idQuartier){
-					$('#conseilQuartier').find('[value='+idQuartier+']').prop('selected', true)
-					$("#conseilQuartier").selectpicker('refresh')
-				});
+				//Quartier — re-selection des valeurs du filtre via Choices.
+				if (window.qChoices && filterQuartier.length) {
+					window.qChoices.setChoiceByValue(filterQuartier.map(String));
+				}
 			}
 		},
 		error:function (xhr, ajaxOptions, thrownError){
@@ -178,14 +195,20 @@ function updateFiltersFromDomain(idDomaine,reset){
 			   $("#checkbox_arrondissement").append("#i18n{dansmarue.reportingList.listEmpty}");
 		   }
 		   
-			// Quartier
+			// Quartier — peuplement via l'instance Choices (setChoices remplace la liste courante).
 		   var quartiers = domain.quartierRefList;
-		   if(undefined != quartiers && quartiers.length > 0){
-			   quartiers.forEach(function(element,index,array){
-				 $('#conseilQuartier').append($('<option>', {value: element.code,text: element.name}));
-			   });
+		   if (window.qChoices) {
+			   if (undefined != quartiers && quartiers.length > 0) {
+				   window.qChoices.setChoices(
+					   quartiers.map(function(e){ return { value: String(e.code), label: e.name }; }),
+					   'value', 'label', true
+				   );
+				   window.qAllVals = quartiers.map(function(e){ return String(e.code); });
+			   } else {
+				   window.qChoices.clearChoices();
+				   window.qAllVals = [];
+			   }
 		   }
-		   $("#conseilQuartier").selectpicker('refresh');
 
 		   <#--// Categories
 		   var categories = domain.categoriesRefList;
@@ -363,6 +386,25 @@ function updateSectorList(idDirection, idDomaine){
 .input-daterange .col-1, .input-daterange .col-3 { width: auto; flex: 0 0 auto; padding-left: 0; padding-right: 0; }
 .input-daterange .input-group { width: auto; margin-right: .75rem; }
 #filter_dateBegin, #filter_dateEnd { width: 90px; }
+/* En-tete du tableau de resultats : bandeau marine + texte blanc gras (comme v6).
+   Tabler/BS5 met un thead gris clair -> on restaure la charte. white-space:nowrap evite
+   le wrapping incoherent des libelles (le tableau est dans .table-responsive -> scroll horizontal ok). */
+#table-signalements thead th, #table-signalements thead th a { color: #fff !important; font-weight: 700; white-space: nowrap; vertical-align: middle; }
+/* BS5 peint le fond des cellules de tableau via un box-shadow inset (var --bs-table-bg = blanc),
+   PAS via background-color -> ce box-shadow blanc recouvrait notre marine et le texte blanc
+   devenait invisible. On neutralise le box-shadow ET on pose le marine en background-color. */
+#table-signalements thead th { background-color: #0C518A !important; box-shadow: none !important; --bs-table-bg: #0C518A; --bs-table-accent-bg: #0C518A; text-transform: none !important; }
+/* Boutons de tri : Tabler transforme les .btn en pastilles epaisses (fond+bordure) qui
+   encombrent l'en-tete et noient le libelle. En v6 c'etaient de simples chevrons fins.
+   -> transparents, sans bordure, serres, chevrons blancs. */
+#table-signalements thead th .btn-group .btn { background: transparent !important; border: none !important; box-shadow: none !important; color: #fff !important; padding: 0 2px !important; }
+#table-signalements thead th .btn-group .btn i { color: #fff !important; }
+/* Onglets CARTE/LISTE : le data-toggle="buttons" (BS3) ne masque plus l'input radio natif en BS5. */
+#toggle-map-btns .toggle-map-btns input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+/* Fidelite v6 : libelles du formulaire de filtres en gras (Tabler les met en normal) +
+   espacement vertical un peu plus aere entre les champs. */
+#manage-signalement .card-body .form-group > label { font-weight: 700; margin-bottom: .35rem; }
+#manage-signalement .card-body .form-group { margin-bottom: 1rem; }
 </style>
 <div class="overlay">
 	<div class="loader"></div>
@@ -386,8 +428,8 @@ function updateSectorList(idDirection, idDomaine){
 									for="filter_type">#i18n{dansmarue.reportingList.domaine} :
 								</label><span id="firt_filter"></span>
 								<div  class="col-12 col-sm-12 col-md-12 col-lg-12 ">
-										<select id="idDomaine" class="form-control
-										form-control-sm" name="idDomaine" filter="${(filter.idDomaine)!}" ></select>
+										<select id="idDomaine" class="form-select
+										form-select-sm" name="idDomaine" filter="${(filter.idDomaine)!}" ></select>
 								</div>
 							</div>
 							<#--<div class="form-group">
@@ -423,8 +465,8 @@ function updateSectorList(idDirection, idDomaine){
 									for="filter_direction">#i18n{dansmarue.reportingList.direction}
 									: </label>
 								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-									<select id="idDirection" class="form-control
-									form-control-sm" name="idDirection" filter="${(filter.idDirection)!}"  ></select>
+									<select id="idDirection" class="form-select
+									form-select-sm" name="idDirection" filter="${(filter.idDirection)!}"  ></select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -432,8 +474,8 @@ function updateSectorList(idDirection, idDomaine){
 									for="filter_secteur">#i18n{dansmarue.reportingList.entite}
 									: </label>
 								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-									<select id="idSector" class="form-control
-										form-control-sm" name="idSector" filter="${(filter.idSector)!}"  ></select>
+									<select id="idSector" class="form-select
+										form-select-sm" name="idSector" filter="${(filter.idSector)!}"  ></select>
 									<noscript>
 										<button class="btn btn-primary btn-sm" type="submit"
 											name="updateSectorsWithDirection">
@@ -575,9 +617,10 @@ function updateSectorList(idDirection, idDomaine){
 										<label class="col-12 col-sm-12 col-md-12 col-lg-12"
 											for="filter_quartier">#i18n{dansmarue.reportingList.quartier}
 										</label>
-										<div id="" class="col-12 col-sm-12 col-md-12 col-lg-12" data-toggle="buttons">
-											<select name="listIdQuartierParam"  id="conseilQuartier" class="selectpicker show-menu-arrow form-control" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
+										<div id="" class="col-12 col-sm-12 col-md-12 col-lg-12">
+											<select name="listIdQuartierParam"  id="conseilQuartier" class="form-control dmr-choices" multiple>
 											</select>
+											<div class="mt-1"><button type="button" class="btn btn-primary btn-sm" id="quartier-all">#i18n{dansmarue.button.select.all}</button> <button type="button" class="btn btn-primary btn-sm" id="quartier-none">#i18n{dansmarue.button.deselect.all}</button></div>
 										</div>
 									</div>
 									<div class="form-group">
@@ -868,9 +911,11 @@ function updateSectorList(idDirection, idDomaine){
         $("#filter_dateDoneBegin").val('');
         $("#filter_dateDoneEnd").val('');
 
-		isReset ? $("#conseilQuartier option").remove() : $("#conseilQuartier").selectpicker('val', '');
-       
-        $("#conseilQuartier").selectpicker('refresh');
+		// Reset Quartier via Choices : deselection ; si reset complet, on vide aussi la liste.
+		if (window.qChoices) {
+			window.qChoices.removeActiveItems();
+			if (isReset) { window.qChoices.clearChoices(); }
+		}
         
 // 		$("#categoryCheckboxes .btn-checkbox").removeClass("active");
 // 		$("input[name='category']").attr('checked',false);

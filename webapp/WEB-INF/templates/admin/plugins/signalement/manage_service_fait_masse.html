@@ -1,7 +1,7 @@
 <#include "macro/commons_signalement.html" />
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 <script src="js/sweetalert.min.js"></script>
-<@getDatePickerRangeBootstrap language="${locale.language!}" />
+<#include "macro/datepicker_init.html" />
 <div class="row">
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 		<div class="card">
@@ -10,188 +10,114 @@
 			</div>
 			<div class="card-body">
 				<div class="col-sm-12">
-					<div class="col-sm-8 text-center font-italic text-primary">
+					<div class="font-italic text-primary">
 						<h4> #i18n{dansmarue.manageServiceFaitMasse.aide} </h4>
 					</div>
-					<br><br><br><br>
-					<div class="col-sm-6 offset-sm-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.recherche}</label></div>
 					<br><br>
+					<h5 class="fw-bold" style="color:#1b3a6b;">#i18n{dansmarue.manageServiceFaitMasse.label.recherche}</h5>
+					<br>
 					<@tform id='search' method='post' action='jsp/admin/plugins/signalement/ManageServiceFaitMasse.jsp'>
 						<!-- Date de création -->
-						<div class="row">
-							<div class="form-group col-sm-8">
-								<label class="<@labelStyle />" for="type">#i18n{dansmarue.reportingList.creationDate}</label>
-								<div class="input-daterange">
-									<div class="col-1"> #i18n{dansmarue.reportingList.from}</div>
-									<div class="col-3 ">
-										<div class="input-group">
-											<div class="input-group-text">
-												<span class="bi bi-calendar"></span>
-											</div>
-											<input class="form-control form-control-sm" type="text" name="dateBegin" id="filter_dateBegin" maxlength="10" value="${filter.dateBegin!}"/>
-										</div>
-									</div>
-								</div>
-								<div class="input-daterange">
-									<div class="col-1">#i18n{dansmarue.reportingList.to} </div>
-									<div class="col-3">
-										<div class="input-group">
-											<div class="input-group-text">
-												<span class="bi bi-calendar"></span>
-											</div>
-											<input class="form-control form-control-sm" type="text" name="dateEnd"	id="filter_dateEnd" value="${filter.dateEnd!}" />
-										</div>
+						<@formGroup labelKey='#i18n{dansmarue.reportingList.creationDate}' labelFor='filter_dateBegin'>
+							<div class="input-daterange">
+								<div class="col-1"> #i18n{dansmarue.reportingList.from}</div>
+								<div class="col-3 ">
+									<div class="input-group">
+										<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+										<input class="form-control form-control-sm" type="text" name="dateBegin" id="filter_dateBegin" maxlength="10" value="${filter.dateBegin!}"/>
 									</div>
 								</div>
 							</div>
-						</div>
+							<div class="input-daterange">
+								<div class="col-1">#i18n{dansmarue.reportingList.to} </div>
+								<div class="col-3">
+									<div class="input-group">
+										<div class="input-group-text"><span class="bi bi-calendar"></span></div>
+										<input class="form-control form-control-sm" type="text" name="dateEnd" id="filter_dateEnd" value="${filter.dateEnd!}" />
+									</div>
+								</div>
+							</div>
+						</@formGroup>
 						<!-- Etats -->
-						<div class="row">
-							<div class="form-group col-sm-8">
-								<label class="<@labelStyle />" for="commentaire">#i18n{dansmarue.manageServiceFaitMasse.label.etat}</label>
-								<div class="col-sm-8">
-									<div id="etatsCheckboxes" data-bs-toggle="buttons">
-										<#if list_state?has_content>		
-											<#list list_state as state>
-												<label class="btn btn-checkbox <#if (filter.idEtats)?has_content && filter.idEtats?seq_contains(state.id)>active</#if> ">
-												<input type="checkbox" name="idEtats" value="${state.id}"<#if (filter.idEtats)?has_content && filter.idEtats?seq_contains(state.id)>checked</#if>>
-													${state.name}
-												</label>
-											</#list>
-										</#if>
-									</div>
-								</div>
+						<@formGroup labelKey='#i18n{dansmarue.manageServiceFaitMasse.label.etat}'>
+							<div id="etatsCheckboxes">
+								<#if list_state?has_content>
+									<#list list_state as state>
+										<label class="btn btn-checkbox <#if (filter.idEtats)?has_content && filter.idEtats?seq_contains(state.id)>active</#if> ">
+										<input type="checkbox" name="idEtats" value="${state.id}"<#if (filter.idEtats)?has_content && filter.idEtats?seq_contains(state.id)>checked</#if>>
+											${state.name}
+										</label>
+									</#list>
+								</#if>
 							</div>
-						</div>
-						
+						</@formGroup>
 						<!-- Types -->
-						<div class="row">
-							<div class="form-group col-sm-8">
-								<label class="<@labelStyle />" for="type">#i18n{dansmarue.messageTypeSignalement.manage.type} :</label>
-								<div class="col-sm-6" style="text-align:left">
-									<select name="idTypeSignalements"  id="idTypeSignalements" class="selectpicker show-menu-arrow form-control" data-width="500px" data-size="10" multiple data-actions-box="true" data-live-search="true">
-												<#list list_type as type>
-													<option value="${type.id}">${type.libelle}</option>
-												</#list>
-									</select>
-								</div>
-							</div>
-						</div>
-
-						
+						<@formGroup labelKey='#i18n{dansmarue.messageTypeSignalement.manage.type} :' labelFor='idTypeSignalements'>
+							<select name="idTypeSignalements" id="idTypeSignalements" class="form-control dmr-choices" data-width="500px" data-size="10" multiple data-actions-box="true" data-live-search="true">
+								<#list list_type as type>
+									<option value="${type.id}">${type.libelle}</option>
+								</#list>
+							</select>
+						</@formGroup>
 						<!-- Bouttons formulaire -->
-						<div class="row">
-							<div class="form-group col-sm-12 text-center" >
-								<div class="form-group">
-									<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-										<button type="submit" class="btn btn-paris btn-red btn-lg"
-											id="search-button" name='action_search'>
-											#i18n{dansmarue.rechercher}
-										</button>
-										<button type="button" class="btn btn-paris btn-blue btn-lg"
-											id="re-init-button" onclick="deleteFields()">
-											#i18n{dansmarue.reportingList.reInitChamps}
-										</button>
-										<button type="button" class="btn btn-paris btn-blue btn-lg" id="retour">
-											<a style="color:white;" href="jsp/admin/plugins/signalement/ManageReferentiel.jsp?plugin_name=signalement">
-											#i18n{dansmarue.retour}
-											</a>
-										</button>
-			
-									</div>
-								</div>
-							</div>
-						</div>
+						<@formGroup>
+							<button type="submit" class="btn btn-paris btn-red btn-lg" id="search-button" name='action_search'>#i18n{dansmarue.rechercher}</button>
+							<button type="button" class="btn btn-paris btn-blue btn-lg" id="re-init-button" onclick="deleteFields()">#i18n{dansmarue.reportingList.reInitChamps}</button>
+							<button type="button" class="btn btn-paris btn-blue btn-lg" id="retour"><a style="color:white;" href="jsp/admin/plugins/signalement/ManageReferentiel.jsp?plugin_name=signalement">#i18n{dansmarue.retour}</a></button>
+						</@formGroup>
 					</@tform>
-					<br><br><br>
-					
+					<br><br>
+
 					<!-- Rapport sur la répartition  -->
 					<#if repartition?? && repartition?has_content>
 						<hr style="border-top: 2px solid #eee;">
 						<@tform id='execute' method='post' action='jsp/admin/plugins/signalement/ManageServiceFaitMasse.jsp'>
 							<!-- Tableau de répartition -->
+							<h5 class="fw-bold" style="color:#1b3a6b;">#i18n{dansmarue.manageServiceFaitMasse.label.recherche.resultat}</h5>
+							<br>
 							<div class="row">
-								<div class="form-group col-sm-12">
-									<div class="col-sm-6 offset-sm-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.recherche.resultat}</label></div>
-									<br><br>
-									<div>
-										<table class="table table-striped table-condensed" id="typesAjoutes">
+								<div class="col-sm-12 offset-lg-3 col-lg-6">
+									<table class="table table-striped table-condensed" id="typesAjoutes">
+										<tr>
+											<th>#i18n{dansmarue.manageServiceFaitMasse.label.type.select}</th>
+											<th class="text-center">#i18n{dansmarue.manageServiceFaitMasse.label.ano.cible}</th>
+										</tr>
+										<#list repartition as libelleType, nbSignalement>
 											<tr>
-												<th>#i18n{dansmarue.manageServiceFaitMasse.label.type.select}</th>
-												<th class="text-center">#i18n{dansmarue.manageServiceFaitMasse.label.ano.cible}</th>
+												<td>${libelleType}</td>
+												<td class="text-center">${nbSignalement}</td>
 											</tr>
-											<#list repartition as libelleType, nbSignalement>
-												<tr>
-													<td>
-														${libelleType}
-													</td>
-													<td class="text-center">
-														${nbSignalement}
-													</td>
-												</tr>
-											</#list>
-										</table>
-									</div>
+										</#list>
+									</table>
 								</div>
 							</div>
 							<hr style="border-top: 2px solid #eee;">
 							<!--  Paramètres d'exécution -->
-							<div class="row">
-								<div class="form-group col-sm-12">
-									<div class="col-sm-6 offset-sm-2"><label >#i18n{dansmarue.manageServiceFaitMasse.label.parametre}</label></div>
-								</div>
-							</div>
+							<h5 class="fw-bold" style="color:#1b3a6b;">#i18n{dansmarue.manageServiceFaitMasse.label.parametre}</h5>
+							<br>
 							<!-- Commentaire -->
-							<div class="row">
-								<div class="form-group col-sm-8">
-									<label class="<@labelStyle />" for="commentaire">#i18n{dansmarue.manageServiceFaitMasse.label.commentaire}</label>
-									<div class="col-sm-8">
-										<input class="form-control" id="commentaire" name="commentaire" type="text" value="#i18n{dansmarue.manageServiceFaitMasse.commentaire}" />
-									</div>
+							<@formGroup labelKey='#i18n{dansmarue.manageServiceFaitMasse.label.commentaire}' labelFor='commentaire'>
+								<input class="form-control" id="commentaire" name="commentaire" type="text" value="#i18n{dansmarue.manageServiceFaitMasse.commentaire}" />
+							</@formGroup>
+							<!-- Etat cible -->
+							<@formGroup labelKey='#i18n{dansmarue.manageServiceFaitMasse.label.etat.cible}' labelFor='etatCible'>
+								<div id="etatCibleCheckboxes">
+									<label class="btn btn-checkbox active" id="labelEtatCible">
+										<input disabled="disabled" style="position: absolute; clip: rect(0,0,0,0);" type="checkbox" name="etatCible" checked>#i18n{dansmarue.manageServiceFaitMasse.label.service.fait}
+									</label>
 								</div>
-							</div>
-							<!-- Etats -->
-							<div class="row">
-								<div class="form-group col-sm-8">
-									<label class="<@labelStyle />" for="etatCible">#i18n{dansmarue.manageServiceFaitMasse.label.etat.cible}</label>
-									<div class="col-sm-8">
-										<div id="etatCibleCheckboxes">
-											<label class="btn btn-checkbox active" id="labelEtatCible">
-												<input disabled="disabled" style="position: absolute; clip: rect(0,0,0,0);" type="checkbox" name="etatCible" checked>#i18n{dansmarue.manageServiceFaitMasse.label.service.fait}
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
+							</@formGroup>
 							<!-- Bouttons de confirmation -->
-							<div class="row">
-								<div class="form-group col-sm-12 text-center" >
-									<div class="form-group">
-										<div class="col-12 col-sm-12 col-md-12 col-lg-12">
-											<button class="btn btn-paris btn-red btn-lg"
-												id="execute-button" name=''>
-												#i18n{dansmarue.manageServiceFaitMasse.label.lancer.traitement}
-											</button>
-											<button class="btn btn-paris btn-red btn-lg" type='submit'
-												id="action_executeServiceFait" name='action_executeServiceFait' style="display:none;"> 
-											</button>
-											<button type="button" class="btn btn-paris btn-blue btn-lg" id="retour">
-												<a style="color:white;" href="jsp/admin/plugins/signalement/ManageReferentiel.jsp?plugin_name=signalement">
-												#i18n{dansmarue.retour}
-												</a>
-											</button>
-				
-										</div>
-									</div>
-								</div>
-							</div>
+							<@formGroup>
+								<button class="btn btn-paris btn-red btn-lg" id="execute-button" name=''>#i18n{dansmarue.manageServiceFaitMasse.label.lancer.traitement}</button>
+								<button class="btn btn-paris btn-red btn-lg" type='submit' id="action_executeServiceFait" name='action_executeServiceFait' style="display:none;"></button>
+								<button type="button" class="btn btn-paris btn-blue btn-lg" id="retour"><a style="color:white;" href="jsp/admin/plugins/signalement/ManageReferentiel.jsp?plugin_name=signalement">#i18n{dansmarue.retour}</a></button>
+							</@formGroup>
 						</@tform>
 					<#elseif repartition?? && !repartition?has_content>
-						<div class="form-group col-sm-12">
-							<div class="text-center"><label >#i18n{dansmarue.manageServiceFaitMasse.label.noresult}</label></div>
-						</div>
+						<div class="text-center"><label>#i18n{dansmarue.manageServiceFaitMasse.label.noresult}</label></div>
 					</#if>
-					
+
 				</div>
 			</div>
 		</div>
@@ -212,9 +138,9 @@ function deleteFields()
     $("#commentaire").val(commentaire);
     $("#etatsCheckboxes input:checkbox").attr('checked',false);
 	$("#etatsCheckboxes label").removeClass("active");
-    $('#idTypeSignalements').val('');
-    $('#idTypeSignalements').selectpicker('refresh');
-   
+    var __tsChoices = document.getElementById('idTypeSignalements');
+    if (__tsChoices && __tsChoices._choices) { __tsChoices._choices.removeActiveItems(); } else { $('#idTypeSignalements').val(''); }
+
 }
 
 $('#execute-button').click(function(event){
@@ -230,8 +156,9 @@ $('#execute-button').click(function(event){
 	  if (doValidate) {
 		  $('#action_executeServiceFait').click();
 		  return true;
-	  } 
+	  }
 	});
 });
 
 </script>
+<#include "macro/choices_init.html" />

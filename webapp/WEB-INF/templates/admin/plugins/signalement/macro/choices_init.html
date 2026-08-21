@@ -1,0 +1,44 @@
+<#-- MPT Lutece 7 : bootstrap-select (v1.12.4, BS3) est casse sous Bootstrap 5.
+     Init Choices.js (composant natif du theme Tabler ; CSS dans tabler-vendors) sur
+     tous les selects marques .dmr-choices. Boutons Tout/Aucun ajoutes pour les multi
+     portant data-actions-box (equivalent de l'ancien data-actions-box bootstrap-select). -->
+<script src="js/admin/style/tabler/libs/choices.js/public/assets/scripts/choices.js"></script>
+<script>
+(function () {
+    function initDmrChoices() {
+        if (!window.Choices) { return; }
+        document.querySelectorAll('select.dmr-choices').forEach(function (sel) {
+            if (sel.closest('.choices')) { return; }
+            var multiple = sel.multiple;
+            var ch = new Choices(sel, {
+                removeItemButton: multiple,
+                searchEnabled: true,
+                shouldSort: false,
+                itemSelectText: '',
+                searchPlaceholderValue: 'Rechercher'
+            });
+            sel._choices = ch;
+            if (multiple && sel.getAttribute('data-actions-box') === 'true') {
+                var vals = [].map.call(sel.querySelectorAll('option'), function (o) { return o.value; });
+                var bar = document.createElement('div');
+                bar.className = 'mt-1';
+                var bAll = document.createElement('button');
+                bAll.type = 'button';
+                bAll.className = 'btn btn-primary btn-sm';
+                bAll.innerHTML = '#i18n{dansmarue.button.select.all}';
+                bAll.addEventListener('click', function () { ch.setChoiceByValue(vals); });
+                var bNone = document.createElement('button');
+                bNone.type = 'button';
+                bNone.className = 'btn btn-primary btn-sm ms-1';
+                bNone.innerHTML = '#i18n{dansmarue.button.deselect.all}';
+                bNone.addEventListener('click', function () { ch.removeActiveItems(); });
+                bar.appendChild(bAll);
+                bar.appendChild(bNone);
+                var anchor = sel.closest('.choices') || sel;
+                anchor.insertAdjacentElement('afterend', bar);
+            }
+        });
+    }
+    if (document.readyState !== 'loading') { initDmrChoices(); } else { document.addEventListener('DOMContentLoaded', initDmrChoices); }
+})();
+</script>

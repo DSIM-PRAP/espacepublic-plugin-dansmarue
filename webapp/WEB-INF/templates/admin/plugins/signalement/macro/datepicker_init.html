@@ -1,0 +1,24 @@
+<#-- MPT Lutece 7 : la macro backport @getDatePickerRangeBootstrap initialise sur des ids codes en dur
+     (date_begin/date_end) souvent inexistants -> calendrier mort. On (re)initialise bootstrap-datepicker
+     sur toutes les plages .input-daterange de la page, avec la CSS du widget (non chargee par Tabler),
+     la locale FR (apres la lib), et un cadrage compact des champs (comme en v6). -->
+<link rel="stylesheet" href="css/admin/bootstrap-datepicker.min.css" type="text/css" />
+<style>
+.input-daterange { display: inline-flex; align-items: center; }
+.input-daterange .col-1, .input-daterange .col-3 { width: auto; flex: 0 0 auto; padding-left: 0; padding-right: 0; }
+.input-daterange .input-group { width: auto; margin-right: .75rem; }
+.input-daterange input.form-control { width: 160px; }
+</style>
+<script>
+$(function () {
+    $.getScript('js/admin/locales/bootstrap-datepicker.fr.min.js').always(function () {
+        $('.input-daterange').datepicker({
+            format: 'dd/mm/yyyy',
+            language: '${locale.language!"fr"}',
+            autoclose: true,
+            todayHighlight: true,
+            weekStart: 1
+        });
+    });
+});
+</script>

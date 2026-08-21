@@ -275,6 +275,12 @@ label.btn-radio > [type='radio']{
 	display: none;
 }
 
+/* MPT BS5 : symetrique du radio ci-dessus. Bootstrap 5 a supprime data-bs-toggle="buttons"
+   (qui masquait l'input) -> sans cette regle la case reste visible dans le bouton a bascule. */
+label.btn-checkbox > [type='checkbox']{
+	display: none;
+}
+
 /* EXPANDABLE */
 .expandable, .expandable > label {
 	cursor: pointer;
@@ -589,6 +595,17 @@ label.btn-radio > [type='radio']{
 
 .create-fdt-modale .modal-footer {
 	border-top: 0px;
+}
+
+/* --- Fidélité pré-montée (BS5/Tabler) : formulaires horizontaux BO --- */
+/* Libellés de champ à gauche, gras navy (comme avant la montée) */
+.card-body label.col-form-label {
+	font-weight: 700;
+	color: #1b3a6b;
+}
+/* Boutons d'action du plugin en MAJUSCULES (text-transform perdu avec le thème) */
+.btn-paris {
+	text-transform: uppercase;
 }
 
 .create-fdt-modale .modal-content {

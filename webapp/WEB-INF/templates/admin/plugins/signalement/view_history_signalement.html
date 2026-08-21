@@ -1,4 +1,16 @@
-<div class="container">
+<link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
+<style>
+/* Lignes libellé/valeur HORIZONTALES (comme v6). Le libellé et la valeur sont 2 enfants
+   d'un même wrapper interne (.col-6) → on met CE wrapper en flex (BS5 ne fait plus .row). */
+#view-history .form-group { width: 100%; margin-bottom: .3rem; }
+#view-history .form-group > div { display: flex; flex-wrap: wrap; align-items: baseline; }
+#view-history .form-group label { min-width: 150px; margin-bottom: 0; }
+#view-history .form-group > div > div { flex: 1 1 auto; }
+/* En-tête du tableau d'historique : fond gris clair (comme v6). Pas de <thead> → cibler les <th>. */
+#view-history table th { background-color: #f5f5f5; vertical-align: top; }
+#view-history table td { vertical-align: top; }
+</style>
+<div id="view-history" class="container">
 	<div class="row-fluid">
 		<legend> #i18n{dansmarue.history.title}
 			${signalement.prefix}${signalement.annee}${signalement.mois}${signalement.numero}

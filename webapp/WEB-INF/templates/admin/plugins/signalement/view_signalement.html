@@ -25,6 +25,11 @@ $(document).ready(function() {
 
 </script>
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
+<style>
+/* Lignes libellé/valeur HORIZONTALES (comme avant la montée) : en BS5 .form-group n'est plus une .row,
+   d'où l'empilement. On remet le flex → label (col-sm-3) à gauche, valeur (col-sm-8) à droite. */
+#view-signalement .form-group { display: flex; flex-wrap: wrap; align-items: baseline; margin-bottom: .4rem; }
+</style>
 
 <div id="view-signalement" class="container">
 	<div class="row-fluid">

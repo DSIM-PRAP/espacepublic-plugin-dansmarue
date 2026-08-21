@@ -615,6 +615,20 @@ label.btn-checkbox > [type='checkbox']{
 .btn-paris {
 	text-transform: uppercase;
 }
+/* Écrans de CONSULTATION (vues) encore en @labelStyle : libellés .control-label et titres <legend>
+   en bleu marque gras (fidélité v6 ; perdu au passage AdminLTE->Tabler). signalement.css n'étant chargé
+   que sur les écrans du plugin, la portée reste limitée à ceux-ci. */
+label.control-label {
+	color: #0C518A !important;
+	font-weight: bold !important;
+}
+legend {
+	color: #0C518A;
+	font-weight: bold;
+	border-bottom: 1px solid #e5e5e5;
+	padding-bottom: .4rem;
+	margin-bottom: 1rem;
+}
 
 .create-fdt-modale .modal-content {
     text-align: initial;

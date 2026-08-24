@@ -615,6 +615,18 @@ label.btn-checkbox > [type='checkbox']{
 .btn-paris {
 	text-transform: uppercase;
 }
+/* Tables de gestion / référentiel : en-tête grisé + zebra striping (fidélité v6 ; Tabler rend les
+   tables tout blanc). Générique à toutes les tables des cartes du plugin, SAUF la liste principale
+   des anomalies (#table-signalements) qui garde son en-tête marine via sa propre règle plus spécifique.
+   box-shadow:none car BS5/Tabler peint le fond des cellules via un box-shadow inset (sinon recouvert). */
+.card-body table.table:not(#table-signalements) th {
+	background-color: #f5f5f5 !important;
+	box-shadow: none !important;
+}
+.card-body table.table-striped:not(#table-signalements) > tbody > tr:nth-child(even) > td {
+	background-color: #f9f9f9 !important;
+	box-shadow: none !important;
+}
 /* Écrans de CONSULTATION (vues) encore en @labelStyle : libellés .control-label et titres <legend>
    en bleu marque gras (fidélité v6 ; perdu au passage AdminLTE->Tabler). signalement.css n'étant chargé
    que sur les écrans du plugin, la portée reste limitée à ceux-ci. */

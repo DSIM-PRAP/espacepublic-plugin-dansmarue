@@ -12,7 +12,7 @@
 	<@boxBody>
 		<@tform method='post' action='jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp'>
 				<div class="col-12 col-sm-12 col-md-10 col-lg-10">
-					  <div class="form-group">
+					  <div class="form-group row align-items-center">
 						<label class="col-12 col-sm-2 col-lg-2 form-label" for="filtre">#i18n{dansmarue.tournee.creation.filtre}</label>
 				 		<div class="col-8 col-sm-8 col-md-4 col-lg-4">
 					 		<@select id='filtre' name='param_filter' title='filtre' size='sm'>
@@ -63,15 +63,17 @@
 <!-- Filtres -->
 <@tform method='post' action='jsp/admin/plugins/signalement/ManageFeuilleDeTournee.jsp' id="creationFeuilleTournee">
 	<div class="card" style="border-top-width:0px !important;">
-		<@boxBody>
+		<@boxBody class="row">
 			<!-- Types -->
-			<select name="typologieSelect" id="typologieSelect" multiple="multiple">
-				<#list type_list as type>
-					<option value='${type.id}'>${type.formatTypeSignalement}</option>
-				</#list>
-			</select>
-			<br><br>
-			
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+				<select name="typologieSelect" id="typologieSelect" multiple="multiple">
+					<#list type_list as type>
+						<option value='${type.id}'>${type.formatTypeSignalement}</option>
+					</#list>
+				</select>
+				<br><br>
+			</div>
+
 			<!-- Etat -->
 			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-5 col-lg-5" labelFor='checkbox_etat' labelKey='#i18n{dansmarue.reportingList.etat}'>
 				<div id="checkbox_etat"  data-bs-toggle="buttons">
@@ -149,8 +151,8 @@
 			
 			<!-- Quartier -->
 			<@formGroup formStyle="inline" class="col-12 col-sm-12 col-md-12 col-lg-12" labelFor='select_quartier' labelKey='#i18n{dansmarue.reportingList.quartier}'>
-				<div id="select_quartier"  data-bs-toggle="buttons">
-					<select name="listIdQuartierParam"  id="conseilQuartier" class="selectpicker show-menu-arrow form-control" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
+				<div id="select_quartier">
+					<select name="listIdQuartierParam"  id="conseilQuartier" class="form-select dmr-choices" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
 						<#list  conseilQuartier_list as conseilQuartier>
 							<option value="${conseilQuartier.idConsqrt}" <#if (filter.listIdQuartier?has_content && filter.listIdQuartier?seq_contains(conseilQuartier.idConsqrt?number))>selected</#if> >${conseilQuartier.nomConsqrt}</option>
 						</#list>
@@ -559,8 +561,8 @@ $('#typologieSelect').multiSelect({
 			data.checked= true;
        	});
 		
-		$("#conseilQuartier").selectpicker('val', '');
-        $("#conseilQuartier").selectpicker('refresh');
+		var __cqChoices = document.getElementById('conseilQuartier');
+        if (__cqChoices && __cqChoices._choices) { __cqChoices._choices.removeActiveItems(); } else { $("#conseilQuartier").val(''); }
 		
 		$("#filter_dateBegin").val('');
         $("#filter_dateEnd").val('');
@@ -611,3 +613,6 @@ $.getScript("jsp/admin/plugins/leaflet/DoGetAutocomplete.jsp", function(data){
 	addAutocomplete("filter_adresse",null);
 });
 </script>
+
+<#include "macro/datepicker_init.html" />
+<#include "macro/choices_init.html" />

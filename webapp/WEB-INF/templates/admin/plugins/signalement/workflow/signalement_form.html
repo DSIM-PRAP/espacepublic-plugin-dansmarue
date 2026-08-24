@@ -1,3 +1,6 @@
+<#-- Charte v6 : styles des formulaires de tache workflow centralises dans signalement.css
+     (libelles bleu marque/gras, recap #sf-info-recap). Pas de <style> inline. -->
+<link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 <div class="container">
 	<div class="row-fluid">
 		<legend>
@@ -10,7 +13,7 @@
 			<input
 				name="from_page" value="${(from_page)!}" type="hidden" />
 			${task_form}
-			<div class="text-center" style="padding-bottom:80px;">
+			<@formGroup rows=2 class="text-center mt-4">
 				<button class="btn btn-paris btn-red btn-lg" type="submit" name="save">
 					#i18n{workflow.tasks_form_test_workflow.button_save}
 				</button>
@@ -27,7 +30,7 @@
 					class="btn btn-paris btn-blue btn-lg" name="cancel">
 					#i18n{workflow.tasks_form_test_workflow.button_cancel}
 				</a>
-			</div>
+			</@formGroup>
 		</form>
 	</div>
 	<script type="text/javascript">

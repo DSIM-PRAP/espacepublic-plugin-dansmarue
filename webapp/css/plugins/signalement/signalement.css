@@ -653,4 +653,31 @@ legend {
     top: 0;
     z-index: 10;
     background-color: rgb(12, 81, 138);
-} 
+}
+
+/* ==========================================================================
+   Formulaires de tache workflow (Declarer un service fait, rejet, requalif...)
+   Fidelite v6 : libelles de champ bleu marque + gras (Tabler rend .control-label
+   noir/normal) ; recap anomalie libelle/valeur cote a cote et aere comme v6.
+   ========================================================================== */
+/* NB : les libelles .control-label sont deja passes en bleu marque par la regle globale
+   `label.control-label` plus haut dans ce fichier (ecrans de consultation) -> pas de doublon ici. */
+
+/* Recap anomalie (task_informations_signalement_form) : COLONNE INFO (gauche) = libelle a gauche de
+   la valeur, bleu marque + gras, interligne aere (comme v6). La colonne Photo (droite) garde son
+   empilement naturel (libelle << Photo(s) >> AU-DESSUS des vignettes, comme v6) -> ne pas flexer. */
+/* Ecart vertical (aere comme v6) sur TOUTES les lignes du recap, les deux colonnes
+   (info a gauche ET Photo(s)/Joindre a droite) -> sinon Photo(s) et Joindre sont colles. */
+#sf-info-recap .form-group { margin-bottom: 1.25rem; }
+#sf-info-recap .sf-info-col .form-group { display: flex; flex-wrap: wrap; align-items: baseline; }
+#sf-info-recap .sf-info-col .form-group > label { flex: 0 0 150px; max-width: 150px; color: #0C518A !important; font-weight: 700 !important; margin-bottom: 0; }
+#sf-info-recap .sf-info-col .form-group > div { flex: 1 1 auto; max-width: calc(100% - 155px); text-align: left; }
+/* Bloc << Joindre une photo du Service Fait >> : EMPILE et PLEINE LARGEUR (libelle sur sa ligne,
+   champ + Parcourir sur la ligne suivante en pleine largeur, description en dessous), avec un ecart
+   au-dessus pour ne pas coller aux vignettes Photo(s). */
+#sf-info-recap .sf-joindre { margin-top: 1.5rem; }
+#sf-info-recap .sf-joindre .form-group { display: block; }
+#sf-info-recap .sf-joindre .form-group > label { display: block; width: 100%; max-width: 100%; flex: none; margin-bottom: .35rem; }
+#sf-info-recap .sf-joindre .form-group > div { display: block; width: 100%; max-width: 100%; flex: none; }
+#sf-info-recap .sf-joindre .bootstrap-filestyle { width: 100%; display: flex; }
+#sf-info-recap .sf-joindre .bootstrap-filestyle .form-control { flex: 1 1 auto; } 

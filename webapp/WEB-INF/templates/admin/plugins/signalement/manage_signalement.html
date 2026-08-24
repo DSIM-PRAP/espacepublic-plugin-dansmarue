@@ -374,9 +374,10 @@ $(document).ready(function() {
    bascules de la page (recherche avancee masquee par defaut, vue liste/carte). */
 .hidden { display: none !important; }
 /* Filtre « Date de creation » : Du/Au sur une meme ligne (comme en v6). */
+.input-daterange { display: inline-flex; align-items: center; }
 .input-daterange .col-1, .input-daterange .col-3 { width: auto; flex: 0 0 auto; padding-left: 0; padding-right: 0; }
 .input-daterange .input-group { width: auto; margin-right: .75rem; }
-#filter_dateBegin, #filter_dateEnd { width: 90px; }
+.input-daterange input.form-control { width: 90px; }
 /* Vignette photo : bornee en hauteur (sinon une image verticale etire la ligne). */
 .signalement-photo img { width: auto; max-width: 100px; max-height: 80px; }
 /* Colonne Actions : le <td> reste une cellule de tableau (alignement) ; le flex-wrap
@@ -502,7 +503,7 @@ div[data-bs-toggle="buttons"] label.btn > input[type="radio"] { position: absolu
 								<label class="col-12 col-sm-12 col-md-12 col-lg-12" for="filter_fdt">#i18n{dansmarue.reportingList.feuilleDeTournee}</label>
 								<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 									<#if feuille_de_tournee_list?has_content && feuille_de_tournee_list?size != 0>
-										<select name="idFdt"  id="idFdt" class="selectpicker show-menu-arrow form-control" data-size="10" data-actions-box="true" data-live-search="true">
+										<select name="idFdt"  id="idFdt" class="form-control dmr-choices">
 											<option></option>
 											<#list feuille_de_tournee_list as feuilleDeTournee>
 												<option value="${feuilleDeTournee.id}"
@@ -645,11 +646,12 @@ div[data-bs-toggle="buttons"] label.btn > input[type="radio"] { position: absolu
 										</label>
 										
 										<div id="" class="col-12 col-sm-12 col-md-12 col-lg-12" data-bs-toggle="buttons">
-											<select name="listIdQuartierParam"  id="conseilQuartier" class="selectpicker show-menu-arrow form-control" data-width="300px" data-size="10" multiple data-actions-box="true" data-live-search="true">
+											<select name="listIdQuartierParam"  id="conseilQuartier" class="form-control dmr-choices" multiple>
 												<#list conseilQuartier_list as conseilQuartier>
 													<option value="${conseilQuartier.idConsqrt}" <#if (filter.listIdQuartier?has_content && filter.listIdQuartier?seq_contains(conseilQuartier.idConsqrt?number))>selected</#if> >${conseilQuartier.nomConsqrt}</option>
 												</#list>
 											</select>
+								<div class="mt-1"><button type="button" class="btn btn-primary btn-sm" id="quartier-all">#i18n{dansmarue.button.select.all}</button> <button type="button" class="btn btn-primary btn-sm" id="quartier-none">#i18n{dansmarue.button.deselect.all}</button></div>
 										</div>
 									</div>
 									<div class="form-group">
@@ -1121,6 +1123,10 @@ div[data-bs-toggle="buttons"] label.btn > input[type="radio"] { position: absolu
      bootstrap-datepicker sur les vraies plages (.input-daterange -> filter_date* / filter_dateDone*).
      + CSS du datepicker (non chargee par le theme Tabler) pour retrouver le rendu v6. -->
 <link rel="stylesheet" href="css/admin/bootstrap-datepicker.min.css" type="text/css" />
+<#-- Item 6 : bootstrap-select (v1.12.4, BS3) est casse sous Bootstrap 5 (le toggle data-toggle=dropdown
+     est ignore -> le menu ne s'ouvre pas). On migre les multi-selects vers Choices.js, composant natif
+     du theme Tabler (CSS deja fournie par tabler-vendors). -->
+<script src="js/admin/style/tabler/libs/choices.js/public/assets/scripts/choices.js"></script>
 <script>
 $(function () {
     // Item 5 : le critere Direction affichait "Vide" pour l'option par defaut (nom vide -> la macro
@@ -1128,6 +1134,20 @@ $(function () {
     $('#idDirection option').each(function () {
         if (this.getAttribute('label') === 'Vide' || this.value === '-1') { this.removeAttribute('label'); this.textContent = ''; }
     });
+    // Item 6 : multi-selects via Choices.js (bootstrap-select 1.12.4 casse en BS5).
+    if (window.Choices) {
+        var fdtEl = document.getElementById('idFdt');
+        if (fdtEl) { new Choices(fdtEl, { searchEnabled: true, shouldSort: false, itemSelectText: '', searchPlaceholderValue: 'Rechercher' }); }
+        var qEl = document.getElementById('conseilQuartier');
+        if (qEl) {
+            var qAllVals = [].map.call(qEl.options, function (o) { return o.value; });
+            var qChoices = new Choices(qEl, { removeItemButton: true, searchEnabled: true, shouldSort: false, itemSelectText: '', searchPlaceholderValue: 'Rechercher' });
+            var bAll = document.getElementById('quartier-all');
+            var bNone = document.getElementById('quartier-none');
+            if (bAll) { bAll.addEventListener('click', function () { qChoices.setChoiceByValue(qAllVals); }); }
+            if (bNone) { bNone.addEventListener('click', function () { qChoices.removeActiveItems(); }); }
+        }
+    }
     // la locale FR doit etre chargee APRES la lib bootstrap-datepicker (chargee en pied de page)
     $.getScript('js/admin/locales/bootstrap-datepicker.fr.min.js').always(function () {
         $('.input-daterange').datepicker({

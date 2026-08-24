@@ -22,7 +22,8 @@ form>a>img, .actionsButtons>a>img {
 	height: 90px;
 	background-color: rgb(12,81,138);
 	color: rgb(255,255,255);
-	font-weight: 600;
+	font-weight: 700;
+	font-size: 16px;
 	display: flex;
     align-items: center;
     justify-content: center;
@@ -34,6 +35,11 @@ form>a>img, .actionsButtons>a>img {
 	width: 100%;
 	height: 80%;
 	border-right: solid 1px rgb(255,255,255);
+	/* Le <button> ne herite pas de la couleur/graisse/taille du .state-header (defaut navigateur/
+	   Tabler) : forcer l'heritage -> titre BLANC + GRAS + taille du .state-header. */
+	color: inherit;
+	font-weight: inherit;
+	font-size: inherit;
 }
 
 #dashboard .dashboard-result .state-header::after{
@@ -286,15 +292,24 @@ label.btn-checkbox > [type='checkbox']{
 	cursor: pointer;
 }
 
+/* Chevron d'expansion : la police 'Glyphicons Halflings' (BS3) n'existe plus en BS5/Tabler ->
+   le glyphe rendait un carre "tofu". Chevrons unicode (rendus par n'importe quelle police). */
 .expandable::after{
-	font-family: 'Glyphicons Halflings';
-    content: "\e260";
+    content: " \25B4"; /* triangle vers le haut (ouvert) */
 }
 
 .expandable.collapsed::after{
-	font-family: 'Glyphicons Halflings';
-    content: "\e259";
+    content: " \25BE"; /* triangle vers le bas (replie) */
 }
+
+/* Tableau de gestion (#dashboard) — fidelite v6 :
+   - dates Du/Au sur une meme ligne (input-daterange en ligne, pas empilees) ;
+   - titres des blocs d'etat en BLANC (le <button> interne remet le texte en noir sous Tabler) ;
+   - ecart entre la rangee de boutons Rechercher/Reinitialiser et le tableau de resultats. */
+#dashboard .input-daterange { display: inline-flex; align-items: center; margin-right: 1rem; }
+#dashboard .input-daterange .col-1, #dashboard .input-daterange .col-3 { width: auto; flex: 0 0 auto; padding-left: 0; padding-right: 0; }
+#dashboard .input-daterange .input-group { width: auto; }
+#dashboard .dashboard-result { margin-top: 1.5rem; }
 
 /*MODAL*/
 .modal-content{

@@ -124,23 +124,23 @@
 	<!-- Résultats -->
 	<div class="dashboard-result">
 		<div class="row">
-			<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Tableau 1 -->
 				<@tableau states_list=states_list_1/>
 			</div>
 			<div class="row">
-				<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
+				<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 					<i>#i18n{dansmarue.dashboard.tranche2.explication}</i>
 				</div>
 			</div>
 			<br><br><br><br>
-			<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Tableau 2 -->
 				<@tableau states_list=states_list_2/>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-12 col-sm-12 offset-md-3 col-md-6 offset-lg-3 col-lg-6">
+			<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 				<i>#i18n{dansmarue.dashboard.tranche2.explication}</i>
 			</div>
 		</div>
@@ -516,8 +516,13 @@ $("label[category-id]").mouseup(function() {
 });
 
 $(".radio-period").mouseup(function() {
+	/* BS5 : data-bs-toggle="buttons" supprime -> on bascule manuellement l'etat actif + le radio
+	   (sinon la periode reste "bloquee" sur 30 jours). */
+	$(".radio-period").removeClass("active");
+	$(this).addClass("active");
+	$(this).find("input[type='radio']").prop("checked", true);
 	var period = $(this).find("input").val();
-	setDateVisuel(period);	
+	setDateVisuel(period);
 });
 
 //Mise à jour du visuel de la période

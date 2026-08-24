@@ -707,4 +707,36 @@ legend {
 #sf-info-recap .sf-joindre .form-group > label { display: block; width: 100%; max-width: 100%; flex: none; margin-bottom: .35rem; }
 #sf-info-recap .sf-joindre .form-group > div { display: block; width: 100%; max-width: 100%; flex: none; }
 #sf-info-recap .sf-joindre .bootstrap-filestyle { width: 100%; display: flex; }
-#sf-info-recap .sf-joindre .bootstrap-filestyle .form-control { flex: 1 1 auto; } 
+
+/* === Gestion des entites (unittree ManageUnits, override site) ===
+   Le tableau des utilisateurs v7 (Tabler) est plus large que sa colonne (police + padding plus
+   gros qu'en v6). Plutot que de compresser la police au risque de l'illisibilite, on garde une
+   taille lisible et on rend le SLIDER horizontal du .table-responsive bien visible (barre epaisse
+   toujours affichee) pour atteindre la colonne Actions. Meme rendu du tableau qu'ailleurs. */
+#manage-units .table-responsive { overflow-x: auto; padding-bottom: 2px; }
+#manage-units .table-responsive::-webkit-scrollbar { height: 12px; }
+#manage-units .table-responsive::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 6px; }
+#manage-units .table-responsive::-webkit-scrollbar-thumb { background: #b0b0b0; border-radius: 6px; }
+#manage-units .table-responsive::-webkit-scrollbar-thumb:hover { background: #909090; }
+#manage-units .table-responsive { scrollbar-width: thin; scrollbar-color: #b0b0b0 #f0f0f0; }
+/* Panneau de gauche (arbre des entites) : les libelles longs sont coupes par la largeur de la
+   colonne. Sans contrainte, la .col-md-3 (min-width:auto) GRANDIT pour contenir l'arbre et deborde
+   sur la liste. On fige sa largeur (min-width:0) puis on ajoute un SLIDER horizontal TOUJOURS
+   VISIBLE (overflow-x:scroll, pas auto/overlay) sur le card-body pour lire les noms complets. */
+#manage-units > .col-md-3 { min-width: 0; }
+#manage-units > .col-md-3 .card-body { overflow-x: scroll; padding-bottom: 2px; }
+#manage-units > .col-md-3 .card-body::-webkit-scrollbar { height: 12px; }
+#manage-units > .col-md-3 .card-body::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 6px; }
+#manage-units > .col-md-3 .card-body::-webkit-scrollbar-thumb { background: #b0b0b0; border-radius: 6px; }
+#manage-units > .col-md-3 .card-body::-webkit-scrollbar-thumb:hover { background: #909090; }
+#manage-units > .col-md-3 .card-body { scrollbar-width: thin; scrollbar-color: #b0b0b0 #f0f0f0; }
+/* Formulaire de recherche unittree (macro searchAdminUsersForm, override BS5) : champs EN LIGNE
+   comme v6 (BS5 a supprime .form-inline -> les inputs prenaient 100% et s'empilaient). */
+#unitree-search .form-control, #unitree-search .input-group { width: auto; }
+/* Panneau avance : reste un div block (togglable en display:none par jQuery) ; ses champs sont
+   mis EN LIGNE via inline-block (ne pas utiliser .d-flex qui est !important et casse le toggle). */
+#unitree-search #adv-form { margin-top: 15px; width: 100%; }
+#unitree-search #adv-form .form-group { display: inline-block; vertical-align: middle; margin-right: .5rem; }
+/* Icone d'action rendue en image (ex. module sira) : la caler a la taille d'une icone de bouton. */
+#manage-units .unit-action-icon { height: 1em; width: auto; vertical-align: middle; }
+#sf-info-recap .sf-joindre .bootstrap-filestyle .form-control { flex: 1 1 auto; }

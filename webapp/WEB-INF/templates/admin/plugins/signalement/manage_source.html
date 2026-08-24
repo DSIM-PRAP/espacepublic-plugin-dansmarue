@@ -1,4 +1,11 @@
-<div class="row">
+<link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
+<#-- signalement.css ne se charge pas de façon fiable sur cette Manage-JSP → styles INLINE pour garder
+     la charte v6 : titre de carte bleu marque + gras, en-tête de tableau sur fond gris clair. -->
+<style>
+#manage-source .card-header .card-title { color: #0C518A !important; font-weight: 700 !important; }
+#manage-source table th { background-color: #f5f5f5; }
+</style>
+<div id="manage-source" class="row">
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 		<div class="card">
 			<div class="card-header">
@@ -6,7 +13,7 @@
 			</div>
 			<div class="card-body">
 				<div class="row">
-						<div class="col-12 col-sm-12 col-md-12 col-lg-12 text-right">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 text-end">
 							<div class="form-group">
 								<a href="jsp/admin/plugins/signalement/ManageTypeSignalementBySource.jsp?view=addSource">
 									<button class="btn btn-primary btn-sm" name="save">	    	

@@ -732,7 +732,11 @@ legend {
 #manage-units > .col-md-3 .card-body { scrollbar-width: thin; scrollbar-color: #b0b0b0 #f0f0f0; }
 /* Formulaire de recherche unittree (macro searchAdminUsersForm, override BS5) : champs EN LIGNE
    comme v6 (BS5 a supprime .form-inline -> les inputs prenaient 100% et s'empilaient). */
-#unitree-search .form-control, #unitree-search .input-group { width: auto; }
+#unitree-search .form-control, #unitree-search .form-select, #unitree-search .input-group { width: auto; }
+/* Un <select> en display:block + width:auto REMPLIT son parent (pas de largeur intrinseque comme
+   un <input>). On le passe en inline-block pour qu'il se cale sur son contenu -> options avancees
+   EN LIGNE (Code d'acces / Niveaux / Statuts) comme v6. */
+#unitree-search .form-select { display: inline-block; vertical-align: middle; }
 /* Panneau avance : reste un div block (togglable en display:none par jQuery) ; ses champs sont
    mis EN LIGNE via inline-block (ne pas utiliser .d-flex qui est !important et casse le toggle). */
 #unitree-search #adv-form { margin-top: 15px; width: 100%; }

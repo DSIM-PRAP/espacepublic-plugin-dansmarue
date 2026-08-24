@@ -9,8 +9,16 @@
 /* Edition d'anomalie : 2 colonnes (formulaire / photo) et libelles a gauche (comme v6).
    Colonne libelles plus etroite qu'un formulaire pleine largeur (le form est dans un col-md-6). */
 .form-horizontal .form-group { display: flex; flex-wrap: wrap; align-items: baseline; margin-bottom: .5rem; }
-.form-horizontal .form-group > label { flex: 0 0 130px; max-width: 130px; text-align: right; padding-right: .75rem; margin-bottom: 0; }
-.form-horizontal .form-group > div { flex: 1 1 auto; max-width: calc(100% - 135px); }
+/* Lignes avec une zone multi-lignes (textarea) : le libelle s'aligne en HAUT de la box (pas en baseline,
+   sinon il tombe au milieu/bas de la zone). */
+.form-horizontal .form-group:has(textarea) { align-items: flex-start; }
+.form-horizontal .form-group > label { flex: 0 0 150px; max-width: 150px; text-align: left; padding-right: .75rem; margin-bottom: 0; color: #0C518A !important; font-weight: 700 !important; }
+.form-horizontal .form-group > div { flex: 1 1 auto; max-width: calc(100% - 155px); }
+/* Sous-titre de l'ecran (legend) : bleu marque + gras comme v6 (Tabler le rend noir/normal). */
+.container legend { color: #0C518A !important; font-weight: 700 !important; font-size: 1.4rem; }
+/* Message a l'usager : textarea pleine largeur (comme v6), sinon cols=80 le rend etroit / colle a la carte. */
+#messageUsagerZone { margin-top: 2rem; clear: both; }
+#messageUsagerZone textarea { width: 100%; }
 </style>
 	
 <script type="text/javascript">
@@ -334,7 +342,7 @@
 			</fieldset>
 			<fieldset>
 				<#if !signalement.id?has_content>
-				<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="col-12 col-sm-12 col-md-12 col-lg-12" id="messageUsagerZone">
 					<div class="form-group">
 						<label class="<@labelStyle />" for="messageForUser">#i18n{dansmarue.saveSignalement.messageForUser}:
 						</label>
@@ -369,4 +377,15 @@
 		</div>
 	</form>
 </div>
+<script>
+/* Priorité : le @comboWithParams core rend l'option vide avec label="Vide" (portal.util.labelEmpty) ;
+   on retire ce label pour retrouver le sélecteur vide (init à blanc) comme avant la montée. */
+$(function () {
+	document.querySelectorAll("select[name='priorite'] option").forEach(function (o) {
+		if (o.value === '' || o.textContent.trim() === '' || o.textContent.trim() === 'Vide') {
+			o.removeAttribute('label'); o.textContent = '';
+		}
+	});
+});
+</script>
 <#include "/admin/util/editor/editor.html" /> <@initEditor />

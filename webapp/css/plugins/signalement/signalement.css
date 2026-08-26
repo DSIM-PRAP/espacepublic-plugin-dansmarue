@@ -245,6 +245,12 @@ form>a>img, .actionsButtons>a>img {
 	border-radius: 5px !important;
 }
 
+/* Retour BA #3 : sous Tabler/BS5, .pagination est rendu inline-block (pas flex) -> les <li> (list-item)
+   s'empilaient VERTICALEMENT. On force la disposition horizontale du paginateur (Rechercher une
+   anomalie ET Consultation des autres entites, qui partagent #signalement-paginator). */
+#signalement-paginator ul.pagination { display: flex; flex-wrap: wrap; padding-left: 0; list-style: none; margin-bottom: 0; }
+#signalement-paginator ul.pagination > li { display: inline-flex; }
+
 #signalement-paginator ul.pagination > li > a{
 	background: none;
 	border: none;

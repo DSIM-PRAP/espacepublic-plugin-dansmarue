@@ -997,10 +997,17 @@ function select_all_arrondissement() {
 function un_select_all_arrondissement() {
 	var checkboxes = $( "label[checkType='arrondissement'] > input");
 	$( "label[checkType='arrondissement']").removeClass("active");
-	
+
 	for (var i = 0; i < checkboxes.length; i++) {
 	  checkboxes[i].checked = false
 	}
 }
+
+/* MPT BS5 : data-bs-toggle="buttons" supprime -> au clic individuel sur un bouton-bascule
+   Etat/Ville, la classe .active n'etait plus synchronisee avec la case cochee (visuel fige).
+   On resynchronise .active avec l'etat coche a chaque change. */
+$(document).on("change", "label[checkType] > input[type='checkbox']", function() {
+	$(this).closest("label[checkType]").toggleClass("active", this.checked);
+});
 
 </script>

@@ -143,6 +143,13 @@ function deleteFields()
 
 }
 
+/* MPT BS5 : data-bs-toggle="buttons" supprime -> au clic individuel sur un bouton-bascule
+   << Etat(s) d'origine >>, la classe .active n'etait plus synchronisee avec la case cochee
+   (pas de changement de couleur). On resynchronise .active avec l'etat coche a chaque change. */
+$(document).on("change", "#etatsCheckboxes label.btn-checkbox > input[type='checkbox']", function() {
+	$(this).closest("label.btn-checkbox").toggleClass("active", this.checked);
+});
+
 $('#execute-button').click(function(event){
 	event.preventDefault();
 	swal({

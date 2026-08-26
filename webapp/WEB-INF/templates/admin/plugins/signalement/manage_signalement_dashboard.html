@@ -525,6 +525,13 @@ $(".radio-period").mouseup(function() {
 	setDateVisuel(period);
 });
 
+/* MPT BS5 : idem pour le critere << Ville >> (boutons-bascule arrondissement) -> au clic individuel
+   la classe .active n'etait plus synchronisee avec la case cochee (pas de changement de couleur).
+   On resynchronise .active avec l'etat coche a chaque change. */
+$(document).on("change", "#arrondissementCheckboxes label.btn-checkbox > input[type='checkbox']", function() {
+	$(this).closest("label.btn-checkbox").toggleClass("active", this.checked);
+});
+
 //Mise à jour du visuel de la période
 function setDateVisuel( period) {
 	var date;

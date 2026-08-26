@@ -360,6 +360,15 @@ $(document).ready(function() {
 		}
 	}
 
+	/* MPT BS5 : data-bs-toggle="buttons" (BS3/4) a ete supprime -> au clic individuel sur un
+	   bouton-bascule Etat/Ville, la classe .active n'etait plus synchronisee avec la case cochee
+	   (le visuel bleu restait desynchronise de la selection reelle). On resynchronise .active avec
+	   l'etat coche a chaque changement. Les boutons Tout selectionner/deselectionner gerent deja
+	   .active de leur cote (mise a jour programmatique sans evenement change). */
+	$(document).on("change", "label[checkType] > input[type='checkbox']", function() {
+		$(this).closest("label[checkType]").toggleClass("active", this.checked);
+	});
+
 </script>
 <link rel="stylesheet" href="css/plugins/signalement/signalement.css" type="text/css"/>
 <link rel="stylesheet" href="js/jquery/plugins/autocomplete/jquery.autocomplete.css" type="text/css" media="screen, projection" />

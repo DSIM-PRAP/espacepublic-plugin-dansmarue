@@ -871,7 +871,24 @@ function updateSectorList(idDirection, idDomaine){
 	</div>
 </div>
 </div>
-<@getDatePickerRangeBootstrap language="${locale.language!}" />
+<#-- Retour BA #3 (R3-3) : la macro depreciee @getDatePickerRangeBootstrap initialisait sur des ids
+     codes en dur inexistants -> les calendriers Date de creation / Date de service fait ne
+     s'ouvraient pas. Meme correctif que Rechercher une anomalie (#4a) : CSS du datepicker + init
+     direct de bootstrap-datepicker sur les vraies plages (.input-daterange), locale FR apres la lib. -->
+<link rel="stylesheet" href="css/admin/bootstrap-datepicker.min.css" type="text/css" />
+<script>
+$(function () {
+	$.getScript('js/admin/locales/bootstrap-datepicker.fr.min.js').always(function () {
+		$('.input-daterange').datepicker({
+			format: 'dd/mm/yyyy',
+			language: '${locale.language!"fr"}',
+			autoclose: true,
+			todayHighlight: true,
+			weekStart: 1
+		});
+	});
+});
+</script>
 
 <script type="text/javascript">
 	var idEtatsDefault = new Array();

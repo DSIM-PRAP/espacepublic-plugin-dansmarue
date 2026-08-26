@@ -750,3 +750,10 @@ legend {
 /* Icone d'action rendue en image (ex. module sira) : la caler a la taille d'une icone de bouton. */
 #manage-units .unit-action-icon { height: 1em; width: auto; vertical-align: middle; }
 #sf-info-recap .sf-joindre .bootstrap-filestyle .form-control { flex: 1 1 auto; }
+
+/* Retour BA #3 (R3-6) — Rejeter l'anomalie : les motifs de rejet sont rendus en Bootstrap 4
+   (.custom-control.custom-checkbox, supprime en BS5) -> la case apparaissait AU-DESSUS du texte.
+   On aligne chaque motif en ligne (case EN FACE du texte, top-alignee), comme v6. */
+#rejet-signalement-form .custom-control.custom-checkbox { display: flex; align-items: flex-start; gap: .45rem; margin-bottom: .5rem; padding-left: 0; }
+#rejet-signalement-form .custom-control.custom-checkbox > .custom-control-input { position: static; opacity: 1; flex: 0 0 auto; margin-top: .25rem; width: auto; }
+#rejet-signalement-form .custom-control.custom-checkbox > .custom-control-label { flex: 1 1 auto; }

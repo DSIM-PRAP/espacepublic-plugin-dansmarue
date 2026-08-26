@@ -10,6 +10,11 @@
         document.querySelectorAll('select.dmr-choices').forEach(function (sel) {
             if (sel.closest('.choices')) { return; }
             var multiple = sel.multiple;
+            // Retour BA #3 (R3-7) : capturer TOUTES les valeurs d'options AVANT l'init Choices.
+            // Apres init, Choices retire du <select> natif les options deja selectionnees (elles
+            // deviennent des items) -> les lire apres ne donnait que les valeurs deja enregistrees,
+            // et << Tout selectionner >> ne reprenait que celles-la (au lieu de toute la liste).
+            var vals = [].map.call(sel.querySelectorAll('option'), function (o) { return o.value; });
             var ch = new Choices(sel, {
                 removeItemButton: multiple,
                 searchEnabled: true,
@@ -19,7 +24,6 @@
             });
             sel._choices = ch;
             if (multiple && sel.getAttribute('data-actions-box') === 'true') {
-                var vals = [].map.call(sel.querySelectorAll('option'), function (o) { return o.value; });
                 var bar = document.createElement('div');
                 bar.className = 'mt-1';
                 var bAll = document.createElement('button');

@@ -247,9 +247,15 @@ form>a>img, .actionsButtons>a>img {
 
 /* Retour BA #3 : sous Tabler/BS5, .pagination est rendu inline-block (pas flex) -> les <li> (list-item)
    s'empilaient VERTICALEMENT. On force la disposition horizontale du paginateur (Rechercher une
-   anomalie ET Consultation des autres entites, qui partagent #signalement-paginator). */
-#signalement-paginator ul.pagination { display: flex; flex-wrap: wrap; padding-left: 0; list-style: none; margin-bottom: 0; }
+   anomalie ET Consultation des autres entites, qui partagent #signalement-paginator).
+   Retour recette #4 (cas 3) : inline-flex et NON flex -> en flex le <ul> occupait toute la largeur
+   disponible (668 px mesures) et le paginateur passait a la ligne, sous le nombre d'elements par
+   page, alors qu'en v6 il est sur la meme ligne. Et BS5 ne style plus .pagination > li > a (il ne
+   connait que .page-link) : on restitue le padding des pastilles (sans quoi la pastille active fait
+   5 px de large) ainsi que le texte blanc de la page courante. */
+#signalement-paginator ul.pagination { display: inline-flex; flex-wrap: wrap; padding-left: 0; list-style: none; margin-bottom: 0; vertical-align: middle; }
 #signalement-paginator ul.pagination > li { display: inline-flex; }
+#signalement-paginator ul.pagination > li > a { padding: 6px 12px; line-height: 1.42857143; }
 
 #signalement-paginator ul.pagination > li > a{
 	background: none;
@@ -262,6 +268,7 @@ form>a>img, .actionsButtons>a>img {
 
 #signalement-paginator ul.pagination > li.active > a{
 	background-color: rgb(12,81,138);
+	color: #fff;
 }
 
 /* INPUT RADIO / CHECKBOX*/

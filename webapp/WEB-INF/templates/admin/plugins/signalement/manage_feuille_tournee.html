@@ -132,7 +132,9 @@
 	</@boxBody>
 </@box>	
 
-<@getDatePickerRangeBootstrap language="${locale.language!}" />
+<#-- MPT Lutece 7 : macro backport depreciee (ids date_begin/date_end codes en dur + flatpickr
+     inoperant en navigateur anglais) -> init bootstrap-datepicker sur les vraies plages. -->
+<#include "macro/datepicker_init.html" />
 
 <script>
 	// Réinitialisation des champs du formulaire de recherche

@@ -1,24 +1,42 @@
-<#-- MPT Lutece 7 : la macro backport @getDatePickerRangeBootstrap initialise sur des ids codes en dur
-     (date_begin/date_end) souvent inexistants -> calendrier mort. On (re)initialise bootstrap-datepicker
-     sur toutes les plages .input-daterange de la page, avec la CSS du widget (non chargee par Tabler),
-     la locale FR (apres la lib), et un cadrage compact des champs (comme en v6). -->
+<#-- MPT Lutece 7 : les macros backport @getDatePickerRangeBootstrap / @getDatePickerBootstrap /
+     @getDatePicker du core 7.0.6 redirigent toutes vers flatpickr. Deux defauts :
+       - la plage initialise sur des ids codes en dur (date_begin/date_end) souvent inexistants ;
+       - flatpickr recoit locale:"<langue admin>" alors qu'il n'expose pas de locale "en" (l'anglais
+         est "default") -> TypeError "lang is undefined" et AUCUNE initialisation des que le
+         navigateur de l'agent est en anglais (le champ redevient une simple zone de texte).
+     On (re)initialise donc bootstrap-datepicker en direct, avec la CSS du widget (non chargee par
+     Tabler), la locale FR (apres la lib), un format dd/mm/yyyy fixe (celui attendu par le serveur,
+     donc insensible a la langue du navigateur) et un cadrage compact des champs (comme en v6).
+     Cible : les plages .input-daterange ET les champs simples marques .dmr-datepicker. -->
 <link rel="stylesheet" href="css/admin/bootstrap-datepicker.min.css" type="text/css" />
 <style>
 .input-daterange { display: inline-flex; align-items: center; }
 .input-daterange .col-1, .input-daterange .col-3 { width: auto; flex: 0 0 auto; padding-left: 0; padding-right: 0; }
 .input-daterange .input-group { width: auto; margin-right: .75rem; }
 .input-daterange input.form-control { width: 160px; }
+.input-group > input.dmr-datepicker { width: 160px; flex: 0 0 auto; }
 </style>
 <script>
 $(function () {
-    $.getScript('js/admin/locales/bootstrap-datepicker.fr.min.js').always(function () {
-        $('.input-daterange').datepicker({
-            format: 'dd/mm/yyyy',
-            language: '${locale.language!"fr"}',
-            autoclose: true,
-            todayHighlight: true,
-            weekStart: 1
+    function initDmrDatepickers() {
+        $.getScript('js/admin/locales/bootstrap-datepicker.fr.min.js').always(function () {
+            var opts = {
+                format: 'dd/mm/yyyy',
+                language: '${locale.language!"fr"}',
+                autoclose: true,
+                todayHighlight: true,
+                weekStart: 1
+            };
+            $('.input-daterange').datepicker(opts);
+            $('input.dmr-datepicker').each(function () {
+                var $i = $(this).datepicker(opts);
+                $i.closest('.input-group').find('.dmr-datepicker-btn').on('click', function () {
+                    $i.datepicker('show');
+                });
+            });
         });
-    });
+    }
+    if ($.fn.datepicker) { initDmrDatepickers(); }
+    else { $.getScript('js/admin/bootstrap-datepicker.min.js').always(initDmrDatepickers); }
 });
 </script>

@@ -1,4 +1,3 @@
-<@getDatePickerRangeBootstrap language="${locale.language!}" />
 <link rel="stylesheet" type="text/css"
 	href="js/jquery/plugins/ui/css/jquery-ui.css" />
 
@@ -153,8 +152,8 @@
 							<label class="<@labelStyle />"
 								for="#i18n{dansmarue.viewSignalement.dateProgrammation}">
 								#i18n{dansmarue.viewSignalement.dateProgrammation} </label>
-							<div class="<@inputStyle /> input-daterange">
-								<input class="form-control form-control-sm" type="text"
+							<div class="<@inputStyle />">
+								<input class="form-control form-control-sm dmr-datepicker" type="text" autocomplete="off"
 									value="${signalement.datePrevueTraitement!}" name="datePrevueTraitement"
 									id="datePrevueTraitement" maxlength="10" />
 							</div> 
@@ -389,3 +388,6 @@ $(function () {
 });
 </script>
 <#include "/admin/util/editor/editor.html" /> <@initEditor />
+<#-- MPT Lutece 7 : macro backport depreciee (@getDatePickerRangeBootstrap : ids codes en dur +
+     flatpickr inoperant en navigateur anglais) -> init bootstrap-datepicker sur le champ date. -->
+<#include "macro/datepicker_init.html" />

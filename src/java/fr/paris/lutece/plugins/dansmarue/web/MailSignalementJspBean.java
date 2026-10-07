@@ -152,9 +152,6 @@ public class MailSignalementJspBean extends AbstractJspBean
     /** The Constant MESSAGE_MAIL_ADRESSE_SIGNALEMENT. */
     private static final String MESSAGE_MAIL_ADRESSE_SIGNALEMENT = "Localisation";
 
-    /** The Constant MESSAGE_MAIL_PRECISION_LOC. */
-    private static final String MESSAGE_MAIL_PRECISION_LOC = "Pr\u00e9cision de localisation";
-
     /** The Constant MESSAGE_MAIL_LINK_WITH_ACCOUNT. */
     private static final String MESSAGE_MAIL_LINK_WITH_ACCOUNT = "Lien back-office authentifié";
 
@@ -222,7 +219,7 @@ public class MailSignalementJspBean extends AbstractJspBean
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see fr.paris.lutece.plugins.dansmarue.web.AbstractJspBean#init(javax.servlet.http.HttpServletRequest, java.lang.String, java.lang.String,
      * java.lang.String)
      */
@@ -318,14 +315,6 @@ public class MailSignalementJspBean extends AbstractJspBean
                     strBuff.append( "<a href=\"" + adresse.getGoogleLink( ) + "\">" + adresse.getAdresse( ) + "</a>" + LINE_SEPARATOR );
                 }
 
-                for ( Adresse adresse : signalement.getAdresses( ) )
-                {
-                    if ( StringUtils.isNotBlank( adresse.getPrecisionLocalisation( ) ) )
-                    {
-                        strBuff.append( MESSAGE_MAIL_PRECISION_LOC + " : " + adresse.getPrecisionLocalisation( ) + LINE_SEPARATOR );
-                    }
-                }
-
                 // comment
                 if ( StringUtils.isNotBlank( signalement.getCommentaire( ) ) )
                 {
@@ -340,7 +329,7 @@ public class MailSignalementJspBean extends AbstractJspBean
 
                 // Link to the consultation page with BO account
                 strBuff.append( LINE_SEPARATOR + LINE_SEPARATOR + MESSAGE_MAIL_LINK_WITH_ACCOUNT + " : <a href=\"" + getLinkConsultationWithAcc( )
-                        + signalement.getId( ) + "\">" + getLinkConsultationWithAcc( ) + signalement.getId( ) + "</a>" );
+                + signalement.getId( ) + "\">" + getLinkConsultationWithAcc( ) + signalement.getId( ) + "</a>" );
 
                 // Link to the consultation page user
                 strBuff.append( LINE_SEPARATOR + LINE_SEPARATOR + MESSAGE_MAIL_LINK + " : <a href=\"" + getLinkConsultation( ) + signalement.getToken( ) + "\">"

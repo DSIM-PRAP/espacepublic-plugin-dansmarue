@@ -68,6 +68,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import au.com.bytecode.opencsv.CSVWriter;
 import fr.paris.lutece.plugins.dansmarue.business.entities.Adresse;
 import fr.paris.lutece.plugins.dansmarue.business.entities.Arrondissement;
@@ -106,6 +109,7 @@ import fr.paris.lutece.plugins.dansmarue.service.role.SignalementViewRoleService
 import fr.paris.lutece.plugins.dansmarue.util.constants.SignalementConstants;
 import fr.paris.lutece.plugins.dansmarue.utils.DateUtils;
 import fr.paris.lutece.plugins.dansmarue.utils.DirectionComparator;
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 import fr.paris.lutece.plugins.dansmarue.utils.ImgUtils;
 import fr.paris.lutece.plugins.dansmarue.utils.ListUtils;
 import fr.paris.lutece.plugins.dansmarue.utils.SignalementUtils;
@@ -147,10 +151,6 @@ import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.image.ImageUtil;
 import fr.paris.lutece.util.url.UrlItem;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 
 /**
  * The Class SignalementJspBean.
@@ -275,9 +275,6 @@ public class SignalementJspBean extends AbstractJspBean
 
     /** The Constant PARAMETER_MAIL. */
     public static final String PARAMETER_MAIL = "mail";
-
-    /** The Constant PARAMETER_PRECISION_LOCALISATION. */
-    public static final String PARAMETER_PRECISION_LOCALISATION = "precisionLocalisation";
 
     /** The Constant PARAMETER_COMMENTAIRE. */
     public static final String PARAMETER_COMMENTAIRE = "commentaire";
@@ -2290,7 +2287,6 @@ public class SignalementJspBean extends AbstractJspBean
         String strIdSignalement = multipartRequest.getParameter( PARAMETER_MARK_SIGNALEMENT_ID );
         String strIdAdresse = multipartRequest.getParameter( PARAMETER_ADRESSE_ID );
         String strAdresse = multipartRequest.getParameter( PARAMETER_MARK_ADRESSE );
-        String strPrecisionLocalisation = multipartRequest.getParameter( PARAMETER_PRECISION_LOCALISATION );
         String strLng = multipartRequest.getParameter( PARAMETER_LNG );
         String strLat = multipartRequest.getParameter( PARAMETER_LAT );
 
@@ -2323,7 +2319,6 @@ public class SignalementJspBean extends AbstractJspBean
         if ( StringUtils.isBlank( strIdSignalement ) )
         {
             adresse.setAdresse( strAdresse );
-            adresse.setPrecisionLocalisation( strPrecisionLocalisation );
             adresse.setLat( nLat );
             adresse.setLng( nLng );
         }
@@ -2343,7 +2338,6 @@ public class SignalementJspBean extends AbstractJspBean
             }
 
             adresse = _adresseService.load( lIdAdresse );
-            adresse.setPrecisionLocalisation( strPrecisionLocalisation );
         }
     }
 

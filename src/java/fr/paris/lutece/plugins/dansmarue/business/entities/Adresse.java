@@ -63,9 +63,6 @@ public class Adresse
     /** The str adresse. */
     private String _strAdresse;
 
-    /** The str precision localisation. */
-    private String _strPrecisionLocalisation;
-
     /**
      * Gets the adresse.
      *
@@ -124,16 +121,6 @@ public class Adresse
     public Double getLngAddress( )
     {
         return _lngAddress;
-    }
-
-    /**
-     * Gets the precision localisation.
-     *
-     * @return the precision localisation
-     */
-    public String getPrecisionLocalisation( )
-    {
-        return _strPrecisionLocalisation;
     }
 
     /**
@@ -212,16 +199,6 @@ public class Adresse
         _lngAddress = lngAddress;
     }
 
-    /**
-     * Sets the precision localisation.
-     *
-     * @param precisionLocalisation
-     *            the new precision localisation
-     */
-    public void setPrecisionLocalisation( String precisionLocalisation )
-    {
-        _strPrecisionLocalisation = precisionLocalisation;
-    }
 
     /**
      * Sets the signalement.

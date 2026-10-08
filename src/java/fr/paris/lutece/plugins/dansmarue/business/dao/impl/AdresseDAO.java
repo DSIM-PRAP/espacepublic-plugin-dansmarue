@@ -51,19 +51,19 @@ public class AdresseDAO implements IAdresseDAO
     private static final String SQL_QUERY_NEW_PK = " SELECT nextval('seq_signalement_adresse_id_adresse')";
 
     /** The Constant SQL_QUERY_INSERT_WITH_GEOM. */
-    private static final String SQL_QUERY_INSERT_WITH_GEOM = " INSERT INTO signalement_adresse(id_adresse, adresse, precision_localisation, fk_id_signalement, geom) VALUES (?, ?, ?, ?, ST_SetSRID(ST_MakePoint(?, ?), 4326))";
+    private static final String SQL_QUERY_INSERT_WITH_GEOM = " INSERT INTO signalement_adresse(id_adresse, adresse, fk_id_signalement, geom) VALUES (?, ?, ?, ST_SetSRID(ST_MakePoint(?, ?), 4326))";
 
     /** The Constant SQL_QUERY_DELETE. */
     private static final String SQL_QUERY_DELETE = " DELETE FROM signalement_adresse WHERE id_adresse = ? ";
 
     /** The Constant SQL_QUERY_SELECT. */
-    private static final String SQL_QUERY_SELECT = " SELECT id_adresse, adresse, ST_X(geom), ST_Y(geom), precision_localisation, fk_id_signalement FROM signalement_adresse WHERE id_adresse = ? ";
+    private static final String SQL_QUERY_SELECT = " SELECT id_adresse, adresse, ST_X(geom), ST_Y(geom), fk_id_signalement FROM signalement_adresse WHERE id_adresse = ? ";
 
     /** The Constant SQL_QUERY_SELECT_BY_SIGNALEMENT. */
-    private static final String SQL_QUERY_SELECT_BY_SIGNALEMENT = " SELECT id_adresse, adresse, ST_X(geom), ST_Y(geom), precision_localisation, fk_id_signalement FROM signalement_adresse WHERE fk_id_signalement = ? ";
+    private static final String SQL_QUERY_SELECT_BY_SIGNALEMENT = " SELECT id_adresse, adresse, ST_X(geom), ST_Y(geom), fk_id_signalement FROM signalement_adresse WHERE fk_id_signalement = ? ";
 
     /** The Constant SQL_QUERY_UPDATE. */
-    private static final String SQL_QUERY_UPDATE = " UPDATE signalement_adresse SET id_adresse=?, adresse=?, precision_localisation=?, geom=ST_SetSRID(ST_MakePoint(?, ?), 4326), fk_id_signalement=? WHERE id_adresse = ? ";
+    private static final String SQL_QUERY_UPDATE = " UPDATE signalement_adresse SET id_adresse=?, adresse=?, geom=ST_SetSRID(ST_MakePoint(?, ?), 4326), fk_id_signalement=? WHERE id_adresse = ? ";
 
     /** The Constant SQL_QUERY_UPDATE_ADRESSE. */
     private static final String SQL_QUERY_UPDATE_ADRESSE = " UPDATE signalement_adresse SET adresse=?, is_adresse_rattrapee=TRUE WHERE id_adresse = ? ";
@@ -140,7 +140,6 @@ public class AdresseDAO implements IAdresseDAO
         int nIndex = 1;
         daoUtil.setLong( nIndex++, adresse.getId( ) );
         daoUtil.setString( nIndex++, adresse.getAdresse( ) );
-        daoUtil.setString( nIndex++, adresse.getPrecisionLocalisation( ) );
         daoUtil.setDouble( nIndex++, adresse.getLng( ) );
         daoUtil.setDouble( nIndex++, adresse.getLat( ) );
         daoUtil.setLong( nIndex++, adresse.getSignalement( ).getId( ) );
@@ -182,7 +181,6 @@ public class AdresseDAO implements IAdresseDAO
                 int nIndex = 1;
                 daoUtil.setLong( nIndex++, adresse.getId( ) );
                 daoUtil.setString( nIndex++, adresse.getAdresse( ) );
-                daoUtil.setString( nIndex++, adresse.getPrecisionLocalisation( ) );
                 daoUtil.setLong( nIndex++, adresse.getSignalement( ).getId( ) );
                 daoUtil.setDouble( nIndex++, adresse.getLng( ) );
                 daoUtil.setDouble( nIndex, adresse.getLat( ) );
@@ -226,8 +224,6 @@ public class AdresseDAO implements IAdresseDAO
             adresse.setLng( daoUtil.getDouble( nIndex++ ) );
             adresse.setLat( daoUtil.getDouble( nIndex++ ) );
 
-            adresse.setPrecisionLocalisation( daoUtil.getString( nIndex++ ) );
-
             Signalement signalement = new Signalement( );
             signalement.setId( daoUtil.getLong( nIndex ) );
             adresse.setSignalement( signalement );
@@ -258,8 +254,6 @@ public class AdresseDAO implements IAdresseDAO
             adresse.setLng( daoUtil.getDouble( nIndex++ ) );
             adresse.setLat( daoUtil.getDouble( nIndex++ ) );
 
-            adresse.setPrecisionLocalisation( daoUtil.getString( nIndex++ ) );
-
             Signalement signalement = new Signalement( );
             signalement.setId( daoUtil.getLong( nIndex ) );
 
@@ -281,7 +275,6 @@ public class AdresseDAO implements IAdresseDAO
         int nIndex = 1;
         daoUtil.setLong( nIndex++, adresse.getId( ) );
         daoUtil.setString( nIndex++, adresse.getAdresse( ) );
-        daoUtil.setString( nIndex++, adresse.getPrecisionLocalisation( ) );
         daoUtil.setLong( nIndex++, adresse.getSignalement( ).getId( ) );
         // WHERE
         daoUtil.setLong( nIndex, adresse.getId( ) );
@@ -313,8 +306,6 @@ public class AdresseDAO implements IAdresseDAO
 
             adresse.setLng( daoUtil.getDouble( nIndex++ ) );
             adresse.setLat( daoUtil.getDouble( nIndex++ ) );
-
-            adresse.setPrecisionLocalisation( daoUtil.getString( nIndex++ ) );
 
             Signalement signalement = new Signalement( );
             signalement.setId( daoUtil.getLong( nIndex ) );

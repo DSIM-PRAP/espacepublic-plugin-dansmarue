@@ -152,20 +152,14 @@ $(document).ready(function() {
 						<div class="form-label col-12 col-sm-8 col-md-6">
 							${signaleur.mail}</div>
 					</div>
-					</#if> <#if adresse.precisionLocalisation?has_content>
-					<div class="form-group">
-						<label class="<@labelStyle />">
-							#i18n{dansmarue.saveSignalement.precisionLocalisation} </label>
-						<div class="form-label col-12 col-sm-8 col-md-6">
-							${adresse.precisionLocalisation}</div>
-					</div>
-					</#if> <#if signalement.commentaire?has_content>
-					<div class="form-group">
-						<label class="<@labelStyle />">
-							#i18n{dansmarue.saveSignalement.commentaire} </label>
-						<div class="form-label col-12 col-sm-8 col-md-6">
-							${signalement.commentaire}</div>
-					</div>
+					</#if>
+					<#if signalement.commentaire?has_content>
+						<div class="form-group">
+							<label class="<@labelStyle />">
+								#i18n{dansmarue.saveSignalement.commentaire} </label>
+							<div class="form-label col-12 col-sm-8 col-md-6">
+								${signalement.commentaire}</div>
+						</div>
 					</#if>
 					<#if signalement.commentaireAgentTerrain?has_content>
 						<div class="form-group">

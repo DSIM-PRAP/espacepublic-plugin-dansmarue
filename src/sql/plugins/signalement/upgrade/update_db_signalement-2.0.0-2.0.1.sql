@@ -7,3 +7,6 @@ UPDATE signalement_workflow_notification_service_programme_config SET message = 
 UPDATE signalement_workflow_notification_suivi_config SET mail_message = replace(mail_message, '$' || '{precision}', '') WHERE mail_message LIKE '%$' || '{precision}%';
 UPDATE signalement_workflow_notification_user_config SET message = replace(message, '$' || '{precision}', '') WHERE message LIKE '%$' || '{precision}%';
 UPDATE signalement_workflow_notifuser_multi_contents_config SET message = replace(message, '$' || '{precision}', '') WHERE message LIKE '%$' || '{precision}%';
+
+--BV-247 Ajout colonne id_arrondissement pour sauvegarder filtre villes abonnement ville
+ALTER TABLE signalement_workflow_notification_config_unit ADD COLUMN id_arrondissement int4 NULL;

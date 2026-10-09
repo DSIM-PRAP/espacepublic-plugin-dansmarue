@@ -111,12 +111,13 @@ public class TypeSignalementResourceIdService extends ResourceIdService
         {
             _typeSignalementService = (ITypeSignalementService) SpringContextService.getBean( "typeSignalementService" );
         }
-        TypeSignalement typeSignalement = _typeSignalementService.findByIdTypeSignalement( Integer.parseInt( strId ) );
+        TypeSignalement typeSignalement = _typeSignalementService.getTypeSignalementByIdWithParents(Integer.parseInt( strId ) );
+
         if ( typeSignalement == null )
         {
             return StringUtils.EMPTY;
         }
-        return typeSignalement.getLibelle( );
+        return typeSignalement.getFormatTypeSignalement( );
     }
 
 }

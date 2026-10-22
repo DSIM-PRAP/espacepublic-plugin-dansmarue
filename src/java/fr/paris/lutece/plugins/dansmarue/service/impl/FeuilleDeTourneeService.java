@@ -538,7 +538,7 @@ public class FeuilleDeTourneeService implements IFeuilleDeTourneeService
 
         // Btn action
         String actionAjout = "<span class='btnActionTooltip' id='actionAjout_" + signalement.getId( ) + "' onclick='addToSelection(" + signalement.getId( )
-                + ")'><i style='color: #1DAF26;' class='fa fa-plus-circle'></i> #i18n{dansmarue.map.tooltips.ajouter}</span>";
+        + ")'><i style='color: #1DAF26;' class='fa fa-plus-circle'></i> #i18n{dansmarue.map.tooltips.ajouter}</span>";
         String actionSuppression = "<span class='btnActionTooltip' id='actionSuppression_" + signalement.getId( ) + "' onclick='removeFromSelection("
                 + signalement.getId( ) + ")'><i style='color: #FF0707;' class='fa fa-minus-circle'></i> #i18n{dansmarue.map.tooltips.retirer}</span>";
         sigMarker.addTooltipText( "", actionAjout + actionSuppression );
@@ -596,8 +596,8 @@ public class FeuilleDeTourneeService implements IFeuilleDeTourneeService
                     + signalement.getIdSignalement( )
                     + ")'><i style='color: #1DAF26;' class='fa fa-plus-circle'></i> #i18n{dansmarue.map.tooltips.ajouter}</span>";
             String actionSuppression = "<span class='btnActionTooltip' id='actionSuppression_" + signalement.getIdSignalement( )
-                    + "' onclick='removeFromSelection(" + signalement.getIdSignalement( )
-                    + ")'><i style='color: #FF0707;' class='fa fa-minus-circle'></i> #i18n{dansmarue.map.tooltips.retirer}</span>";
+            + "' onclick='removeFromSelection(" + signalement.getIdSignalement( )
+            + ")'><i style='color: #FF0707;' class='fa fa-minus-circle'></i> #i18n{dansmarue.map.tooltips.retirer}</span>";
             sigMarker.addTooltipText( "", actionAjout + actionSuppression );
         }
 
@@ -718,6 +718,21 @@ public class FeuilleDeTourneeService implements IFeuilleDeTourneeService
             }
         }
         return feuilleDeTourneeListAutorise;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isNbResultOk( int totalAnomalies )
+    {
+        if ( !StringUtils.equals( "0", DatastoreService.getDataValue( "sitelabels.site_property.feuille.de.tournee.limite.signalement", "0" ) ) )
+        {
+            int nbMaxResult = Integer.parseInt( DatastoreService.getDataValue( "sitelabels.site_property.feuille.de.tournee.limite.signalement", "0" ) );
+            return totalAnomalies < nbMaxResult;
+        }
+
+        return true;
     }
 
 }

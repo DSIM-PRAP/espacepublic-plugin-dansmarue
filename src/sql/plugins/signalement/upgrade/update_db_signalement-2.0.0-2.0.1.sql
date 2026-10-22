@@ -1,12 +1,15 @@
 -- BV-250 suppression colonne precision_localisation
 ALTER TABLE signalement_adresse DROP COLUMN IF EXISTS precision_localisation;
 
---BV-250 nettoyer les notification contenant la precision location
+-- BV-250 nettoyer les notification contenant la precision location
 UPDATE signalement_workflow_notification_config SET message = replace(message, '$' || '{precision}', '') WHERE message LIKE '%$' || '{precision}%';
 UPDATE signalement_workflow_notification_service_programme_config SET message = replace(message, '$' || '{precision}', '') WHERE message LIKE '%$' || '{precision}%';
 UPDATE signalement_workflow_notification_suivi_config SET mail_message = replace(mail_message, '$' || '{precision}', '') WHERE mail_message LIKE '%$' || '{precision}%';
 UPDATE signalement_workflow_notification_user_config SET message = replace(message, '$' || '{precision}', '') WHERE message LIKE '%$' || '{precision}%';
 UPDATE signalement_workflow_notifuser_multi_contents_config SET message = replace(message, '$' || '{precision}', '') WHERE message LIKE '%$' || '{precision}%';
 
---BV-247 Ajout colonne id_arrondissement pour sauvegarder filtre villes abonnement ville
+-- BV-247 Ajout colonne id_arrondissement pour sauvegarder filtre villes abonnement ville
 ALTER TABLE signalement_workflow_notification_config_unit ADD COLUMN id_arrondissement int4 NULL;
+
+-- BV-252 Ajout d une limite de signalements sur la recherche FDT
+INSERT INTO core_datastore (entity_key, entity_value) VALUES('sitelabels.site_property.feuille.de.tournee.limite.signalement', '1000'); 

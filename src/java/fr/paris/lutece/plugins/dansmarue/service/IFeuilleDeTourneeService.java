@@ -109,7 +109,7 @@ public interface IFeuilleDeTourneeService
 
     /**
      * Find Filter search.
-     * 
+     *
      * @param nameToSearch
      *            name of filter
      * @return FilterSearch find
@@ -320,4 +320,13 @@ public interface IFeuilleDeTourneeService
      *            the jour delai suppression
      */
     void deleteOldFeuilleDeTournee( int jourDelaiSuppression );
+
+    /**
+     * Checks if is nb result ok.
+     *
+     * @param totalAnomalies
+     *            the total anomalies
+     * @return true, if is nb result ok
+     */
+    boolean isNbResultOk( int totalAnomalies );
 }

@@ -40,7 +40,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -52,6 +51,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import fr.paris.lutece.plugins.dansmarue.business.entities.Arrondissement;
 import fr.paris.lutece.plugins.dansmarue.business.entities.EtatSignalement;
@@ -70,9 +73,9 @@ import fr.paris.lutece.plugins.dansmarue.service.IPrioriteService;
 import fr.paris.lutece.plugins.dansmarue.service.ISignalementExportService;
 import fr.paris.lutece.plugins.dansmarue.service.ITypeSignalementService;
 import fr.paris.lutece.plugins.dansmarue.service.dto.SignalementExportCSVDTO;
-import fr.paris.lutece.plugins.dansmarue.service.role.FeuilleDeTourneeResourceIdService;
 import fr.paris.lutece.plugins.dansmarue.util.constants.SignalementConstants;
 import fr.paris.lutece.plugins.dansmarue.utils.DateUtils;
+import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
 import fr.paris.lutece.plugins.dansmarue.utils.ListUtils;
 import fr.paris.lutece.plugins.unittree.business.unit.Unit;
 import fr.paris.lutece.plugins.unittree.modules.dansmarue.business.sector.Sector;
@@ -82,11 +85,13 @@ import fr.paris.lutece.plugins.workflowcore.business.state.State;
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.admin.AdminUserService;
+import fr.paris.lutece.portal.service.datastore.DatastoreService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.rbac.RBACService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -100,12 +105,6 @@ import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import fr.paris.lutece.plugins.dansmarue.utils.DmrJson;
-import fr.paris.lutece.portal.service.util.AppException;
 
 @Controller( controllerJsp = "ManageFeuilleDeTournee.jsp", controllerPath = "jsp/admin/plugins/signalement/", right = "FEUILLE_DE_TOURNEE" )
 public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
@@ -253,13 +252,13 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
      * @param request
      *            the request
      * @return the manage
-     * @throws AccessDeniedException 
+     * @throws AccessDeniedException
      */
     @View( value = VIEW_MANAGE, defaultView = true )
     public String getManage( HttpServletRequest request ) throws AccessDeniedException
     {
         checkUserRole( FeuilleDeTournee.PERMISSION_VIEW );
-        
+
         Map<String, Object> model = getModel( );
 
         model.put( SignalementConstants.MARK_LOCALE, request.getLocale( ) );
@@ -281,7 +280,7 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
     public String doSearchFdt( HttpServletRequest request ) throws AccessDeniedException
     {
         checkUserRole( FeuilleDeTournee.PERMISSION_VIEW );
-        
+
         populate( _feuilleDeTourneeFilter, request );
 
         if ( !_feuilleDeTourneeFilter.isDatesValid( ) )
@@ -303,7 +302,7 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
     public String getCreate( HttpServletRequest request ) throws AccessDeniedException
     {
         checkUserRole( FeuilleDeTournee.PERMISSION_CREATE );
-        
+
         Map<String, Object> model = getModel( );
 
         Locale locale = getLocale( );
@@ -521,11 +520,11 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
         _signalementFilter = new SignalementFilter( );
 
         _signalementFilter
-                .setListIdTypeSignalements( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_TYPOLOGIE )) ) ) );
+        .setListIdTypeSignalements( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_TYPOLOGIE )) ) ) );
         _signalementFilter.setEtats( etats );
         _signalementFilter.setPriorites( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_PRIORITE )) ) ) );
         _signalementFilter
-                .setListIdArrondissements( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_ARRONDISEMENT )) ) ) );
+        .setListIdArrondissements( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_ARRONDISEMENT )) ) ) );
         _signalementFilter.setListIdQuartier( new ArrayList<Integer>( DmrJson.toIntegerList( ((ArrayNode) jsonObjectFilterValue.get( PARAMETER_QUARTIER )) ) ) );
 
         _signalementFilter.setDateBegin( jsonObjectFilterValue.get( PARAMETER_DATE_BEGIN ).asText( ) );
@@ -690,7 +689,7 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
     public String getLoad( HttpServletRequest request ) throws AccessDeniedException
     {
         checkUserRole( FeuilleDeTournee.PERMISSION_VIEW );
-        
+
         Map<String, Object> model = getModel( );
         int feuilledeDeTourneId = -1;
 
@@ -793,6 +792,16 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
         addFilterOrder( request );
 
         int totalAnomalies = _signalementExportService.countSearchResult( _signalementFilter );
+
+        if ( !_feuilleTourneeService.isNbResultOk( totalAnomalies ) )
+        {
+            String [ ] args = new String [ 1];
+            args [0] = DatastoreService.getDataValue( "sitelabels.site_property.feuille.de.tournee.limite.signalement", "0" );
+
+            return redirect( request, AdminMessageService.getMessageUrl( request, "dansmarue.map.max.results.execeeded", args, AdminMessage.TYPE_STOP ) );
+        }
+
+
         List<Signalement> listSignalements = _signalementExportService.findByFilterSearch( _signalementFilter,
                 getPaginationProperties( request, totalAnomalies ) );
 
@@ -1012,7 +1021,7 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
      * @param request
      *            the request
      * @return the string
-     * @throws AccessDeniedException 
+     * @throws AccessDeniedException
      */
     @Action( ACTION_SAVE_FILTER )
     public String doSaveFilter( HttpServletRequest request ) throws AccessDeniedException
@@ -1178,7 +1187,7 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
         String destinairesParam = request.getParameter( PARAMETER_DESTINAIRES_EXPORT );
         Integer feuilleeDeTourneId = request.getParameter( PARAMETER_FEUILLE_DE_TOURNEE_ID ) != null
                 ? Integer.parseInt( request.getParameter( PARAMETER_FEUILLE_DE_TOURNEE_ID ) )
-                : 0;
+                        : 0;
         String base64Map = request.getParameter( PARAMETER_CARTE_BASE64 );
         String pathToTemplate = request.getServletContext( ).getRealPath( "editions" ) + "/" + NOM_TEMPLATE + ".jrxml";
 
@@ -1224,7 +1233,7 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
         checkUserRole( FeuilleDeTournee.PERMISSION_TRANSFERT);
         Integer feuilleeDeTourneId = request.getParameter( PARAMETER_FEUILLE_DE_TOURNEE_ID ) != null
                 ? Integer.parseInt( request.getParameter( PARAMETER_FEUILLE_DE_TOURNEE_ID ) )
-                : 0;
+                        : 0;
         String pathToTemplate = request.getServletContext( ).getRealPath( "editions" ) + "/" + NOM_TEMPLATE + ".jrxml";
         String destinairesParam = request.getParameter( PARAMETER_DESTINAIRES_TRANSFERT );
 
@@ -1309,7 +1318,7 @@ public class ManageFeuilleDeTourneeJspBean extends AbstractJspBean
      * @param permission the permission
      * @throws AccessDeniedException the access denied exception
      */
-    private void checkUserRole( String permission) throws AccessDeniedException 
+    private void checkUserRole( String permission) throws AccessDeniedException
     {
         AdminUser user = getUser();
         if ( !RBACService.isAuthorized( FeuilleDeTournee.RESOURCE_TYPE, FeuilleDeTournee.RESOURCE_TYPE, permission, user ) )
